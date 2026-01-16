@@ -1,0 +1,20 @@
+{
+  "$schema": "https://cmake.org/cmake/help/latest/_downloads/3e2d73bff478d88a7de0de736ba5e361/schema.json",
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 31
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "Default",
+      "environment": {
+        "VULKAN_SDK": "/home/kaan/Belgeler/0000_Projects/sneed/sdks/vulkansdk-linux-x86_64-1.4.335.0/1.4.335.0/x86_64",
+        "VK_LAYER_PATH": "$env{VULKAN_SDK}/etc/vulkan/explicit_layer.d",
+        "LD_LIBRARY_PATH": "$env{VULKAN_SDK}/lib:$penv{LD_LIBRARY_PATH}"
+      },
+      "generator": "Ninja"
+    }
+  ]
+}
