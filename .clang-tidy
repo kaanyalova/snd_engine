@@ -4,15 +4,8 @@ Checks: -*,
   modernize-*,
   performance-*,
   portability-*,
-  readability-*,
-  -readability-magic-numbers,
-  -readability-braces-around-statements,
-  -readability-redundant-access-specifiers,
-  -readability-redundant-member-init,
-  -readability-redundant-string-init,
-  -readability-identifier-length,
-  -readability-implicit-bool-conversion,
-
+  readability-*
+  -modernize-return-braced-init-list
 CheckOptions:
   - { key: readability-identifier-naming.NamespaceCase, value: lower_case }
   - { key: readability-identifier-naming.ClassCase, value: CamelCase }

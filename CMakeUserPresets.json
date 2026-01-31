@@ -7,8 +7,10 @@
   },
   "configurePresets": [
     {
-      "name": "default",
-      "displayName": "Default",
+      "name": "debug-local",
+      "inherits": "debug",
+      "binaryDir": "build/debug-local",
+      "displayName": "Debug (local)",
       "environment": {
         "VULKAN_SDK": "/home/kaan/Belgeler/0000_Projects/sneed/sdks/vulkansdk-linux-x86_64-1.4.335.0/1.4.335.0/x86_64",
         "VK_LAYER_PATH": "$env{VULKAN_SDK}/etc/vulkan/explicit_layer.d",

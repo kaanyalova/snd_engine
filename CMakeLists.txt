@@ -1,31 +1,16 @@
 cmake_minimum_required(VERSION 3.31)
 
-# Enable C++ modules support
-SET(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "d0edc3af-4c50-42ea-a356-e2862fe7a444")
-SET(CMAKE_CXX_MODULE_STD 1)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+set(CMAKE_CXX_STANDARD 23)
+
+set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_C_COMPILER gcc)
 
 project(sneed)
 
 find_package(Vulkan REQUIRED)
-
-# set up cpp modules for vulkan
-add_library(VulkanHppModule)
-
-target_compile_definitions(VulkanHppModule
-        PUBLIC VULKAN_HPP_DISPATCH_LOADER_DYNAMIC=1 VULKAN_HPP_NO_STRUCT_CONSTRUCTORS=1
-)
-
-target_sources(VulkanHppModule PUBLIC
-        FILE_SET CXX_MODULES
-        BASE_DIRS ${Vulkan_INCLUDE_DIR}
-        FILES
-        ${Vulkan_INCLUDE_DIR}/vulkan/vulkan_video.cppm ${Vulkan_INCLUDE_DIR}/vulkan/vulkan.cppm
-)
-target_compile_features(VulkanHppModule PUBLIC cxx_std_20)
-target_link_libraries(VulkanHppModule PUBLIC Vulkan::Vulkan)
-
 
 include(FetchContent)
 FetchContent_Declare(
@@ -38,15 +23,13 @@ FetchContent_MakeAvailable(SDL3)
 
 add_executable(sneed src/main.cpp
         src/Renderer.cpp
-        src/Window.cppm
-        src/Window.cpp)
+        src/Window.cpp
+        src/Window.hpp
+        src/Renderer.hpp
+        src/FileUtils.cpp
+        src/FileUtils.hpp
+        )
 
-target_sources(sneed
-        PUBLIC
-        FILE_SET modules TYPE CXX_MODULES FILES
-        src/Renderer.cppm
-        src/Window.cppm
-)
+target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3)
 
-
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan VulkanHppModule SDL3::SDL3)
+target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)
