@@ -27,6 +27,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(GLM)
 
+FetchContent_Declare(
+        Vma-Hpp
+        URL https://github.com/YaaZ/VulkanMemoryAllocator-Hpp/releases/download/v3.3.0%2B2/VulkanMemoryAllocator-Hpp-3.3.0.tar.gz
+        URL_HASH SHA256=44767b5990dd36bdc3934b48a7bda2906a5573199a12b61ef2f0de8e72f988f1
+)
+FetchContent_MakeAvailable(Vma-Hpp)
+
 
 add_executable(sneed src/main.cpp
         src/Renderer.cpp
@@ -37,8 +44,11 @@ add_executable(sneed src/main.cpp
         src/Utils/FileUtils.hpp
         src/Utils/StringUtils.cpp
         src/Utils/StringUtils.hpp
+        src/Vertex.hpp
+        src/Vertex.cpp
+        src/VmaUsage.cpp
 )
 
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm)
+target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp)
 
 target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)

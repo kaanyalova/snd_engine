@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="12" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="11" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
@@ -38,23 +38,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Utils/StringUtils.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Utils/StringUtils.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/VmaUsage.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.clang-format" beforeDir="false" afterPath="$PROJECT_DIR$/.clang-format" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Justfile" beforeDir="false" afterPath="$PROJECT_DIR$/Justfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/compile_shaders.ts" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/compile_shaders.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/FileUtils.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileUtils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/FileUtils.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Renderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Renderer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Renderer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Renderer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Window.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shaders/triangle.slang" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shaders/triangle.spv" beforeDir="false" afterPath="$PROJECT_DIR$/src/shaders/triangle.spv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vertex.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vertex.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vertex.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vertex.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +176,9 @@
       <workItem from="1769877142935" duration="1126000" />
       <workItem from="1769958905967" duration="4710000" />
       <workItem from="1769969885497" duration="5765000" />
-      <workItem from="1770031706807" duration="1263000" />
+      <workItem from="1770031706807" duration="6250000" />
+      <workItem from="1770057915645" duration="809000" />
+      <workItem from="1770058736348" duration="1349000" />
     </task>
     <servers />
   </component>

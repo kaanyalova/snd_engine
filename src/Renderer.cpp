@@ -1,20 +1,21 @@
 #include "Renderer.hpp"
 
 #include <SDL3/SDL_video.h>
-#include <sys/types.h>
 
 #include <algorithm>
 #include <array>
-#include <cstdint>
 #include <limits>
 #include <print>
 #include <ranges>
 #include <vector>
+#include <vk_mem_alloc.hpp>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
 
 #include "Utils/FileUtils.hpp"
 #include "Utils/StringUtils.hpp"
+#include "Vertex.hpp"
+
 Renderer::Renderer(Window& window, RendererSettings settings)
     : m_required_extensions(std::move(settings.required_extensions))
     , m_validation_layers(std::move(settings.validation_layers))
@@ -24,6 +25,7 @@ Renderer::Renderer(Window& window, RendererSettings settings)
     , m_prefer_discrete_gpu(settings.prefer_discrete_gpu)
     , m_window(window) {
 }
+
 auto Renderer::init_vulkan() -> void {
     create_instance();
     if (m_enable_validation) {
@@ -32,6 +34,7 @@ auto Renderer::init_vulkan() -> void {
     create_surface();
     pick_physical_device();
     create_logical_device();
+    create_memory_allocator();
     create_swap_chain();
     create_image_views();
     create_graphics_pipeline();
@@ -39,6 +42,7 @@ auto Renderer::init_vulkan() -> void {
     create_command_buffers();
     create_sync_objects();
 }
+
 auto Renderer::create_instance() -> void {
     auto constexpr application_info = vk::ApplicationInfo {
         .pApplicationName = "vulkan",
@@ -83,6 +87,7 @@ auto Renderer::create_instance() -> void {
 
     m_instance = vk::raii::Instance(m_context, create_info);
 }
+
 auto Renderer::are_required_extensions_supported_by_instance() -> bool {
     std::vector<vk::ExtensionProperties> extension_properties =
         m_context.enumerateInstanceExtensionProperties();
@@ -96,6 +101,7 @@ auto Renderer::are_required_extensions_supported_by_instance() -> bool {
         );
     });
 }
+
 auto Renderer::are_required_validation_layers_supported_by_instance() -> bool {
     std::vector<vk::LayerProperties> layer_properties =
         m_context.enumerateInstanceLayerProperties();
@@ -109,6 +115,7 @@ auto Renderer::are_required_validation_layers_supported_by_instance() -> bool {
         );
     });
 }
+
 auto Renderer::get_validation_layers() -> std::vector<const char*> {
     if (m_enable_validation) {
         if (!are_required_extensions_supported_by_instance()) {
@@ -118,6 +125,7 @@ auto Renderer::get_validation_layers() -> std::vector<const char*> {
     }
     return {};
 }
+
 auto Renderer::is_device_suitable(const vk::raii::PhysicalDevice& device) -> bool {
     const vk::PhysicalDeviceProperties device_properties = device.getProperties();
     std::vector<vk::QueueFamilyProperties> queue_family_properties =
@@ -150,6 +158,7 @@ auto Renderer::is_device_suitable(const vk::raii::PhysicalDevice& device) -> boo
 
     return is_suitable;
 }
+
 auto Renderer::find_queue_families(const vk::raii::PhysicalDevice& device) -> FamilyIndices {
     std::vector<vk::QueueFamilyProperties> queue_family_properties =
         device.getQueueFamilyProperties();
@@ -195,6 +204,7 @@ auto Renderer::find_queue_families(const vk::raii::PhysicalDevice& device) -> Fa
         .presentation_family = presentation_family_index,
     };
 }
+
 auto Renderer::setup_debug_messenger() -> void {
     auto messenger_create_info = vk::DebugUtilsMessengerCreateInfoEXT {
         .messageSeverity = m_validation_log_level,
@@ -204,6 +214,7 @@ auto Renderer::setup_debug_messenger() -> void {
 
     m_debug_messenger = m_instance.createDebugUtilsMessengerEXT(messenger_create_info);
 }
+
 auto Renderer::pick_physical_device() -> void {
     std::vector<vk::raii::PhysicalDevice> physical_devices = m_instance.enumeratePhysicalDevices();
 
@@ -247,6 +258,7 @@ auto Renderer::pick_physical_device() -> void {
     // no gpus are suitable
     throw std::runtime_error("failed to find a suitable GPU");
 }
+
 auto Renderer::create_logical_device() -> void {
     m_family_indices = find_queue_families(m_physical_device);
     float queue_priority = 1.0f;
@@ -290,9 +302,28 @@ auto Renderer::create_logical_device() -> void {
     m_graphics_queue = vk::raii::Queue(m_device, m_family_indices.graphics_family, 0);
     m_presentation_queue = vk::raii::Queue(m_device, m_family_indices.presentation_family, 0);
 }
+
+auto Renderer::create_memory_allocator() -> void {
+    auto vma_vulkan_functions = vma::VulkanFunctions {
+        .vkGetInstanceProcAddr = &vkGetInstanceProcAddr,
+        .vkGetDeviceProcAddr = &vkGetDeviceProcAddr,
+    };
+
+    auto vma_allocator_create_info = vma::AllocatorCreateInfo {
+        .physicalDevice = *m_physical_device,
+        .device = *m_device,
+        .pVulkanFunctions = &vma_vulkan_functions,
+        .instance = *m_instance,
+        .vulkanApiVersion = vk::ApiVersion14,
+    };
+
+    m_allocator = vma::raii::createAllocator(m_instance, m_device, vma_allocator_create_info);
+}
+
 auto Renderer::create_surface() -> void {
     m_surface = m_window.create_surface(m_instance);
 }
+
 auto Renderer::debug_callback(
     vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
     vk::DebugUtilsMessageTypeFlagsEXT type,
@@ -312,6 +343,7 @@ auto Renderer::debug_callback(
     );
     return vk::False;
 }
+
 auto Renderer::choose_swap_surface_format(
     const std::vector<vk::SurfaceFormatKHR>& available_formats
 ) -> vk::SurfaceFormatKHR {
@@ -328,6 +360,7 @@ auto Renderer::choose_swap_surface_format(
     // return the first one if the preferred one is not found
     return available_formats[0];
 }
+
 auto Renderer::choose_swap_present_mode(const std::vector<vk::PresentModeKHR>& available_modes)
     -> vk::PresentModeKHR {
     auto mailbox_mode_it = std::ranges::find(available_modes, vk::PresentModeKHR::eMailbox);
@@ -338,6 +371,7 @@ auto Renderer::choose_swap_present_mode(const std::vector<vk::PresentModeKHR>& a
 
     return vk::PresentModeKHR::eFifo;
 }
+
 auto Renderer::choose_swap_extent(const vk::SurfaceCapabilitiesKHR& capabilities) -> vk::Extent2D {
     if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
         return capabilities.currentExtent;
@@ -360,6 +394,7 @@ auto Renderer::choose_swap_extent(const vk::SurfaceCapabilitiesKHR& capabilities
         ),
     };
 }
+
 auto Renderer::create_swap_chain() -> void {
     auto surface_capabilities = m_physical_device.getSurfaceCapabilitiesKHR(m_surface);
     m_swap_chain_extent = choose_swap_extent(surface_capabilities);
@@ -418,6 +453,7 @@ auto Renderer::create_swap_chain() -> void {
     m_swap_chain = vk::raii::SwapchainKHR(m_device, swap_chain_create_info);
     m_swap_chain_images = m_swap_chain.getImages();
 }
+
 auto Renderer::create_image_views() -> void {
     m_swap_chain_image_views.clear();
 
@@ -441,6 +477,25 @@ auto Renderer::create_image_views() -> void {
         m_swap_chain_image_views.emplace_back(m_device, image_view_create_info);
     }
 }
+
+auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags properties) {
+    vk::PhysicalDeviceMemoryProperties physical_device_memory_properties =
+        m_physical_device.getMemoryProperties();
+
+    for (uint32_t i = 0; i < physical_device_memory_properties.memoryTypeCount; i++) {
+        const bool is_type = type_filter & (1 << i);
+        const bool supports_properties =
+            (physical_device_memory_properties.memoryTypes[i].propertyFlags & properties) ==
+            properties;
+
+        if (is_type && supports_properties) {
+            return i;
+        }
+    }
+
+    throw std::runtime_error("failed to find suitable memory type!");
+}
+
 [[nodiscard]] auto Renderer::create_shader_module(const std::vector<char>& code) const
     -> vk::raii::ShaderModule {
     auto shader_module_create_info = vk::ShaderModuleCreateInfo {
@@ -451,9 +506,10 @@ auto Renderer::create_image_views() -> void {
     auto shader_module = vk::raii::ShaderModule(m_device, shader_module_create_info);
     return shader_module;
 }
+
 auto Renderer::create_graphics_pipeline() -> void {
     std::vector<char> shader_code =
-        FileUtils::read_file("/home/kaan/Masaüstü/sneed/src/shaders/triangle.spv");
+        FileUtils::read_file("/home/kaan/Masaüstü/sneed/src/shaders/shader.spv");
     vk::raii::ShaderModule shader_module = create_shader_module(shader_code);
 
     auto vert_shader_stage_info = vk::PipelineShaderStageCreateInfo {
@@ -547,7 +603,16 @@ auto Renderer::create_graphics_pipeline() -> void {
         .pColorAttachmentFormats = &m_swap_chain_surface_format.format,
     };
 
-    auto vertex_input_info = vk::PipelineVertexInputStateCreateInfo {};
+    vk::VertexInputBindingDescription binding_description = Vertex::get_binding_description();
+    std::array<vk::VertexInputAttributeDescription, 2> attribute_descriptions =
+        Vertex::get_attribute_descriptions();
+
+    auto vertex_input_info = vk::PipelineVertexInputStateCreateInfo {
+        .vertexBindingDescriptionCount = 1,
+        .pVertexBindingDescriptions = &binding_description,
+        .vertexAttributeDescriptionCount = attribute_descriptions.size(),
+        .pVertexAttributeDescriptions = attribute_descriptions.data(),
+    };
 
     auto graphics_pipeline_create_info = vk::GraphicsPipelineCreateInfo {
         .pNext = &pipeline_rendering_create_info,
@@ -566,6 +631,7 @@ auto Renderer::create_graphics_pipeline() -> void {
 
     m_graphics_pipeline = vk::raii::Pipeline(m_device, nullptr, graphics_pipeline_create_info);
 }
+
 auto Renderer::create_command_pool() -> void {
     auto command_pool_create_info = vk::CommandPoolCreateInfo {
         .flags = vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
@@ -574,6 +640,7 @@ auto Renderer::create_command_pool() -> void {
 
     m_command_pool = vk::raii::CommandPool(m_device, command_pool_create_info);
 }
+
 auto Renderer::create_command_buffers() -> void {
     m_command_buffers.clear();
 
@@ -585,6 +652,7 @@ auto Renderer::create_command_buffers() -> void {
 
     m_command_buffers = vk::raii::CommandBuffers(m_device, command_buffer_allocate_info);
 }
+
 auto Renderer::record_command_buffer(uint32_t image_index) -> void {
     vk::raii::CommandBuffer& command_buffer = m_command_buffers[frame_index];
 
@@ -659,6 +727,7 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
 
     command_buffer.end();
 }
+
 auto Renderer::create_sync_objects() -> void {
     assert(m_present_complete_semaphores.empty());
     assert(m_render_finished_semaphores.empty());
@@ -678,6 +747,25 @@ auto Renderer::create_sync_objects() -> void {
         in_flight_fences.emplace_back(m_device, fence_create_info);
     }
 }
+
+auto Renderer::create_vertex_buffer() -> void {
+    auto buffer_create_info = vk::BufferCreateInfo {
+        .size = sizeof(vertices.front()) * vertices.size(),
+        .usage = vk::BufferUsageFlagBits::eVertexBuffer,
+        .sharingMode = vk::SharingMode::eExclusive,
+    };
+
+    auto allocation_info = vma::AllocationCreateInfo {
+        .usage = vma::MemoryUsage::eAuto,
+    };
+
+    //m_vertex_buffer = vk::raii::Buffer(m_device, buffer_create_info);
+
+    m_vertex_buffer = m_allocator.createBuffer(buffer_create_info, allocation_info);
+
+
+}
+
 auto Renderer::draw_frame() -> void {
     auto fence_result = m_device.waitForFences(
         *in_flight_fences[frame_index], vk::True, std::numeric_limits<uint64_t>::max()
@@ -721,9 +809,11 @@ auto Renderer::draw_frame() -> void {
 
     frame_index = (frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 }
+
 auto Renderer::wait_idle() -> void {
     m_device.waitIdle();
 }
+
 auto Renderer::transition_image_layout(
     uint32_t image_index,
     vk::ImageLayout old_layout,
@@ -763,10 +853,17 @@ auto Renderer::transition_image_layout(
 
     command_buffer.pipelineBarrier2(dependency_info);
 };
+
 auto Renderer::prepare() -> void {
     init_vulkan();
 }
+
 auto Renderer::main_loop() -> void {
 }
+
 auto Renderer::cleanup() -> void {
+}
+
+Renderer::~Renderer() {
+    cleanup();
 }

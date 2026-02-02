@@ -1,10 +1,16 @@
 #pragma once
 
+#include <vk_mem_alloc.h>
+
 #include <vector>
+#include <vk_mem_alloc.hpp>
+#include <vk_mem_alloc_raii.hpp>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
 
+#include "Vertex.hpp"
 #include "Window.hpp"
+
 struct RendererSettings {
     std::vector<const char*> required_extensions = {};
     std::vector<const char*> validation_layers = {"VK_LAYER_KHRONOS_validation"};
@@ -21,10 +27,12 @@ struct RendererSettings {
         vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation;
     bool prefer_discrete_gpu = false;
 };
+
 struct FamilyIndices {
     uint32_t graphics_family;
     uint32_t presentation_family;
 };
+
 class Renderer {
   public:
     Renderer(Window& window, RendererSettings settings);
@@ -33,11 +41,16 @@ class Renderer {
     auto draw_frame() -> void;
     auto wait_idle() -> void;
 
-
   private:
     static constexpr uint32_t WIDTH = 800;
     static constexpr uint32_t HEIGHT = 600;
     static constexpr uint32_t MAX_FRAMES_IN_FLIGHT = 2;
+
+    const std::vector<Vertex> vertices = {
+        {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+        {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+        {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+    };
 
     uint32_t frame_index = 0;
 
@@ -66,6 +79,8 @@ class Renderer {
     std::vector<vk::raii::Semaphore> m_present_complete_semaphores = {};
     std::vector<vk::raii::Semaphore> m_render_finished_semaphores = {};
     std::vector<vk::raii::Fence> in_flight_fences = {};
+    vma::raii::Buffer m_vertex_buffer = nullptr;
+    vma::raii::Allocator m_allocator = nullptr;
 
     std::vector<const char*> m_required_extensions;
     std::vector<const char*> m_validation_layers;
@@ -79,6 +94,7 @@ class Renderer {
     auto setup_debug_messenger() -> void;
     auto pick_physical_device() -> void;
     auto create_logical_device() -> void;
+    auto create_memory_allocator() -> void;
     auto create_surface() -> void;
     auto create_swap_chain() -> void;
     auto create_graphics_pipeline() -> void;
@@ -86,7 +102,7 @@ class Renderer {
     auto create_command_buffers() -> void;
     auto record_command_buffer(uint32_t image_index) -> void;
     auto create_sync_objects() -> void;
-
+    auto create_vertex_buffer() -> void;
 
     auto transition_image_layout(
         uint32_t image_index,
@@ -105,6 +121,7 @@ class Renderer {
     auto find_queue_families(const vk::raii::PhysicalDevice& device) -> FamilyIndices;
     auto choose_swap_extent(const vk::SurfaceCapabilitiesKHR& capabilities) -> vk::Extent2D;
     auto create_image_views() -> void;
+    auto find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags properties);
 
     [[nodiscard]] auto create_shader_module(const std::vector<char>& code) const
         -> vk::raii::ShaderModule;
@@ -119,4 +136,6 @@ class Renderer {
 
     auto main_loop() -> void;
     auto cleanup() -> void;
+
+    ~Renderer();
 };
