@@ -11,6 +11,7 @@ auto FileUtils::read_file(const std::string& file_path) -> std::vector<char> {
     }
 
     auto buffer = std::vector<char>(file.tellg());
+
     file.seekg(0, std::ios::beg);
     file.read(buffer.data(), buffer.size());
     file.close();

@@ -5,33 +5,41 @@
 #include <vulkan/vulkan_raii.hpp>
 
 #include "Window.hpp"
-
 struct RendererSettings {
     std::vector<const char*> required_extensions = {};
     std::vector<const char*> validation_layers = {"VK_LAYER_KHRONOS_validation"};
     bool enable_validation = true;
     vk::Flags<vk::DebugUtilsMessageSeverityFlagBitsEXT> validation_log_level =
-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo;
+        vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
+        vk::DebugUtilsMessageSeverityFlagBitsEXT::eError |
+        vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
+        vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning;
+
     vk::Flags<vk::DebugUtilsMessageTypeFlagBitsEXT> validation_message_types =
         vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
         vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
         vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation;
     bool prefer_discrete_gpu = false;
 };
-
 struct FamilyIndices {
     uint32_t graphics_family;
     uint32_t presentation_family;
 };
-
 class Renderer {
   public:
     Renderer(Window& window, RendererSettings settings);
-    auto run() -> void;
+
+    auto prepare() -> void;
+    auto draw_frame() -> void;
+    auto wait_idle() -> void;
+
 
   private:
     static constexpr uint32_t WIDTH = 800;
     static constexpr uint32_t HEIGHT = 600;
+    static constexpr uint32_t MAX_FRAMES_IN_FLIGHT = 2;
+
+    uint32_t frame_index = 0;
 
     Window& m_window;
 
@@ -53,6 +61,11 @@ class Renderer {
     std::vector<vk::raii::ImageView> m_swap_chain_image_views = {};
     vk::raii::PipelineLayout m_pipeline_layout = nullptr;
     vk::raii::Pipeline m_graphics_pipeline = nullptr;
+    vk::raii::CommandPool m_command_pool = nullptr;
+    std::vector<vk::raii::CommandBuffer> m_command_buffers = {};
+    std::vector<vk::raii::Semaphore> m_present_complete_semaphores = {};
+    std::vector<vk::raii::Semaphore> m_render_finished_semaphores = {};
+    std::vector<vk::raii::Fence> in_flight_fences = {};
 
     std::vector<const char*> m_required_extensions;
     std::vector<const char*> m_validation_layers;
@@ -62,7 +75,6 @@ class Renderer {
     bool m_prefer_discrete_gpu = false;
 
     auto init_vulkan() -> void;
-
     auto create_instance() -> void;
     auto setup_debug_messenger() -> void;
     auto pick_physical_device() -> void;
@@ -70,6 +82,21 @@ class Renderer {
     auto create_surface() -> void;
     auto create_swap_chain() -> void;
     auto create_graphics_pipeline() -> void;
+    auto create_command_pool() -> void;
+    auto create_command_buffers() -> void;
+    auto record_command_buffer(uint32_t image_index) -> void;
+    auto create_sync_objects() -> void;
+
+
+    auto transition_image_layout(
+        uint32_t image_index,
+        vk::ImageLayout old_layout,
+        vk::ImageLayout new_layout,
+        vk::AccessFlags2 source_access_mask,
+        vk::AccessFlags2 destination_access_mask,
+        vk::PipelineStageFlags2 source_stage_mask,
+        vk::PipelineStageFlags2 destination_stage_mask
+    ) -> void;
 
     auto are_required_extensions_supported_by_instance() -> bool;
     auto are_required_validation_layers_supported_by_instance() -> bool;
@@ -77,7 +104,6 @@ class Renderer {
     auto is_device_suitable(const vk::raii::PhysicalDevice& device) -> bool;
     auto find_queue_families(const vk::raii::PhysicalDevice& device) -> FamilyIndices;
     auto choose_swap_extent(const vk::SurfaceCapabilitiesKHR& capabilities) -> vk::Extent2D;
-
     auto create_image_views() -> void;
 
     [[nodiscard]] auto create_shader_module(const std::vector<char>& code) const
@@ -88,13 +114,8 @@ class Renderer {
     ) -> vk::SurfaceFormatKHR;
     auto static choose_swap_present_mode(const std::vector<vk::PresentModeKHR>& available_modes)
         -> vk::PresentModeKHR;
-
-    auto static debug_callback(
-        vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
-        vk::DebugUtilsMessageTypeFlagsEXT type,
-        const vk::DebugUtilsMessengerCallbackDataEXT* callback_data,
-        void*
-    ) -> vk::Bool32;
+    auto static debug_callback(vk::DebugUtilsMessageSeverityFlagBitsEXT severity, vk::DebugUtilsMessageTypeFlagsEXT type, const vk::DebugUtilsMessengerCallbackDataEXT* callback_data, void*)
+        -> vk::Bool32;
 
     auto main_loop() -> void;
     auto cleanup() -> void;

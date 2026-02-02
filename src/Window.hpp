@@ -5,7 +5,6 @@
 #include <vector>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
-
 class Window {
   public:
     Window(const char* title, uint32_t width, uint32_t height);

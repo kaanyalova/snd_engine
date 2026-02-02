@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="8" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="12" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
+    <option name="/Default/Housekeeping/Search/HighlightUsagesHintUsed/@EntryValue" value="true" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -19,6 +22,7 @@
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="sneed" targetName="sneed" />
+      <config projectName="sneed" targetName="glm" />
       <config projectName="sneed" targetName="SDL_uclibc" />
       <config projectName="sneed" targetName="SDL3_test" />
       <config projectName="sneed" targetName="SDL3-shared" />
@@ -34,16 +38,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.clang-tidy" beforeDir="false" afterPath="$PROJECT_DIR$/.clang-tidy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Utils/StringUtils.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Utils/StringUtils.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.clang-format" beforeDir="false" afterPath="$PROJECT_DIR$/.clang-format" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeUserPresets.json" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeUserPresets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Justfile" beforeDir="false" afterPath="$PROJECT_DIR$/Justfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/compile_shaders.ts" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/compile_shaders.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileUtils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/FileUtils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileUtils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/FileUtils.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Renderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Renderer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Renderer.cppm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Renderer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Renderer.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Window.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Window.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Window.cppm" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shaders/triangle.slang" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shaders/triangle.spv" beforeDir="false" afterPath="$PROJECT_DIR$/src/shaders/triangle.spv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,35 +65,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;kaanyalova&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed&quot;,
+    &quot;accountId&quot;: &quot;d56a6d9a-7b01-4884-a095-160befef7e9d&quot;
+  }
+}</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/sdks/vulkansdk-linux-x86_64-1.4.335.0/1.4.335.0/x86_64/include/vulkan/vulkan_raii.hpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/kaan/Masaüstü/sneed/src/Renderer.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file:///usr/include/vulkan/vulkan_raii.hpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -101,7 +98,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;CMake Application.sneed.executor&quot;: &quot;Debug&quot;,
+    &quot;CMake Application.sneed.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -114,15 +111,23 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/kaan/Masaüstü/sneed&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;language.cpp.clang-tidy&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/kaan/Masaüstü/sneed/scripts/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Utils" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager" selected="CMake Application.sneed">
     <configuration name="SDL3-shared" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sneed" TARGET_NAME="SDL3-shared" CONFIG_NAME="Debug">
       <method v="2">
@@ -139,6 +144,16 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="glm" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sneed" TARGET_NAME="glm" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="sneed" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sneed" TARGET_NAME="sneed" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sneed" RUN_TARGET_NAME="sneed">
       <envs>
         <env name="SDL_VIDEODRIVER" value="x11" />
@@ -149,6 +164,7 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.sneed" />
+      <item itemvalue="CMake Application.glm" />
       <item itemvalue="CMake Application.SDL3-shared" />
       <item itemvalue="CMake Application.SDL3_test" />
       <item itemvalue="CMake Application.SDL_uclibc" />
@@ -165,6 +181,11 @@
       <workItem from="1769763357598" duration="816000" />
       <workItem from="1769764210315" duration="558000" />
       <workItem from="1769766281174" duration="1607000" />
+      <workItem from="1769869189580" duration="7932000" />
+      <workItem from="1769877142935" duration="1126000" />
+      <workItem from="1769958905967" duration="4710000" />
+      <workItem from="1769969885497" duration="5765000" />
+      <workItem from="1770031706807" duration="1263000" />
     </task>
     <servers />
   </component>
@@ -176,11 +197,26 @@
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="device" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

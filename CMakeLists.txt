@@ -20,16 +20,25 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SDL3)
 
+FetchContent_Declare(
+        GLM
+        URL https://github.com/g-truc/glm/releases/download/1.0.3/glm-1.0.3.zip
+        URL_HASH SHA256=1c0a0fced9b0d87c7b7bc94e40be490cff6d4c83c25db8488d8f33754e7fdeb2
+)
+FetchContent_MakeAvailable(GLM)
+
 
 add_executable(sneed src/main.cpp
         src/Renderer.cpp
         src/Window.cpp
         src/Window.hpp
         src/Renderer.hpp
-        src/FileUtils.cpp
-        src/FileUtils.hpp
-        )
+        src/Utils/FileUtils.cpp
+        src/Utils/FileUtils.hpp
+        src/Utils/StringUtils.cpp
+        src/Utils/StringUtils.hpp
+)
 
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3)
+target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm)
 
 target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)

@@ -26,8 +26,8 @@ Window::Window(const char* title, uint32_t width, uint32_t height) {
 
 auto Window::get_required_vulkan_extensions() -> std::vector<const char*> {
     uint32_t extension_count = 0;
-    const char* const* extenions = SDL_Vulkan_GetInstanceExtensions(&extension_count);
-    auto extensions_vector = std::vector<const char*>(extenions, extenions + extension_count);
+    const char* const* extensions = SDL_Vulkan_GetInstanceExtensions(&extension_count);
+    auto extensions_vector = std::vector<const char*>(extensions, extensions + extension_count);
     return extensions_vector;
 }
 

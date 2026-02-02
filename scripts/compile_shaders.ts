@@ -7,7 +7,9 @@ const slangc_binary = config.slangc_path;
 for (const shader_dir of config.shader_paths) {
   const glob = new Bun.Glob(shader_dir).scanSync();
 
+  console.log(`Loading vulkan libraries from ${config.vulkan_sdk_libs_path}`);
   process.env.LD_LIBRARY_PATH = `${config.vulkan_sdk_libs_path}:${process.env.LD_LIBRARY_PATH}`;
+
 
   for (const file of glob) {
     const parentDir = dirname(file);
@@ -15,8 +17,11 @@ for (const shader_dir of config.shader_paths) {
 
     const outputPath = `${parentDir}/${fileName}.spv`;
 
-    const command = `${slangc_binary} ${file} ${config.slangc_options} -o ${outputPath}`;
-    console.log(command);
-    $`${command}`;
+    const options = config.slangc_options.split(" ");
+
+    console.log(`Compiling shader: ${file} to ${outputPath}`);
+    console.log(`${slangc_binary} ${file} ${options.join(" ")} -o ${outputPath}`);
+
+    await $`${slangc_binary} ${file} ${options} -o ${outputPath}`;
   }
 }
