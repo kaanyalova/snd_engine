@@ -47,8 +47,10 @@ add_executable(sneed src/main.cpp
         src/Vertex.hpp
         src/Vertex.cpp
         src/VmaUsage.cpp
+        src/RendererStructs.cpp
+        src/RendererStructs.hpp
 )
 
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp)
+target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm  VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp)
 
 target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)

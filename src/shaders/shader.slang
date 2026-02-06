@@ -1,7 +1,7 @@
-static float2 positions[3] = float2[](float2(0.0, -0.5), float2(0.5, 0.5), float2(-0.5, 0.5));
+// static float2 positions[3] = float2[](float2(0.0, -0.5), float2(0.5, 0.5), float2(-0.5, 0.5));
 
-static float3 colors[3] =
-    float3[](float3(1.0, 0.0, 0.0), float3(0.0, 1.0, 0.0), float3(0.0, 0.0, 1.0));
+// static float3 colors[3] =
+//     float3[](float3(1.0, 0.0, 0.0), float3(0.0, 1.0, 0.0), float3(0.0, 0.0, 1.0));
 
 struct VertexInput {
     float2 position;
@@ -13,11 +13,24 @@ struct VertexOutput {
     float4 position : SV_Position;
 };
 
+struct UniformBuffer {
+    float4x4 view;
+    float4x4 model;
+    float4x4 projection;
+}
+
+ConstantBuffer<UniformBuffer> uniform_buffer;
+
 [shader("vertex")]
 VertexOutput vertex_main(VertexInput input) {
     VertexOutput output;
 
-    output.position = float4(input.position, 0.0, 1.0);
+    float4x4 projection =
+        uniform_buffer.view * uniform_buffer.projection * uniform_buffer.projection;
+
+    float4 position = mul(float4(input.position, 0.0, 1.0), projection);
+    output.position = position;
+
     output.color = input.color;
     return output;
 }

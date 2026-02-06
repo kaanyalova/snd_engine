@@ -6,10 +6,10 @@
 auto main() -> int {
     auto window = Window("Vulkan Window", 800, 600);
 
-    auto renderer_settings = RendererSettings{
+    auto renderer_settings = RendererSettings {
         .enable_validation = true,
         //.validation_log_level = vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose,
-        .prefer_discrete_gpu = true,
+        .prefer_discrete_gpu = false,
     };
 
     try {
@@ -28,9 +28,7 @@ auto main() -> int {
 
         renderer.wait_idle();
 
-
-
-    } catch (const std::runtime_error &e) {
+    } catch (const std::runtime_error& e) {
         std::println("Failed to create renderer: {}", e.what());
         return EXIT_FAILURE;
     }

@@ -1,37 +1,14 @@
 #pragma once
 
-#include <vk_mem_alloc.h>
-
 #include <vector>
 #include <vk_mem_alloc.hpp>
 #include <vk_mem_alloc_raii.hpp>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
 
+#include "RendererStructs.hpp"
 #include "Vertex.hpp"
 #include "Window.hpp"
-
-struct RendererSettings {
-    std::vector<const char*> required_extensions = {};
-    std::vector<const char*> validation_layers = {"VK_LAYER_KHRONOS_validation"};
-    bool enable_validation = true;
-    vk::Flags<vk::DebugUtilsMessageSeverityFlagBitsEXT> validation_log_level =
-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eError |
-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning;
-
-    vk::Flags<vk::DebugUtilsMessageTypeFlagBitsEXT> validation_message_types =
-        vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
-        vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
-        vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation;
-    bool prefer_discrete_gpu = false;
-};
-
-struct FamilyIndices {
-    uint32_t graphics_family;
-    uint32_t presentation_family;
-};
 
 class Renderer {
   public:
@@ -41,16 +18,37 @@ class Renderer {
     auto draw_frame() -> void;
     auto wait_idle() -> void;
 
+    // auto allocate_gpu_memory(whatever) -> void;
+    auto copy_buffer_waited(vk::raii::Buffer& from, vk::raii::Buffer& to, vk::DeviceSize size)
+        -> void;
+
+    [[nodiscard]] auto create_buffer(vk::DeviceSize size, BufferInfo info) const
+        -> vma::raii::Buffer;
+
+    [[nodiscard]] auto create_and_map_buffer(const void* data, vk::DeviceSize size, BufferInfo info)
+        -> vma::raii::Buffer;
+
+    [[nodiscard]] auto create_device_vertex_buffer(const void* data, vk::DeviceSize size)
+        -> vma::raii::Buffer;
+
+    [[nodiscard]] auto create_device_index_buffer(const void* data, vk::DeviceSize size)
+        -> vma::raii::Buffer;
+
+    ~Renderer();
+
   private:
     static constexpr uint32_t WIDTH = 800;
     static constexpr uint32_t HEIGHT = 600;
     static constexpr uint32_t MAX_FRAMES_IN_FLIGHT = 2;
 
     const std::vector<Vertex> vertices = {
-        {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-        {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-        {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+        {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+        {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
+        {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+        {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
     };
+
+    const std::vector<uint16_t> indices = {0, 1, 2, 2, 3, 0};
 
     uint32_t frame_index = 0;
 
@@ -73,14 +71,21 @@ class Renderer {
     std::vector<vk::Image> m_swap_chain_images = {};
     std::vector<vk::raii::ImageView> m_swap_chain_image_views = {};
     vk::raii::PipelineLayout m_pipeline_layout = nullptr;
+    vk::raii::DescriptorSetLayout m_descriptor_set_layout = nullptr;
     vk::raii::Pipeline m_graphics_pipeline = nullptr;
     vk::raii::CommandPool m_command_pool = nullptr;
     std::vector<vk::raii::CommandBuffer> m_command_buffers = {};
     std::vector<vk::raii::Semaphore> m_present_complete_semaphores = {};
     std::vector<vk::raii::Semaphore> m_render_finished_semaphores = {};
     std::vector<vk::raii::Fence> in_flight_fences = {};
-    vma::raii::Buffer m_vertex_buffer = nullptr;
+
+    // Memory allocator stuff
     vma::raii::Allocator m_allocator = nullptr;
+
+    vma::raii::Buffer m_vertex_buffer = nullptr;
+    vma::raii::Buffer m_index_buffer = nullptr;
+    std::vector<vma::raii::Buffer> m_uniform_buffers = {};
+    std::vector<void*> m_uniform_buffers_mapped = {};
 
     std::vector<const char*> m_required_extensions;
     std::vector<const char*> m_validation_layers;
@@ -103,6 +108,9 @@ class Renderer {
     auto record_command_buffer(uint32_t image_index) -> void;
     auto create_sync_objects() -> void;
     auto create_vertex_buffer() -> void;
+    auto create_index_buffer() -> void;
+    auto create_descriptor_set_layout() -> void;
+    auto create_uniform_buffers() -> void;
 
     auto transition_image_layout(
         uint32_t image_index,
@@ -131,11 +139,13 @@ class Renderer {
     ) -> vk::SurfaceFormatKHR;
     auto static choose_swap_present_mode(const std::vector<vk::PresentModeKHR>& available_modes)
         -> vk::PresentModeKHR;
-    auto static debug_callback(vk::DebugUtilsMessageSeverityFlagBitsEXT severity, vk::DebugUtilsMessageTypeFlagsEXT type, const vk::DebugUtilsMessengerCallbackDataEXT* callback_data, void*)
-        -> vk::Bool32;
+    auto static debug_callback(
+        vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
+        vk::DebugUtilsMessageTypeFlagsEXT type,
+        const vk::DebugUtilsMessengerCallbackDataEXT* callback_data,
+        void*
+    ) -> vk::Bool32;
 
     auto main_loop() -> void;
     auto cleanup() -> void;
-
-    ~Renderer();
 };

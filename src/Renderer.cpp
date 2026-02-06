@@ -4,17 +4,21 @@
 
 #include <algorithm>
 #include <array>
+#include <cstring>
 #include <limits>
 #include <print>
 #include <ranges>
 #include <vector>
-#include <vk_mem_alloc.hpp>
+#include <vk_mem_alloc_raii.hpp>
+#include <vk_mem_alloc_structs.hpp>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
 
+#include "RendererStructs.hpp"
 #include "Utils/FileUtils.hpp"
 #include "Utils/StringUtils.hpp"
 #include "Vertex.hpp"
+#include "vulkan/vulkan.hpp"
 
 Renderer::Renderer(Window& window, RendererSettings settings)
     : m_required_extensions(std::move(settings.required_extensions))
@@ -39,6 +43,8 @@ auto Renderer::init_vulkan() -> void {
     create_image_views();
     create_graphics_pipeline();
     create_command_pool();
+    create_vertex_buffer();
+    create_index_buffer();
     create_command_buffers();
     create_sync_objects();
 }
@@ -94,8 +100,7 @@ auto Renderer::are_required_extensions_supported_by_instance() -> bool {
 
     return std::ranges::all_of(m_required_extensions, [&](const char* required_extension) -> bool {
         return std::ranges::any_of(
-            extension_properties,
-            [&](const vk::ExtensionProperties& available_extension) -> bool {
+            extension_properties, [&](const vk::ExtensionProperties& available_extension) -> bool {
                 return std::strcmp(required_extension, available_extension.extensionName) == 0;
             }
         );
@@ -108,8 +113,7 @@ auto Renderer::are_required_validation_layers_supported_by_instance() -> bool {
 
     return std::ranges::all_of(m_validation_layers, [&](const char* required_layer) -> bool {
         return std::ranges::any_of(
-            layer_properties,
-            [&](const vk::LayerProperties& available_layer) -> bool {
+            layer_properties, [&](const vk::LayerProperties& available_layer) -> bool {
                 return std::strcmp(required_layer, available_layer.layerName) == 0;
             }
         );
@@ -135,8 +139,7 @@ auto Renderer::is_device_suitable(const vk::raii::PhysicalDevice& device) -> boo
 
     const bool is_api_version_suitable = device_properties.apiVersion >= vk::ApiVersion13;
     const bool has_graphics_queue = std::ranges::any_of(
-        queue_family_properties,
-        [](const vk::QueueFamilyProperties& properties) {
+        queue_family_properties, [](const vk::QueueFamilyProperties& properties) {
             return static_cast<bool>(properties.queueFlags & vk::QueueFlagBits::eGraphics);
         }
     );
@@ -164,8 +167,7 @@ auto Renderer::find_queue_families(const vk::raii::PhysicalDevice& device) -> Fa
         device.getQueueFamilyProperties();
 
     const auto graphics_queue_family_property = std::ranges::find_if(
-        queue_family_properties,
-        [](const vk::QueueFamilyProperties& qfp) -> bool {
+        queue_family_properties, [](const vk::QueueFamilyProperties& qfp) -> bool {
             return static_cast<bool>(qfp.queueFlags & vk::QueueFlagBits::eGraphics);
         }
     );
@@ -304,16 +306,8 @@ auto Renderer::create_logical_device() -> void {
 }
 
 auto Renderer::create_memory_allocator() -> void {
-    auto vma_vulkan_functions = vma::VulkanFunctions {
-        .vkGetInstanceProcAddr = &vkGetInstanceProcAddr,
-        .vkGetDeviceProcAddr = &vkGetDeviceProcAddr,
-    };
-
     auto vma_allocator_create_info = vma::AllocatorCreateInfo {
         .physicalDevice = *m_physical_device,
-        .device = *m_device,
-        .pVulkanFunctions = &vma_vulkan_functions,
-        .instance = *m_instance,
         .vulkanApiVersion = vk::ApiVersion14,
     };
 
@@ -463,7 +457,6 @@ auto Renderer::create_image_views() -> void {
         .levelCount = 1,
         .baseArrayLayer = 0,
         .layerCount = 1,
-
     };
 
     auto image_view_create_info = vk::ImageViewCreateInfo {
@@ -509,7 +502,7 @@ auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags pr
 
 auto Renderer::create_graphics_pipeline() -> void {
     std::vector<char> shader_code =
-        FileUtils::read_file("/home/kaan/Masaüstü/sneed/src/shaders/shader.spv");
+        FileUtils::read_file("/home/kaan/Belgeler/0000_Projects/sneed/src/shaders/shader.spv");
     vk::raii::ShaderModule shader_module = create_shader_module(shader_code);
 
     auto vert_shader_stage_info = vk::PipelineShaderStageCreateInfo {
@@ -592,7 +585,8 @@ auto Renderer::create_graphics_pipeline() -> void {
     };
 
     auto pipeline_layout_create_info = vk::PipelineLayoutCreateInfo {
-        .setLayoutCount = 0,
+        .setLayoutCount = 1,
+        .pSetLayouts = &*m_descriptor_set_layout,
         .pushConstantRangeCount = 0,
     };
 
@@ -711,7 +705,10 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
         }
     );
 
-    command_buffer.draw(3, 1, 0, 0);
+    command_buffer.bindVertexBuffers(0, *m_vertex_buffer, {0});
+    command_buffer.bindIndexBuffer(*m_index_buffer, 0, vk::IndexType::eUint16);
+
+    command_buffer.drawIndexed(indices.size(), 1, 0, 0, 0);
 
     command_buffer.endRendering();
 
@@ -749,21 +746,16 @@ auto Renderer::create_sync_objects() -> void {
 }
 
 auto Renderer::create_vertex_buffer() -> void {
-    auto buffer_create_info = vk::BufferCreateInfo {
-        .size = sizeof(vertices.front()) * vertices.size(),
-        .usage = vk::BufferUsageFlagBits::eVertexBuffer,
-        .sharingMode = vk::SharingMode::eExclusive,
-    };
+    size_t buffer_size = sizeof(vertices.front()) * vertices.size();
+    m_vertex_buffer = create_device_vertex_buffer(vertices.data(), buffer_size);
+}
 
-    auto allocation_info = vma::AllocationCreateInfo {
-        .usage = vma::MemoryUsage::eAuto,
-    };
-
-    //m_vertex_buffer = vk::raii::Buffer(m_device, buffer_create_info);
-
-    m_vertex_buffer = m_allocator.createBuffer(buffer_create_info, allocation_info);
-
-
+/**
+ * This just creates the buffer for the demo
+ */
+auto Renderer::create_index_buffer() -> void {
+    const vk::DeviceSize size = indices.size() * sizeof(indices.front());
+    m_index_buffer = create_device_index_buffer(indices.data(), size);
 }
 
 auto Renderer::draw_frame() -> void {
@@ -833,14 +825,13 @@ auto Renderer::transition_image_layout(
         .srcQueueFamilyIndex = vk::QueueFamilyIgnored,
         .dstQueueFamilyIndex = vk::QueueFamilyIgnored,
         .image = m_swap_chain_images[image_index],
-        .subresourceRange =
-            vk::ImageSubresourceRange {
-                .aspectMask = vk::ImageAspectFlagBits::eColor,
-                .baseMipLevel = 0,
-                .levelCount = 1,
-                .baseArrayLayer = 0,
-                .layerCount = 1,
-            },
+        .subresourceRange = vk::ImageSubresourceRange {
+            .aspectMask = vk::ImageAspectFlagBits::eColor,
+            .baseMipLevel = 0,
+            .levelCount = 1,
+            .baseArrayLayer = 0,
+            .layerCount = 1,
+        },
     };
 
     auto dependency_info = vk::DependencyInfo {
@@ -853,6 +844,138 @@ auto Renderer::transition_image_layout(
 
     command_buffer.pipelineBarrier2(dependency_info);
 };
+
+/**
+ * Create a buffer according to the given info
+ * @param data optional data to put into the buffer
+ * @param size size of the buffer
+ * @param create_info
+ */
+auto Renderer::create_buffer(vk::DeviceSize size, BufferInfo create_info) const
+    -> vma::raii::Buffer {
+    const auto buffer_create_info = vk::BufferCreateInfo {
+        .size = size,
+        .usage = create_info.buffer_usage,
+        .sharingMode = vk::SharingMode::eExclusive,
+    };
+
+    const auto allocation_info = vma::AllocationCreateInfo {
+        .flags = create_info.allocation_flags,
+        .usage = create_info.allocation_usage,
+    };
+
+    vma::raii::Buffer buffer = m_allocator.createBuffer(buffer_create_info, allocation_info);
+
+    // if (data.has_value()) {
+    //     const vma::raii::Allocation& allocation = buffer.getAllocation();
+    //     void* allocated_data = allocation.map();
+    //     std::memcpy(allocated_data, data.value(), size);
+    //     allocation.unmap();
+    // }
+
+    return buffer;
+}
+
+auto Renderer::create_and_map_buffer(const void* data, vk::DeviceSize size, BufferInfo info)
+    -> vma::raii::Buffer {
+    vma::raii::Buffer buffer = create_buffer(size, info);
+    const vma::raii::Allocation& allocation = buffer.getAllocation();
+    void* allocated_data = allocation.map();
+    std::memcpy(allocated_data, data, size);
+    allocation.unmap();
+
+    return buffer;
+}
+
+// TODO: sync these "properly"
+auto Renderer::create_device_vertex_buffer(const void* data, vk::DeviceSize size)
+    -> vma::raii::Buffer {
+    vma::raii::Buffer staging_buffer =
+        create_and_map_buffer(data, size, BufferInfo::vertex_staging_buffer());
+
+    vma::raii::Buffer device_buffer = create_buffer(size, BufferInfo::vertex_device_buffer());
+
+    copy_buffer_waited(staging_buffer, device_buffer, size);
+
+    return device_buffer;
+}
+
+auto Renderer::create_device_index_buffer(const void* data, vk::DeviceSize size)
+    -> vma::raii::Buffer {
+    vma::raii::Buffer staging_buffer =
+        create_and_map_buffer(data, size, BufferInfo::index_staging_buffer());
+
+    vma::raii::Buffer device_buffer = create_buffer(size, BufferInfo::index_device_buffer());
+
+    copy_buffer_waited(staging_buffer, device_buffer, size);
+
+    return device_buffer;
+}
+
+auto Renderer::copy_buffer_waited(vk::raii::Buffer& from, vk::raii::Buffer& to, vk::DeviceSize size)
+    -> void {
+    auto allocate_info = vk::CommandBufferAllocateInfo {
+        .commandPool = m_command_pool,
+        .level = vk::CommandBufferLevel::ePrimary,
+        .commandBufferCount = 1,
+    };
+
+    // TODO: why not vk::raii::CommandBuffers
+    std::vector<vk::raii::CommandBuffer> command_buffers =
+        m_device.allocateCommandBuffers(allocate_info);
+
+    vk::raii::CommandBuffer command_buffer = std::move(command_buffers.front());
+
+    auto command_buffer_begin_info = vk::CommandBufferBeginInfo {
+        .flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit,
+    };
+
+    command_buffer.begin(command_buffer_begin_info);
+
+    command_buffer.copyBuffer(
+        from,
+        to,
+        vk::BufferCopy {
+            .srcOffset = 0,
+            .dstOffset = 0,
+            .size = size,
+        }
+    );
+
+    command_buffer.end();
+
+    auto submit_info = vk::SubmitInfo {
+        .commandBufferCount = 1,
+        .pCommandBuffers = &*command_buffer,
+    };
+
+    m_graphics_queue.submit(submit_info);
+
+    // TODO: properly sync these
+    m_graphics_queue.waitIdle();
+}
+
+auto Renderer::create_descriptor_set_layout() -> void {
+    auto ubo_layout_binding = vk::DescriptorSetLayoutBinding {
+        .binding = 0,
+        .descriptorType = vk::DescriptorType::eUniformBuffer,  // which kind of shaders it binds to
+        .descriptorCount = 1,
+        .stageFlags = vk::ShaderStageFlagBits::eVertex,
+    };
+
+    auto descriptor_set_layout_create_info = vk::DescriptorSetLayoutCreateInfo {
+        .bindingCount = 1,
+        .pBindings = &ubo_layout_binding,
+    };
+}
+
+auto Renderer::create_uniform_buffers() -> void {
+    vk::DeviceSize size = sizeof(UniformBuffer);
+
+    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+        vma::raii::Buffer buffer = create_buffer(size, BufferInfo::uniform_buffer());
+    }
+}
 
 auto Renderer::prepare() -> void {
     init_vulkan();

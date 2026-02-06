@@ -1,6 +1,6 @@
 build/
 cmake-build-*/
 sdks/
-CmakeUserPresets.json
+CMakeUserPresets.json
 compile_commands.json
 .cache/

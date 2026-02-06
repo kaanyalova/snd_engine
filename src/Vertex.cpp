@@ -14,7 +14,7 @@ auto Vertex::get_attribute_descriptions() -> std::array<vk::VertexInputAttribute
     return {
         vk::VertexInputAttributeDescription {
             .location = 0,
-            .binding = 1,
+            .binding = 0,
             .format = vk::Format::eR32G32Sfloat,
             .offset = offsetof(Vertex, position),
         },
