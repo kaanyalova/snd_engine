@@ -35,6 +35,17 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Vma-Hpp)
 
 
+# github's archives are completely broken for this one
+FetchContent_Declare(
+    Ktx
+    GIT_REPOSITORY https://github.com/KhronosGroup/KTX-Software
+    GIT_TAG v4.4.2
+    GIT_SHALLOW 1
+    SOURCE_SUBDIR lib/
+)
+FetchContent_MakeAvailable(Ktx)
+
+
 add_executable(sneed src/main.cpp
         src/Renderer.cpp
         src/Window.cpp
@@ -51,6 +62,6 @@ add_executable(sneed src/main.cpp
         src/RendererStructs.hpp
 )
 
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm  VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp)
+target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp ktx)
 
 target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)

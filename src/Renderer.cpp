@@ -1,23 +1,34 @@
 #include "Renderer.hpp"
 
 #include <SDL3/SDL_video.h>
+#include <ktx.h>
+#include <ktxvulkan.h>
 
 #include <algorithm>
 #include <array>
+#include <chrono>
+#include <cstdint>
 #include <cstring>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <limits>
 #include <print>
 #include <ranges>
+#include <stdexcept>
+#include <utility>
 #include <vector>
 #include <vk_mem_alloc_raii.hpp>
 #include <vk_mem_alloc_structs.hpp>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
 
+#include "Image/KtxImage.hpp"
 #include "RendererStructs.hpp"
 #include "Utils/FileUtils.hpp"
 #include "Utils/StringUtils.hpp"
 #include "Vertex.hpp"
+#include "vk_mem_alloc_enums.hpp"
+#include "vk_mem_alloc_handles.hpp"
 #include "vulkan/vulkan.hpp"
 
 Renderer::Renderer(Window& window, RendererSettings settings)
@@ -41,10 +52,14 @@ auto Renderer::init_vulkan() -> void {
     create_memory_allocator();
     create_swap_chain();
     create_image_views();
+    create_descriptor_set_layout();
     create_graphics_pipeline();
     create_command_pool();
     create_vertex_buffer();
     create_index_buffer();
+    create_uniform_buffers();
+    create_descriptor_pool();
+    create_descriptor_sets();
     create_command_buffers();
     create_sync_objects();
 }
@@ -501,6 +516,7 @@ auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags pr
 }
 
 auto Renderer::create_graphics_pipeline() -> void {
+    // TODO: use relative paths here
     std::vector<char> shader_code =
         FileUtils::read_file("/home/kaan/Belgeler/0000_Projects/sneed/src/shaders/shader.spv");
     vk::raii::ShaderModule shader_module = create_shader_module(shader_code);
@@ -550,7 +566,7 @@ auto Renderer::create_graphics_pipeline() -> void {
         .rasterizerDiscardEnable = vk::False,
         .polygonMode = vk::PolygonMode::eFill,
         .cullMode = vk::CullModeFlagBits::eBack,
-        .frontFace = vk::FrontFace::eClockwise,
+        .frontFace = vk::FrontFace::eCounterClockwise,
         .depthBiasEnable = vk::False,
         .depthBiasSlopeFactor = 1.0f,
         .lineWidth = 1.0f,
@@ -705,10 +721,15 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
         }
     );
 
+    const vk::DescriptorSet& descriptor_set = m_descriptor_sets[frame_index];
+
     command_buffer.bindVertexBuffers(0, *m_vertex_buffer, {0});
     command_buffer.bindIndexBuffer(*m_index_buffer, 0, vk::IndexType::eUint16);
+    command_buffer.bindDescriptorSets(
+        vk::PipelineBindPoint::eGraphics, m_pipeline_layout, 0, descriptor_set, nullptr
+    );
 
-    command_buffer.drawIndexed(indices.size(), 1, 0, 0, 0);
+    command_buffer.drawIndexed(INDICES.size(), 1, 0, 0, 0);
 
     command_buffer.endRendering();
 
@@ -746,16 +767,16 @@ auto Renderer::create_sync_objects() -> void {
 }
 
 auto Renderer::create_vertex_buffer() -> void {
-    size_t buffer_size = sizeof(vertices.front()) * vertices.size();
-    m_vertex_buffer = create_device_vertex_buffer(vertices.data(), buffer_size);
+    size_t buffer_size = sizeof(VERTICES.front()) * VERTICES.size();
+    m_vertex_buffer = create_device_vertex_buffer(VERTICES.data(), buffer_size);
 }
 
 /**
  * This just creates the buffer for the demo
  */
 auto Renderer::create_index_buffer() -> void {
-    const vk::DeviceSize size = indices.size() * sizeof(indices.front());
-    m_index_buffer = create_device_index_buffer(indices.data(), size);
+    const vk::DeviceSize size = INDICES.size() * sizeof(INDICES.front());
+    m_index_buffer = create_device_index_buffer(INDICES.data(), size);
 }
 
 auto Renderer::draw_frame() -> void {
@@ -768,6 +789,8 @@ auto Renderer::draw_frame() -> void {
     auto [result, image_index] = m_swap_chain.acquireNextImage(
         std::numeric_limits<uint64_t>::max(), *m_present_complete_semaphores[frame_index], nullptr
     );
+
+    update_uniform_buffer(frame_index);
 
     m_command_buffers[frame_index].reset();
     record_command_buffer(image_index);
@@ -845,12 +868,6 @@ auto Renderer::transition_image_layout(
     command_buffer.pipelineBarrier2(dependency_info);
 };
 
-/**
- * Create a buffer according to the given info
- * @param data optional data to put into the buffer
- * @param size size of the buffer
- * @param create_info
- */
 auto Renderer::create_buffer(vk::DeviceSize size, BufferInfo create_info) const
     -> vma::raii::Buffer {
     const auto buffer_create_info = vk::BufferCreateInfo {
@@ -879,6 +896,7 @@ auto Renderer::create_buffer(vk::DeviceSize size, BufferInfo create_info) const
 auto Renderer::create_and_map_buffer(const void* data, vk::DeviceSize size, BufferInfo info)
     -> vma::raii::Buffer {
     vma::raii::Buffer buffer = create_buffer(size, info);
+
     const vma::raii::Allocation& allocation = buffer.getAllocation();
     void* allocated_data = allocation.map();
     std::memcpy(allocated_data, data, size);
@@ -914,45 +932,17 @@ auto Renderer::create_device_index_buffer(const void* data, vk::DeviceSize size)
 
 auto Renderer::copy_buffer_waited(vk::raii::Buffer& from, vk::raii::Buffer& to, vk::DeviceSize size)
     -> void {
-    auto allocate_info = vk::CommandBufferAllocateInfo {
-        .commandPool = m_command_pool,
-        .level = vk::CommandBufferLevel::ePrimary,
-        .commandBufferCount = 1,
-    };
-
-    // TODO: why not vk::raii::CommandBuffers
-    std::vector<vk::raii::CommandBuffer> command_buffers =
-        m_device.allocateCommandBuffers(allocate_info);
-
-    vk::raii::CommandBuffer command_buffer = std::move(command_buffers.front());
-
-    auto command_buffer_begin_info = vk::CommandBufferBeginInfo {
-        .flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit,
-    };
-
-    command_buffer.begin(command_buffer_begin_info);
-
-    command_buffer.copyBuffer(
-        from,
-        to,
-        vk::BufferCopy {
-            .srcOffset = 0,
-            .dstOffset = 0,
-            .size = size,
-        }
-    );
-
-    command_buffer.end();
-
-    auto submit_info = vk::SubmitInfo {
-        .commandBufferCount = 1,
-        .pCommandBuffers = &*command_buffer,
-    };
-
-    m_graphics_queue.submit(submit_info);
-
-    // TODO: properly sync these
-    m_graphics_queue.waitIdle();
+    run_single_time_commands([&](vk::raii::CommandBuffer& command_buffer) {
+        command_buffer.copyBuffer(
+            from,
+            to,
+            vk::BufferCopy {
+                .srcOffset = 0,
+                .dstOffset = 0,
+                .size = size,
+            }
+        );
+    });
 }
 
 auto Renderer::create_descriptor_set_layout() -> void {
@@ -967,14 +957,250 @@ auto Renderer::create_descriptor_set_layout() -> void {
         .bindingCount = 1,
         .pBindings = &ubo_layout_binding,
     };
+
+    m_descriptor_set_layout =
+        vk::raii::DescriptorSetLayout(m_device, descriptor_set_layout_create_info);
 }
 
 auto Renderer::create_uniform_buffers() -> void {
     vk::DeviceSize size = sizeof(UniformBuffer);
 
+    m_uniform_buffers.clear();
+    m_uniform_buffers_mapped.clear();
+
     for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
         vma::raii::Buffer buffer = create_buffer(size, BufferInfo::uniform_buffer());
+        const vma::raii::Allocation& allocation = buffer.getAllocation();
+        void* mapped = allocation.map();
+
+        m_uniform_buffers_mapped.emplace_back(mapped);
+        m_uniform_buffers.emplace_back(std::move(buffer));
     }
+}
+
+auto Renderer::update_uniform_buffer(uint32_t current_image) -> void {
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
+        std::chrono::high_resolution_clock::now();
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> end_time =
+        std::chrono::high_resolution_clock::now();
+
+    float time =
+        std::chrono::duration<float, std::chrono::seconds::period>(end_time - start_time).count();
+
+    glm::mat4 model =
+        rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+    glm::mat4 view = lookAt(
+        glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)
+    );
+
+    glm::mat4 projection = glm::perspective(
+        glm::radians(45.0f),
+        static_cast<float>(m_swap_chain_extent.width) /
+            static_cast<float>(m_swap_chain_extent.height),
+        0.1f,
+        10.0f
+    );
+
+    // flip y
+    projection[1][1] *= -1;
+
+    UniformBuffer uniform_buffer = {
+        .model = model,
+        .view = view,
+        .projection = projection,
+    };
+
+    void* current_buffer = m_uniform_buffers_mapped[current_image];
+    std::memcpy(current_buffer, &uniform_buffer, sizeof(UniformBuffer));
+}
+
+auto Renderer::create_descriptor_pool() -> void {
+    auto desciptor_pool_size = vk::DescriptorPoolSize {
+        .type = vk::DescriptorType::eUniformBuffer,
+        .descriptorCount = MAX_FRAMES_IN_FLIGHT,
+    };
+
+    auto descriptor_pool_create_info = vk::DescriptorPoolCreateInfo {
+        .flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet,
+        .maxSets = MAX_FRAMES_IN_FLIGHT,
+        .poolSizeCount = 1,
+        .pPoolSizes = &desciptor_pool_size,
+    };
+
+    m_descriptor_pool = vk::raii::DescriptorPool(m_device, descriptor_pool_create_info);
+}
+
+auto Renderer::create_descriptor_sets() -> void {
+    auto layouts =
+        std::vector<vk::DescriptorSetLayout>(MAX_FRAMES_IN_FLIGHT, *m_descriptor_set_layout);
+
+    auto descriptor_set_allocate_info = vk::DescriptorSetAllocateInfo {
+        .descriptorPool = m_descriptor_pool,
+        .descriptorSetCount = static_cast<uint32_t>(layouts.size()),
+        .pSetLayouts = layouts.data(),
+    };
+
+    m_descriptor_sets.clear();
+    m_descriptor_sets = m_device.allocateDescriptorSets(descriptor_set_allocate_info);
+
+    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+        auto descriptor_buffer_info = vk::DescriptorBufferInfo {
+            .buffer = m_uniform_buffers[i],
+            .offset = 0,
+            .range = sizeof(UniformBuffer),
+        };
+
+        auto write_descriptor_set = vk::WriteDescriptorSet {
+            .dstSet = m_descriptor_sets[i],
+            .dstBinding = 0,
+            .dstArrayElement = 0,
+            .descriptorCount = 1,
+            .descriptorType = vk::DescriptorType::eUniformBuffer,
+            .pBufferInfo = &descriptor_buffer_info,
+        };
+
+        m_device.updateDescriptorSets(write_descriptor_set, {});
+    }
+}
+
+// delete
+auto Renderer::create_texture_image() -> void {
+    KtxImage texture = KtxImage::from_file_name("todo.ktx");
+
+    vma::raii::Image image = create_image(texture.width, texture.height, ImageInfo::r8g8b8a8Srgb());
+
+    vma::raii::Buffer staging_buffer =
+        create_and_map_buffer(texture.data, texture.size, BufferInfo::image_staging_buffer());
+
+    transition_image_layout(
+        image, vk::ImageLayout::eUndefined, vk::ImageLayout::eTransferDstOptimal
+    );
+
+    copy_buffer_to_image(staging_buffer, image, texture.width, texture.height);
+}
+
+/// Create and allocate (on the GPU) an image
+auto Renderer::create_image(uint32_t width, uint32_t height, ImageInfo info) -> vma::raii::Image {
+    auto image_create_info = vk::ImageCreateInfo {
+        .imageType = vk::ImageType::e2D,
+        .format = info.format,
+        .extent =
+            vk::Extent3D {
+                .width = width,
+                .height = height,
+                .depth = 1,
+            },
+        .mipLevels = 1,
+        .arrayLayers = 1,
+        .samples = vk::SampleCountFlagBits::e1,
+        .tiling = info.tiling,
+        .usage = info.usage_flags,
+        .sharingMode = vk::SharingMode::eExclusive,
+    };
+
+    auto allocation_create_info = vma::AllocationCreateInfo {
+        .usage = vma::MemoryUsage::eAutoPreferDevice,
+    };
+
+    vma::raii::Image image =
+        m_allocator.createImage(image_create_info, allocation_create_info, nullptr);
+
+    return image;
+}
+
+auto Renderer::transition_image_layout(
+    const vk::raii::Image& image, vk::ImageLayout old_layout, vk::ImageLayout new_layout
+) -> void {
+    run_single_time_commands([&](vk::raii::CommandBuffer& command_buffer) {
+        auto barrier = vk::ImageMemoryBarrier {
+            .oldLayout = old_layout,
+            .newLayout = new_layout,
+            .image = image,
+            .subresourceRange = vk::ImageSubresourceRange {
+                .aspectMask = vk::ImageAspectFlagBits::eColor,
+                .baseMipLevel = 0,
+                .levelCount = 1,
+                .baseArrayLayer = 0,
+                .layerCount = 1,
+            },
+        };
+    });
+}
+
+auto Renderer::create_and_map_image(void* data, uint32_t width, uint32_t height, ImageInfo info)
+    -> vma::raii::Image {
+    vma::raii::Image empty_image = create_image(width, height, info);
+    size_t size = width * height * 4;
+
+    vma::raii::Buffer staging_buffer =
+        create_and_map_buffer(data, size, BufferInfo::image_staging_buffer());
+}
+
+auto Renderer::copy_buffer_to_image(
+    const vma::raii::Buffer& buffer, vma::raii::Image& destination, uint32_t width, uint32_t height
+) -> void {
+    run_single_time_commands([&](vk::raii::CommandBuffer& command_buffer) {
+        auto buffer_image_copy = vk::BufferImageCopy {
+            .bufferOffset = 0,
+            .bufferRowLength = 0,
+            .bufferImageHeight = 0,
+            .imageSubresource =
+                vk::ImageSubresourceLayers {
+                    .aspectMask = vk::ImageAspectFlagBits::eColor,
+                    .mipLevel = 0,
+                    .baseArrayLayer = 0,
+                    .layerCount = 0,
+                },
+            .imageOffset =
+                vk::Offset3D {
+                    .x = 0,
+                    .y = 0,
+                    .z = 0,
+                },
+            .imageExtent = vk::Extent3D {
+                .width = width,
+                .height = height,
+                .depth = 1,
+            },
+        };
+
+        command_buffer.copyBufferToImage(
+            buffer, destination, vk::ImageLayout::eTransferDstOptimal, {buffer_image_copy}
+        );
+    });
+};
+
+auto Renderer::run_single_time_commands(
+    std::function<void(vk::raii::CommandBuffer& command_buffer)> commands
+) -> void {
+    auto command_buffer_allocate_info = vk::CommandBufferAllocateInfo {
+        .commandPool = m_command_pool,
+        .level = vk::CommandBufferLevel::ePrimary,
+        .commandBufferCount = 1,
+    };
+
+    vk::raii::CommandBuffer command_buffer =
+        std::move(m_device.allocateCommandBuffers(command_buffer_allocate_info).front());
+
+    auto command_buffer_begin_info = vk::CommandBufferBeginInfo {
+        .flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit,
+    };
+
+    command_buffer.begin(command_buffer_begin_info);
+
+    commands(command_buffer);
+
+    command_buffer.end();
+
+    auto submit_info = vk::SubmitInfo {
+        .commandBufferCount = 1,
+        .pCommandBuffers = &*command_buffer,
+    };
+
+    m_graphics_queue.submit(submit_info, nullptr);
+    m_graphics_queue.waitIdle();
 }
 
 auto Renderer::prepare() -> void {

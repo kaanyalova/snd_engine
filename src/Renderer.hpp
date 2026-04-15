@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <vector>
 #include <vk_mem_alloc.hpp>
 #include <vk_mem_alloc_raii.hpp>
@@ -9,6 +10,7 @@
 #include "RendererStructs.hpp"
 #include "Vertex.hpp"
 #include "Window.hpp"
+#include "vulkan/vulkan.hpp"
 
 class Renderer {
   public:
@@ -34,6 +36,17 @@ class Renderer {
     [[nodiscard]] auto create_device_index_buffer(const void* data, vk::DeviceSize size)
         -> vma::raii::Buffer;
 
+    [[nodiscard]] auto create_image(uint32_t width, uint32_t height, ImageInfo info)
+        -> vma::raii::Image;
+
+    [[nodiscard]] auto create_and_map_image(
+        void* data, uint32_t width, uint32_t height, ImageInfo info
+    ) -> vma::raii::Image;
+
+    auto run_single_time_commands(
+        std::function<void(vk::raii::CommandBuffer& command_buffer)> commands
+    ) -> void;
+
     ~Renderer();
 
   private:
@@ -41,14 +54,16 @@ class Renderer {
     static constexpr uint32_t HEIGHT = 600;
     static constexpr uint32_t MAX_FRAMES_IN_FLIGHT = 2;
 
-    const std::vector<Vertex> vertices = {
+    const std::vector<Vertex> VERTICES = {
         {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
         {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
         {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
         {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
     };
 
-    const std::vector<uint16_t> indices = {0, 1, 2, 2, 3, 0};
+    const std::vector<uint16_t> INDICES = {0, 1, 2, 2, 3, 0};
+
+    const std::string TEXTURE_PATH = "";
 
     uint32_t frame_index = 0;
 
@@ -75,6 +90,10 @@ class Renderer {
     vk::raii::Pipeline m_graphics_pipeline = nullptr;
     vk::raii::CommandPool m_command_pool = nullptr;
     std::vector<vk::raii::CommandBuffer> m_command_buffers = {};
+    vk::raii::DescriptorPool m_descriptor_pool = nullptr;
+    std::vector<vk::raii::DescriptorSet> m_descriptor_sets = {};
+
+    // Sync
     std::vector<vk::raii::Semaphore> m_present_complete_semaphores = {};
     std::vector<vk::raii::Semaphore> m_render_finished_semaphores = {};
     std::vector<vk::raii::Fence> in_flight_fences = {};
@@ -111,6 +130,9 @@ class Renderer {
     auto create_index_buffer() -> void;
     auto create_descriptor_set_layout() -> void;
     auto create_uniform_buffers() -> void;
+    auto create_descriptor_pool() -> void;
+    auto create_descriptor_sets() -> void;
+    auto create_texture_image() -> void;
 
     auto transition_image_layout(
         uint32_t image_index,
@@ -130,6 +152,19 @@ class Renderer {
     auto choose_swap_extent(const vk::SurfaceCapabilitiesKHR& capabilities) -> vk::Extent2D;
     auto create_image_views() -> void;
     auto find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags properties);
+    auto transition_image_layout(
+        const vk::raii::Image& image, vk::ImageLayout old_layout, vk::ImageLayout new_layout
+    ) -> void;
+
+    auto copy_buffer_to_image(
+        const vma::raii::Buffer& buffer,
+        vma::raii::Image& destination,
+        uint32_t width,
+        uint32_t height
+    ) -> void;
+
+    // per frame
+    auto update_uniform_buffer(uint32_t current_image) -> void;
 
     [[nodiscard]] auto create_shader_module(const std::vector<char>& code) const
         -> vk::raii::ShaderModule;

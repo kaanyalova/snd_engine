@@ -3,6 +3,8 @@
 #include <vk_mem_alloc.hpp>
 #include <vulkan/vulkan.hpp>
 
+#include "vulkan/vulkan.hpp"
+
 struct RendererSettings {
     std::vector<const char*> required_extensions = {};
     std::vector<const char*> validation_layers = {"VK_LAYER_KHRONOS_validation"};
@@ -32,7 +34,11 @@ struct BufferInfo {
     static auto index_staging_buffer() -> BufferInfo;
     static auto index_device_buffer() -> BufferInfo;
 
+    static auto default_staging_buffer() -> BufferInfo;
+
     static auto uniform_buffer() -> BufferInfo;
+
+    static auto image_staging_buffer() -> BufferInfo;
 };
 
 enum class BufferKind : uint8_t {
@@ -50,7 +56,24 @@ struct FamilyIndices {
 };
 
 struct UniformBuffer {
-    glm::mat4 model;
-    glm::mat4 view;
-    glm::mat4 projection;
+    alignas(16) glm::mat4 model;
+    alignas(16) glm::mat4 view;
+    alignas(16) glm::mat4 projection;
+};
+
+struct ImageInfo {
+    vk::Format format;
+    vk::ImageTiling tiling;
+    vk::ImageUsageFlags usage_flags;
+    vk::MemoryPropertyFlags memory_flags;
+
+    static auto r8g8b8a8Srgb() -> ImageInfo;
+};
+
+struct ImageTransitionInfo {
+    vk::ImageLayout from;
+    vk::ImageLayout to;
+
+    static auto undefined_to_dst_optimal() -> ImageTransitionInfo;
+    static auto dst_optimal_to_shader_optimal() -> ImageTransitionInfo;
 };

@@ -14,8 +14,8 @@ struct VertexOutput {
 };
 
 struct UniformBuffer {
-    float4x4 view;
     float4x4 model;
+    float4x4 view;
     float4x4 projection;
 }
 
@@ -25,12 +25,9 @@ ConstantBuffer<UniformBuffer> uniform_buffer;
 VertexOutput vertex_main(VertexInput input) {
     VertexOutput output;
 
-    float4x4 projection =
-        uniform_buffer.view * uniform_buffer.projection * uniform_buffer.projection;
+    float4x4 mvp = mul(uniform_buffer.projection, mul(uniform_buffer.view, uniform_buffer.model));
 
-    float4 position = mul(float4(input.position, 0.0, 1.0), projection);
-    output.position = position;
-
+    output.position = mul(mvp, float4(input.position, 0.0, 1.0));
     output.color = input.color;
     return output;
 }
@@ -39,4 +36,3 @@ VertexOutput vertex_main(VertexInput input) {
 float4 fragment_main(VertexOutput vertex_output) : SV_Target {
     return float4(vertex_output.color, 1.0);
 }
-

@@ -4,3 +4,4 @@ sdks/
 CMakeUserPresets.json
 compile_commands.json
 .cache/
+.xmake/
