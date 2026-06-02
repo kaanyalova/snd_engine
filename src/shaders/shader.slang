@@ -6,11 +6,13 @@
 struct VertexInput {
     float2 position;
     float3 color;
+    float2 texture_coord;
 }
 
 struct VertexOutput {
     float3 color;
     float4 position : SV_Position;
+    float2 texture_coord;
 };
 
 struct UniformBuffer {
@@ -29,10 +31,14 @@ VertexOutput vertex_main(VertexInput input) {
 
     output.position = mul(mvp, float4(input.position, 0.0, 1.0));
     output.color = input.color;
+    output.texture_coord = input.texture_coord;
+
     return output;
 }
 
+Sampler2D texture;
+
 [shader("fragment")]
 float4 fragment_main(VertexOutput vertex_output) : SV_Target {
-    return float4(vertex_output.color, 1.0);
+    return texture.Sample(vertex_output.texture_coord);
 }

@@ -9,7 +9,8 @@
 #include <vk_mem_alloc_raii.hpp>
 #include <vulkan/vulkan.hpp>
 
-KtxImage::KtxImage(uint32_t width, uint32_t height, size_t size, uint8_t* data) {
+KtxImage::KtxImage(ktxTexture* texture, uint32_t width, uint32_t height, size_t size, uint8_t* data)
+    : image(texture), size(size), width(width), height(height), data(data) {
 }
 
 auto KtxImage::from_file_name(const std::string& file_name) -> KtxImage {
@@ -28,7 +29,7 @@ auto KtxImage::from_file_name(const std::string& file_name) -> KtxImage {
     size_t size = ktxTexture_GetImageSize(texture, 0);
     uint8_t* data = ktxTexture_GetData(texture);
 
-    return KtxImage(width, height, size, data);
+    return KtxImage(texture, width, height, size, data);
 }
 
 KtxImage::~KtxImage() {

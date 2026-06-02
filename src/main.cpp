@@ -1,6 +1,12 @@
+#include <SDL3/SDL_events.h>
+#include <imgui_impl_vulkan.h>
+
 #include <print>
 
 #include "Renderer.hpp"
+#include "RendererInfoGui.hpp"
+#include "RendererStructs/RendererStructs.hpp"
+#include "Utils/ImGuiUtils.hpp"
 #include "Window.hpp"
 
 auto main() -> int {
@@ -9,12 +15,15 @@ auto main() -> int {
     auto renderer_settings = RendererSettings {
         .enable_validation = true,
         //.validation_log_level = vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose,
-        .prefer_discrete_gpu = false,
+        .gpu_preference = GpuPreference::Discrete,
     };
 
     try {
         auto renderer = Renderer(window, renderer_settings);
         renderer.prepare();
+
+        ImGui_ImplVulkan_InitInfo imgui_vulkan_init_info = renderer.create_imgui_init_info();
+        ImGuiUtils::initialize(window, imgui_vulkan_init_info);
 
         while (true) {
             SDL_Event event = window.poll_event();
@@ -23,12 +32,19 @@ auto main() -> int {
                 break;
             }
 
-            renderer.draw_frame();
+            if (event.type == SDL_EVENT_WINDOW_RESIZED) {
+                renderer.recreate_swap_chain();
+            }
+
+            ImGuiUtils::process_event(event);
+            ImGuiUtils::update();
+            RendererInfoGui::process();
+
+            renderer.process();
         }
+    }
 
-        renderer.wait_idle();
-
-    } catch (const std::runtime_error& e) {
+    catch (const std::runtime_error& e) {
         std::println("Failed to create renderer: {}", e.what());
         return EXIT_FAILURE;
     }

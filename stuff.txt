@@ -1,0 +1,881 @@
+diff --git a/.gitignore b/.gitignore
+index 997a9b4..32c961b 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,6 +1,6 @@
+ build/
+ cmake-build-*/
+ sdks/
+-CmakeUserPresets.json
++CMakeUserPresets.json
+ compile_commands.json
+-.cache/
+\ No newline at end of file
++.cache/
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+index a3539c2..d8529df 100644
+--- a/.idea/workspace.xml
++++ b/.idea/workspace.xml
+@@ -4,7 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="BackendCodeEditorMiscSettings">
+-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="11" type="long" />
++    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="6" type="long" />
+     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
+     <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
+@@ -38,14 +38,19 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/VmaUsage.cpp" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.clang-format" beforeDir="false" afterPath="$PROJECT_DIR$/.clang-format" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/RendererStructs.cpp" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/RendererStructs.hpp" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Justfile" beforeDir="false" afterPath="$PROJECT_DIR$/Justfile" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/scripts/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/.gitignore" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/Renderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Renderer.cpp" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/Renderer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Renderer.hpp" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/Vertex.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vertex.cpp" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Vertex.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vertex.hpp" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/shaders/shader.slang" beforeDir="false" afterPath="$PROJECT_DIR$/src/shaders/shader.slang" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/shaders/shader.spv" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -64,13 +69,13 @@
+ }</component>
+   <component name="GithubPullRequestsUISettings">{
+   &quot;selectedUrlAndAccountId&quot;: {
+-    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed&quot;,
+-    &quot;accountId&quot;: &quot;d56a6d9a-7b01-4884-a095-160befef7e9d&quot;
++    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed.git&quot;,
++    &quot;accountId&quot;: &quot;ebbfca58-e1e2-4539-b7fe-ee0f182a9efa&quot;
+   }
+ }</component>
+   <component name="HighlightingSettingsPerFile">
+-    <setting file="mock:///home/kaan/Masaüstü/sneed/src/Renderer.cpp" root0="SKIP_HIGHLIGHTING" />
+     <setting file="file:///usr/include/vulkan/vulkan_raii.hpp" root0="SKIP_HIGHLIGHTING" />
++    <setting file="file:///usr/include/vulkan/vulkan_structs.hpp" root0="SKIP_HIGHLIGHTING" />
+   </component>
+   <component name="ProjectApplicationVersion">
+     <option name="ide" value="CLion" />
+@@ -87,34 +92,35 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;CMake Application.sneed.executor&quot;: &quot;Run&quot;,
+-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+-    &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
+-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;/home/kaan/Masaüstü/sneed&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;language.cpp.clang-tidy&quot;,
+-    &quot;ts.external.directory.path&quot;: &quot;/home/kaan/Masaüstü/sneed/scripts/node_modules/typescript/lib&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "CMake Application.sneed.executor": "Run",
++    "ModuleVcsDetector.initialDetectionPerformed": "true",
++    "RunOnceActivity.RadMigrateCodeStyle": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
++    "RunOnceActivity.cidr.known.project.marker": "true",
++    "RunOnceActivity.git.unshallow": "true",
++    "RunOnceActivity.readMode.enableVisualFormatting": "true",
++    "RunOnceActivity.west.config.association.type.startup.service": "true",
++    "cf.advertisement.text.overridden": "true",
++    "cf.first.check.clang-format": "false",
++    "cidr.known.project.marker": "true",
++    "git-widget-placeholder": "master",
++    "last_opened_file_path": "/home/kaan/Belgeler/3000_Git/Zelda64Recomp",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "bun",
++    "settings.editor.selected.configurable": "CMakeSettings",
++    "ts.external.directory.path": "/home/kaan/Masaüstü/sneed/scripts/node_modules/typescript/lib",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
++      <recent name="$PROJECT_DIR$/sdks" />
+       <recent name="$PROJECT_DIR$/src/Utils" />
+       <recent name="$PROJECT_DIR$" />
+     </key>
+@@ -135,11 +141,6 @@
+         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+-      <method v="2">
+-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+-      </method>
+-    </configuration>
+     <configuration name="glm" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sneed" TARGET_NAME="glm" CONFIG_NAME="Debug">
+       <method v="2">
+         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+@@ -154,11 +155,11 @@
+       </method>
+     </configuration>
+     <list>
+-      <item itemvalue="CMake Application.sneed" />
+-      <item itemvalue="CMake Application.glm" />
+       <item itemvalue="CMake Application.SDL3-shared" />
+       <item itemvalue="CMake Application.SDL3_test" />
+       <item itemvalue="CMake Application.SDL_uclibc" />
++      <item itemvalue="CMake Application.glm" />
++      <item itemvalue="CMake Application.sneed" />
+     </list>
+   </component>
+   <component name="TaskManager">
+@@ -179,6 +180,13 @@
+       <workItem from="1770031706807" duration="6250000" />
+       <workItem from="1770057915645" duration="809000" />
+       <workItem from="1770058736348" duration="1349000" />
++      <workItem from="1770108008255" duration="2378000" />
++      <workItem from="1770199962993" duration="62000" />
++      <workItem from="1770279049059" duration="817000" />
++      <workItem from="1770280595505" duration="1393000" />
++      <workItem from="1770283505007" duration="2302000" />
++      <workItem from="1770287349147" duration="2221000" />
++      <workItem from="1770289597406" duration="1533000" />
+     </task>
+     <servers />
+   </component>
+@@ -202,6 +210,40 @@
+     </option>
+   </component>
+   <component name="XDebuggerManager">
++    <breakpoint-manager>
++      <breakpoints>
++        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
++          <url>file://$PROJECT_DIR$/src/Renderer.cpp</url>
++          <line>855</line>
++          <option name="timeStamp" value="2" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
++          <url>file://$PROJECT_DIR$/src/Renderer.cpp</url>
++          <line>748</line>
++          <option name="timeStamp" value="3" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
++          <url>file://$PROJECT_DIR$/src/Renderer.cpp</url>
++          <line>895</line>
++          <option name="timeStamp" value="4" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
++          <url>file://$PROJECT_DIR$/src/Renderer.cpp</url>
++          <line>882</line>
++          <option name="timeStamp" value="5" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
++          <url>file://$PROJECT_DIR$/src/Renderer.cpp</url>
++          <line>29</line>
++          <option name="timeStamp" value="6" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
++          <url>file://$PROJECT_DIR$/src/main.cpp</url>
++          <line>5</line>
++          <option name="timeStamp" value="7" />
++        </line-breakpoint>
++      </breakpoints>
++    </breakpoint-manager>
+     <watches-manager>
+       <configuration name="CMakeRunConfiguration">
+         <watch expression="device" />
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2091858..11f9dbf 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -47,8 +47,10 @@ add_executable(sneed src/main.cpp
+         src/Vertex.hpp
+         src/Vertex.cpp
+         src/VmaUsage.cpp
++        src/RendererStructs.cpp
++        src/RendererStructs.hpp
+ )
+ 
+-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp)
++target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm  VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp)
+ 
+ target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)
+diff --git a/Justfile b/Justfile
+index 4a7c038..4fbd7fe 100644
+--- a/Justfile
++++ b/Justfile
+@@ -1,4 +1,18 @@
+ compile_shaders:
+     cd scripts && bun run compile_shaders.ts
+-build:
+-    cmake -S . -B build/ && cmake --build build/ -j $(nproc)
++
++build-debug:
++    cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug
++    cmake --build build/debug -j $(nproc)
++    cp build/debug/compile_commands.json .
++
++build-release:
++    cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release
++    cmake --build build/release -j $(nproc)
++    cp build/release/compile_commands.json .
++
++run-debug: build-debug
++    build/debug/sneed
++
++run-release: build-release
++    build/release/sneed
+\ No newline at end of file
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index a14702c..9ff6e45 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -32,3 +32,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+ 
+ # Finder (MacOS) folder config
+ .DS_Store
++
++config.json
+diff --git a/src/Renderer.cpp b/src/Renderer.cpp
+index 435a6d5..c130b94 100644
+--- a/src/Renderer.cpp
++++ b/src/Renderer.cpp
+@@ -4,17 +4,22 @@
+ 
+ #include <algorithm>
+ #include <array>
++#include <chrono>
++#include <cstring>
+ #include <limits>
+ #include <print>
+ #include <ranges>
+ #include <vector>
+-#include <vk_mem_alloc.hpp>
++#include <vk_mem_alloc_raii.hpp>
++#include <vk_mem_alloc_structs.hpp>
+ #include <vulkan/vulkan.hpp>
+ #include <vulkan/vulkan_raii.hpp>
+ 
++#include "RendererStructs.hpp"
+ #include "Utils/FileUtils.hpp"
+ #include "Utils/StringUtils.hpp"
+ #include "Vertex.hpp"
++#include "vulkan/vulkan.hpp"
+ 
+ Renderer::Renderer(Window& window, RendererSettings settings)
+     : m_required_extensions(std::move(settings.required_extensions))
+@@ -39,6 +44,8 @@ auto Renderer::init_vulkan() -> void {
+     create_image_views();
+     create_graphics_pipeline();
+     create_command_pool();
++    create_vertex_buffer();
++    create_index_buffer();
+     create_command_buffers();
+     create_sync_objects();
+ }
+@@ -94,8 +101,7 @@ auto Renderer::are_required_extensions_supported_by_instance() -> bool {
+ 
+     return std::ranges::all_of(m_required_extensions, [&](const char* required_extension) -> bool {
+         return std::ranges::any_of(
+-            extension_properties,
+-            [&](const vk::ExtensionProperties& available_extension) -> bool {
++            extension_properties, [&](const vk::ExtensionProperties& available_extension) -> bool {
+                 return std::strcmp(required_extension, available_extension.extensionName) == 0;
+             }
+         );
+@@ -108,8 +114,7 @@ auto Renderer::are_required_validation_layers_supported_by_instance() -> bool {
+ 
+     return std::ranges::all_of(m_validation_layers, [&](const char* required_layer) -> bool {
+         return std::ranges::any_of(
+-            layer_properties,
+-            [&](const vk::LayerProperties& available_layer) -> bool {
++            layer_properties, [&](const vk::LayerProperties& available_layer) -> bool {
+                 return std::strcmp(required_layer, available_layer.layerName) == 0;
+             }
+         );
+@@ -135,8 +140,7 @@ auto Renderer::is_device_suitable(const vk::raii::PhysicalDevice& device) -> boo
+ 
+     const bool is_api_version_suitable = device_properties.apiVersion >= vk::ApiVersion13;
+     const bool has_graphics_queue = std::ranges::any_of(
+-        queue_family_properties,
+-        [](const vk::QueueFamilyProperties& properties) {
++        queue_family_properties, [](const vk::QueueFamilyProperties& properties) {
+             return static_cast<bool>(properties.queueFlags & vk::QueueFlagBits::eGraphics);
+         }
+     );
+@@ -164,8 +168,7 @@ auto Renderer::find_queue_families(const vk::raii::PhysicalDevice& device) -> Fa
+         device.getQueueFamilyProperties();
+ 
+     const auto graphics_queue_family_property = std::ranges::find_if(
+-        queue_family_properties,
+-        [](const vk::QueueFamilyProperties& qfp) -> bool {
++        queue_family_properties, [](const vk::QueueFamilyProperties& qfp) -> bool {
+             return static_cast<bool>(qfp.queueFlags & vk::QueueFlagBits::eGraphics);
+         }
+     );
+@@ -304,16 +307,8 @@ auto Renderer::create_logical_device() -> void {
+ }
+ 
+ auto Renderer::create_memory_allocator() -> void {
+-    auto vma_vulkan_functions = vma::VulkanFunctions {
+-        .vkGetInstanceProcAddr = &vkGetInstanceProcAddr,
+-        .vkGetDeviceProcAddr = &vkGetDeviceProcAddr,
+-    };
+-
+     auto vma_allocator_create_info = vma::AllocatorCreateInfo {
+         .physicalDevice = *m_physical_device,
+-        .device = *m_device,
+-        .pVulkanFunctions = &vma_vulkan_functions,
+-        .instance = *m_instance,
+         .vulkanApiVersion = vk::ApiVersion14,
+     };
+ 
+@@ -463,7 +458,6 @@ auto Renderer::create_image_views() -> void {
+         .levelCount = 1,
+         .baseArrayLayer = 0,
+         .layerCount = 1,
+-
+     };
+ 
+     auto image_view_create_info = vk::ImageViewCreateInfo {
+@@ -508,8 +502,7 @@ auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags pr
+ }
+ 
+ auto Renderer::create_graphics_pipeline() -> void {
+-    std::vector<char> shader_code =
+-        FileUtils::read_file("/home/kaan/Masaüstü/sneed/src/shaders/shader.spv");
++    std::vector<char> shader_code = FileUtils::read_file("./src/shaders/shader.spv");
+     vk::raii::ShaderModule shader_module = create_shader_module(shader_code);
+ 
+     auto vert_shader_stage_info = vk::PipelineShaderStageCreateInfo {
+@@ -592,7 +585,8 @@ auto Renderer::create_graphics_pipeline() -> void {
+     };
+ 
+     auto pipeline_layout_create_info = vk::PipelineLayoutCreateInfo {
+-        .setLayoutCount = 0,
++        .setLayoutCount = 1,
++        .pSetLayouts = &*m_descriptor_set_layout,
+         .pushConstantRangeCount = 0,
+     };
+ 
+@@ -711,7 +705,10 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
+         }
+     );
+ 
+-    command_buffer.draw(3, 1, 0, 0);
++    command_buffer.bindVertexBuffers(0, *m_vertex_buffer, {0});
++    command_buffer.bindIndexBuffer(*m_index_buffer, 0, vk::IndexType::eUint16);
++
++    command_buffer.drawIndexed(indices.size(), 1, 0, 0, 0);
+ 
+     command_buffer.endRendering();
+ 
+@@ -749,21 +746,16 @@ auto Renderer::create_sync_objects() -> void {
+ }
+ 
+ auto Renderer::create_vertex_buffer() -> void {
+-    auto buffer_create_info = vk::BufferCreateInfo {
+-        .size = sizeof(vertices.front()) * vertices.size(),
+-        .usage = vk::BufferUsageFlagBits::eVertexBuffer,
+-        .sharingMode = vk::SharingMode::eExclusive,
+-    };
+-
+-    auto allocation_info = vma::AllocationCreateInfo {
+-        .usage = vma::MemoryUsage::eAuto,
+-    };
+-
+-    //m_vertex_buffer = vk::raii::Buffer(m_device, buffer_create_info);
+-
+-    m_vertex_buffer = m_allocator.createBuffer(buffer_create_info, allocation_info);
+-
++    size_t buffer_size = sizeof(vertices.front()) * vertices.size();
++    m_vertex_buffer = create_device_vertex_buffer(vertices.data(), buffer_size);
++}
+ 
++/**
++ * This just creates the buffer for the demo
++ */
++auto Renderer::create_index_buffer() -> void {
++    const vk::DeviceSize size = indices.size() * sizeof(indices.front());
++    m_index_buffer = create_device_index_buffer(indices.data(), size);
+ }
+ 
+ auto Renderer::draw_frame() -> void {
+@@ -780,6 +772,8 @@ auto Renderer::draw_frame() -> void {
+     m_command_buffers[frame_index].reset();
+     record_command_buffer(image_index);
+ 
++    update_uniform_buffer(frame_index);
++
+     vk::PipelineStageFlags wait_destination_stage_mask =
+         vk::PipelineStageFlagBits::eColorAttachmentOutput;
+ 
+@@ -833,14 +827,13 @@ auto Renderer::transition_image_layout(
+         .srcQueueFamilyIndex = vk::QueueFamilyIgnored,
+         .dstQueueFamilyIndex = vk::QueueFamilyIgnored,
+         .image = m_swap_chain_images[image_index],
+-        .subresourceRange =
+-            vk::ImageSubresourceRange {
+-                .aspectMask = vk::ImageAspectFlagBits::eColor,
+-                .baseMipLevel = 0,
+-                .levelCount = 1,
+-                .baseArrayLayer = 0,
+-                .layerCount = 1,
+-            },
++        .subresourceRange = vk::ImageSubresourceRange {
++            .aspectMask = vk::ImageAspectFlagBits::eColor,
++            .baseMipLevel = 0,
++            .levelCount = 1,
++            .baseArrayLayer = 0,
++            .layerCount = 1,
++        },
+     };
+ 
+     auto dependency_info = vk::DependencyInfo {
+@@ -854,11 +847,166 @@ auto Renderer::transition_image_layout(
+     command_buffer.pipelineBarrier2(dependency_info);
+ };
+ 
++/**
++ * Create a buffer according to the given info
++ * @param data optional data to put into the buffer
++ * @param size size of the buffer
++ * @param create_info
++ */
++auto Renderer::create_buffer(vk::DeviceSize size, BufferInfo create_info) const
++    -> vma::raii::Buffer {
++    const auto buffer_create_info = vk::BufferCreateInfo {
++        .size = size,
++        .usage = create_info.buffer_usage,
++        .sharingMode = vk::SharingMode::eExclusive,
++    };
++
++    const auto allocation_info = vma::AllocationCreateInfo {
++        .flags = create_info.allocation_flags,
++        .usage = create_info.allocation_usage,
++    };
++
++    vma::raii::Buffer buffer = m_allocator.createBuffer(buffer_create_info, allocation_info);
++
++    // if (data.has_value()) {
++    //     const vma::raii::Allocation& allocation = buffer.getAllocation();
++    //     void* allocated_data = allocation.map();
++    //     std::memcpy(allocated_data, data.value(), size);
++    //     allocation.unmap();
++    // }
++
++    return buffer;
++}
++
++auto Renderer::create_and_map_buffer(const void* data, vk::DeviceSize size, BufferInfo info)
++    -> vma::raii::Buffer {
++    vma::raii::Buffer buffer = create_buffer(size, info);
++    const vma::raii::Allocation& allocation = buffer.getAllocation();
++    void* allocated_data = allocation.map();
++    std::memcpy(allocated_data, data, size);
++    allocation.unmap();
++
++    return buffer;
++}
++
++// TODO: sync these "properly"
++auto Renderer::create_device_vertex_buffer(const void* data, vk::DeviceSize size)
++    -> vma::raii::Buffer {
++    vma::raii::Buffer staging_buffer =
++        create_and_map_buffer(data, size, BufferInfo::vertex_staging_buffer());
++
++    vma::raii::Buffer device_buffer = create_buffer(size, BufferInfo::vertex_device_buffer());
++
++    copy_buffer_waited(staging_buffer, device_buffer, size);
++
++    return device_buffer;
++}
++
++auto Renderer::create_device_index_buffer(const void* data, vk::DeviceSize size)
++    -> vma::raii::Buffer {
++    vma::raii::Buffer staging_buffer =
++        create_and_map_buffer(data, size, BufferInfo::index_staging_buffer());
++
++    vma::raii::Buffer device_buffer = create_buffer(size, BufferInfo::index_device_buffer());
++
++    copy_buffer_waited(staging_buffer, device_buffer, size);
++
++    return device_buffer;
++}
++
++auto Renderer::copy_buffer_waited(vk::raii::Buffer& from, vk::raii::Buffer& to, vk::DeviceSize size)
++    -> void {
++    auto allocate_info = vk::CommandBufferAllocateInfo {
++        .commandPool = m_command_pool,
++        .level = vk::CommandBufferLevel::ePrimary,
++        .commandBufferCount = 1,
++    };
++
++    // TODO: why not vk::raii::CommandBuffers
++    std::vector<vk::raii::CommandBuffer> command_buffers =
++        m_device.allocateCommandBuffers(allocate_info);
++
++    vk::raii::CommandBuffer command_buffer = std::move(command_buffers.front());
++
++    auto command_buffer_begin_info = vk::CommandBufferBeginInfo {
++        .flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit,
++    };
++
++    command_buffer.begin(command_buffer_begin_info);
++
++    command_buffer.copyBuffer(
++        from,
++        to,
++        vk::BufferCopy {
++            .srcOffset = 0,
++            .dstOffset = 0,
++            .size = size,
++        }
++    );
++
++    command_buffer.end();
++
++    auto submit_info = vk::SubmitInfo {
++        .commandBufferCount = 1,
++        .pCommandBuffers = &*command_buffer,
++    };
++
++    m_graphics_queue.submit(submit_info);
++
++    // TODO: properly sync these
++    m_graphics_queue.waitIdle();
++}
++
++auto Renderer::create_descriptor_set_layout() -> void {
++    auto ubo_layout_binding = vk::DescriptorSetLayoutBinding {
++        .binding = 0,
++        .descriptorType = vk::DescriptorType::eUniformBuffer,  // which kind of shaders it binds to
++        .descriptorCount = 1,
++        .stageFlags = vk::ShaderStageFlagBits::eVertex,
++    };
++
++    auto descriptor_set_layout_create_info = vk::DescriptorSetLayoutCreateInfo {
++        .bindingCount = 1,
++        .pBindings = &ubo_layout_binding,
++    };
++
++    m_descriptor_set_layout =
++        vk::raii::DescriptorSetLayout(m_device, descriptor_set_layout_create_info);
++}
++
++auto Renderer::create_uniform_buffers() -> void {
++    vk::DeviceSize size = sizeof(UniformBuffer);
++
++    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
++        vma::raii::Buffer buffer = create_buffer(size, BufferInfo::uniform_buffer());
++        m_uniform_buffers.emplace_back(std::move(buffer));
++
++        void* mapped = m_uniform_buffers[i].getAllocation().map();
++        m_uniform_buffers_mapped.emplace_back(mapped);
++    }
++}
++
++auto Renderer::update_uniform_buffer(uint32_t current_image) -> void {
++    static std::chrono::high_resolution_clock::time_point start_time =
++        std::chrono::high_resolution_clock::now();
++}
++
+ auto Renderer::prepare() -> void {
+     init_vulkan();
++    m_start_time = std::chrono::high_resolution_clock::now();
++}
++
++auto Renderer::process() -> void {
++    update_clocks();
++    draw_frame();
+ }
+ 
+-auto Renderer::main_loop() -> void {
++auto Renderer::update_clocks() -> void {
++    m_current_time = std::chrono::high_resolution_clock::now();
++
++    m_elapsed_time =
++        std::chrono::duration<float, std::chrono::seconds::period>(m_current_time - m_start_time)
++            .count();
+ }
+ 
+ auto Renderer::cleanup() -> void {
+diff --git a/src/Renderer.hpp b/src/Renderer.hpp
+index b951d07..b812c8b 100644
+--- a/src/Renderer.hpp
++++ b/src/Renderer.hpp
+@@ -1,45 +1,40 @@
+ #pragma once
+ 
+-#include <vk_mem_alloc.h>
+-
++#include <chrono>
+ #include <vector>
+-#include <vk_mem_alloc.hpp>
+ #include <vk_mem_alloc_raii.hpp>
+ #include <vulkan/vulkan.hpp>
+ #include <vulkan/vulkan_raii.hpp>
+ 
++#include "RendererStructs.hpp"
+ #include "Vertex.hpp"
+ #include "Window.hpp"
+ 
+-struct RendererSettings {
+-    std::vector<const char*> required_extensions = {};
+-    std::vector<const char*> validation_layers = {"VK_LAYER_KHRONOS_validation"};
+-    bool enable_validation = true;
+-    vk::Flags<vk::DebugUtilsMessageSeverityFlagBitsEXT> validation_log_level =
+-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
+-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eError |
+-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
+-        vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning;
+-
+-    vk::Flags<vk::DebugUtilsMessageTypeFlagBitsEXT> validation_message_types =
+-        vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
+-        vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
+-        vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation;
+-    bool prefer_discrete_gpu = false;
+-};
+-
+-struct FamilyIndices {
+-    uint32_t graphics_family;
+-    uint32_t presentation_family;
+-};
+-
+ class Renderer {
+   public:
+     Renderer(Window& window, RendererSettings settings);
+ 
+     auto prepare() -> void;
+-    auto draw_frame() -> void;
+     auto wait_idle() -> void;
++    auto process() -> void;
++
++    // auto allocate_gpu_memory(whatever) -> void;
++    auto copy_buffer_waited(vk::raii::Buffer& from, vk::raii::Buffer& to, vk::DeviceSize size)
++        -> void;
++
++    [[nodiscard]] auto create_buffer(vk::DeviceSize size, BufferInfo info) const
++        -> vma::raii::Buffer;
++
++    [[nodiscard]] auto create_and_map_buffer(const void* data, vk::DeviceSize size, BufferInfo info)
++        -> vma::raii::Buffer;
++
++    [[nodiscard]] auto create_device_vertex_buffer(const void* data, vk::DeviceSize size)
++        -> vma::raii::Buffer;
++
++    [[nodiscard]] auto create_device_index_buffer(const void* data, vk::DeviceSize size)
++        -> vma::raii::Buffer;
++
++    ~Renderer();
+ 
+   private:
+     static constexpr uint32_t WIDTH = 800;
+@@ -47,11 +42,14 @@ class Renderer {
+     static constexpr uint32_t MAX_FRAMES_IN_FLIGHT = 2;
+ 
+     const std::vector<Vertex> vertices = {
+-        {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+-        {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+-        {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
++        {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
++        {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
++        {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
++        {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
+     };
+ 
++    const std::vector<uint16_t> indices = {0, 1, 2, 2, 3, 0};
++
+     uint32_t frame_index = 0;
+ 
+     Window& m_window;
+@@ -72,6 +70,7 @@ class Renderer {
+     vk::raii::SwapchainKHR m_swap_chain = nullptr;
+     std::vector<vk::Image> m_swap_chain_images = {};
+     std::vector<vk::raii::ImageView> m_swap_chain_image_views = {};
++    vk::raii::DescriptorSetLayout m_descriptor_set_layout = nullptr;
+     vk::raii::PipelineLayout m_pipeline_layout = nullptr;
+     vk::raii::Pipeline m_graphics_pipeline = nullptr;
+     vk::raii::CommandPool m_command_pool = nullptr;
+@@ -79,9 +78,15 @@ class Renderer {
+     std::vector<vk::raii::Semaphore> m_present_complete_semaphores = {};
+     std::vector<vk::raii::Semaphore> m_render_finished_semaphores = {};
+     std::vector<vk::raii::Fence> in_flight_fences = {};
+-    vma::raii::Buffer m_vertex_buffer = nullptr;
++
++    // Memory allocator stuff
+     vma::raii::Allocator m_allocator = nullptr;
+ 
++    vma::raii::Buffer m_vertex_buffer = nullptr;
++    vma::raii::Buffer m_index_buffer = nullptr;
++    std::vector<vma::raii::Buffer> m_uniform_buffers = {};
++    std::vector<void*> m_uniform_buffers_mapped = {};
++
+     std::vector<const char*> m_required_extensions;
+     std::vector<const char*> m_validation_layers;
+     bool m_enable_validation = true;
+@@ -89,6 +94,11 @@ class Renderer {
+     vk::Flags<vk::DebugUtilsMessageTypeFlagBitsEXT> m_validation_message_types;
+     bool m_prefer_discrete_gpu = false;
+ 
++    std::chrono::high_resolution_clock::time_point m_start_time;
++    std::chrono::high_resolution_clock::time_point m_current_time;
++
++    float m_elapsed_time;
++
+     auto init_vulkan() -> void;
+     auto create_instance() -> void;
+     auto setup_debug_messenger() -> void;
+@@ -103,6 +113,10 @@ class Renderer {
+     auto record_command_buffer(uint32_t image_index) -> void;
+     auto create_sync_objects() -> void;
+     auto create_vertex_buffer() -> void;
++    auto create_index_buffer() -> void;
++    auto create_descriptor_set_layout() -> void;
++    auto create_uniform_buffers() -> void;
++    auto update_uniform_buffer(uint32_t current_image) -> void;
+ 
+     auto transition_image_layout(
+         uint32_t image_index,
+@@ -131,11 +145,15 @@ class Renderer {
+     ) -> vk::SurfaceFormatKHR;
+     auto static choose_swap_present_mode(const std::vector<vk::PresentModeKHR>& available_modes)
+         -> vk::PresentModeKHR;
+-    auto static debug_callback(vk::DebugUtilsMessageSeverityFlagBitsEXT severity, vk::DebugUtilsMessageTypeFlagsEXT type, const vk::DebugUtilsMessengerCallbackDataEXT* callback_data, void*)
+-        -> vk::Bool32;
++    auto static debug_callback(
++        vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
++        vk::DebugUtilsMessageTypeFlagsEXT type,
++        const vk::DebugUtilsMessengerCallbackDataEXT* callback_data,
++        void*
++    ) -> vk::Bool32;
+ 
+-    auto main_loop() -> void;
+-    auto cleanup() -> void;
++    auto draw_frame() -> void;
++    auto update_clocks() -> void;
+ 
+-    ~Renderer();
++    auto cleanup() -> void;
+ };
+diff --git a/src/Vertex.cpp b/src/Vertex.cpp
+index caa51d3..6287024 100644
+--- a/src/Vertex.cpp
++++ b/src/Vertex.cpp
+@@ -14,7 +14,7 @@ auto Vertex::get_attribute_descriptions() -> std::array<vk::VertexInputAttribute
+     return {
+         vk::VertexInputAttributeDescription {
+             .location = 0,
+-            .binding = 1,
++            .binding = 0,
+             .format = vk::Format::eR32G32Sfloat,
+             .offset = offsetof(Vertex, position),
+         },
+@@ -26,4 +26,4 @@ auto Vertex::get_attribute_descriptions() -> std::array<vk::VertexInputAttribute
+             .offset = offsetof(Vertex, color),
+         }
+     };
+-}
+\ No newline at end of file
++}
+diff --git a/src/main.cpp b/src/main.cpp
+index b7c3a8f..8176262 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -6,10 +6,10 @@
+ auto main() -> int {
+     auto window = Window("Vulkan Window", 800, 600);
+ 
+-    auto renderer_settings = RendererSettings{
++    auto renderer_settings = RendererSettings {
+         .enable_validation = true,
+         //.validation_log_level = vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose,
+-        .prefer_discrete_gpu = true,
++        .prefer_discrete_gpu = false,
+     };
+ 
+     try {
+@@ -23,14 +23,12 @@ auto main() -> int {
+                 break;
+             }
+ 
+-            renderer.draw_frame();
++            renderer.process();
+         }
+ 
+         renderer.wait_idle();
+ 
+-
+-
+-    } catch (const std::runtime_error &e) {
++    } catch (const std::runtime_error& e) {
+         std::println("Failed to create renderer: {}", e.what());
+         return EXIT_FAILURE;
+     }
+diff --git a/src/shaders/shader.slang b/src/shaders/shader.slang
+index f22d69f..d2204ee 100644
+--- a/src/shaders/shader.slang
++++ b/src/shaders/shader.slang
+@@ -1,7 +1,7 @@
+-static float2 positions[3] = float2[](float2(0.0, -0.5), float2(0.5, 0.5), float2(-0.5, 0.5));
++// static float2 positions[3] = float2[](float2(0.0, -0.5), float2(0.5, 0.5), float2(-0.5, 0.5));
+ 
+-static float3 colors[3] =
+-    float3[](float3(1.0, 0.0, 0.0), float3(0.0, 1.0, 0.0), float3(0.0, 0.0, 1.0));
++// static float3 colors[3] =
++//     float3[](float3(1.0, 0.0, 0.0), float3(0.0, 1.0, 0.0), float3(0.0, 0.0, 1.0));
+ 
+ struct VertexInput {
+     float2 position;
+@@ -13,11 +13,24 @@ struct VertexOutput {
+     float4 position : SV_Position;
+ };
+ 
++struct UniformBuffer {
++    float4x4 view;
++    float4x4 model;
++    float4x4 projection;
++}
++
++ConstantBuffer<UniformBuffer> uniform_buffer;
++
+ [shader("vertex")]
+ VertexOutput vertex_main(VertexInput input) {
+     VertexOutput output;
+ 
+-    output.position = float4(input.position, 0.0, 1.0);
++    float4x4 projection =
++        uniform_buffer.view * uniform_buffer.projection * uniform_buffer.projection;
++
++    float4 position = mul(float4(input.position, 0.0, 1.0), projection);
++    output.position = position;
++
+     output.color = input.color;
+     return output;
+ }
+diff --git a/src/shaders/shader.spv b/src/shaders/shader.spv
+index 269ffa0..c521b46 100644
+Binary files a/src/shaders/shader.spv and b/src/shaders/shader.spv differ

@@ -14,23 +14,23 @@ find_package(Vulkan REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
-        SDL3
-        URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.0/SDL3-3.4.0.zip
-        URL_HASH SHA256=9ac2debb493e0d3e13dbd2729fb91f4bfeb00a0f4dff5e04b73cc9bac276b38d
+    SDL3
+    URL https://github.com/libsdl-org/SDL/releases/download/release-3.4.0/SDL3-3.4.0.zip
+    URL_HASH SHA256=9ac2debb493e0d3e13dbd2729fb91f4bfeb00a0f4dff5e04b73cc9bac276b38d
 )
 FetchContent_MakeAvailable(SDL3)
 
 FetchContent_Declare(
-        GLM
-        URL https://github.com/g-truc/glm/releases/download/1.0.3/glm-1.0.3.zip
-        URL_HASH SHA256=1c0a0fced9b0d87c7b7bc94e40be490cff6d4c83c25db8488d8f33754e7fdeb2
+    GLM
+    URL https://github.com/g-truc/glm/releases/download/1.0.3/glm-1.0.3.zip
+    URL_HASH SHA256=1c0a0fced9b0d87c7b7bc94e40be490cff6d4c83c25db8488d8f33754e7fdeb2
 )
 FetchContent_MakeAvailable(GLM)
 
 FetchContent_Declare(
-        Vma-Hpp
-        URL https://github.com/YaaZ/VulkanMemoryAllocator-Hpp/releases/download/v3.3.0%2B2/VulkanMemoryAllocator-Hpp-3.3.0.tar.gz
-        URL_HASH SHA256=44767b5990dd36bdc3934b48a7bda2906a5573199a12b61ef2f0de8e72f988f1
+    Vma-Hpp
+    URL https://github.com/YaaZ/VulkanMemoryAllocator-Hpp/releases/download/v3.3.0%2B2/VulkanMemoryAllocator-Hpp-3.3.0.tar.gz
+    URL_HASH SHA256=44767b5990dd36bdc3934b48a7bda2906a5573199a12b61ef2f0de8e72f988f1
 )
 FetchContent_MakeAvailable(Vma-Hpp)
 
@@ -39,29 +39,93 @@ FetchContent_MakeAvailable(Vma-Hpp)
 FetchContent_Declare(
     Ktx
     GIT_REPOSITORY https://github.com/KhronosGroup/KTX-Software
-    GIT_TAG v4.4.2
+    GIT_TAG bc8ec6c
     GIT_SHALLOW 1
     SOURCE_SUBDIR lib/
 )
 FetchContent_MakeAvailable(Ktx)
 
 
-add_executable(sneed src/main.cpp
-        src/Renderer.cpp
-        src/Window.cpp
-        src/Window.hpp
-        src/Renderer.hpp
-        src/Utils/FileUtils.cpp
-        src/Utils/FileUtils.hpp
-        src/Utils/StringUtils.cpp
-        src/Utils/StringUtils.hpp
-        src/Vertex.hpp
-        src/Vertex.cpp
-        src/VmaUsage.cpp
-        src/RendererStructs.cpp
-        src/RendererStructs.hpp
+# imgui doesn't have a CMakeLists.txt file so i have to suffer though this shit
+FetchContent_Declare(
+    imgui_src
+    URL https://github.com/ocornut/imgui/archive/refs/tags/v1.92.8.zip
+    URL_HASH SHA256=27765c56ab27ce47472d0bea43cf1e3301c726362ce585e99a059e3b37616870
 )
 
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp ktx)
+FetchContent_MakeAvailable(imgui_src)
+
+set(IMGUI_DIR ${imgui_src_SOURCE_DIR})
+
+set(IMGUI_SOURCES
+    ${IMGUI_DIR}/imgui.cpp
+    ${IMGUI_DIR}/imgui_draw.cpp
+    ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    ${IMGUI_DIR}/imgui_demo.cpp
+
+    # backend files
+    ${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_sdl3.cpp
+)
+
+add_library(
+    imgui STATIC
+    ${IMGUI_SOURCES}
+)
+
+target_include_directories(imgui PUBLIC
+    ${IMGUI_DIR}
+    ${IMGUI_DIR}/backends
+)
+
+target_link_libraries(imgui PRIVATE Vulkan::Vulkan SDL3::SDL3)
+
+FetchContent_Declare(
+    tinygltf
+    URL https://github.com/syoyo/tinygltf/archive/refs/tags/v3.0.0.zip
+    URL_HASH SHA256=6e2583eb75d113446c593c249d6ac0ddb00662174935d4819317da2223934884
+)
+
+
+set(TINYGLTF_HEADER_ONLY ON CACHE INTERNAL "" FORCE)
+set(TINYGLTF_INSTALL OFF CACHE INTERNAL "" FORCE)
+
+FetchContent_MakeAvailable(tinygltf)
+
+add_executable(sneed
+    src/main.cpp
+    src/Renderer.cpp
+    src/Window.cpp
+    src/Window.hpp
+    src/Renderer.hpp
+    src/Utils/FileUtils.cpp
+    src/Utils/FileUtils.hpp
+    src/Utils/StringUtils.cpp
+    src/Utils/StringUtils.hpp
+    src/Utils/ImGuiUtils.cpp
+    src/Utils/ImGuiUtils.hpp
+    src/RendererInfoGui.hpp
+    src/RendererInfoGui.cpp
+    src/Vertex.hpp
+    src/Vertex.cpp
+    src/VmaUsage.cpp
+    src/RendererStructs/RendererStructs.hpp
+    src/RendererStructs/BufferInfo.hpp
+    src/RendererStructs/BufferInfo.cpp
+    src/RendererStructs/ImageInfo.hpp
+    src/RendererStructs/ImageInfo.cpp
+    src/RendererStructs/ImageViewInfo.hpp
+    src/RendererStructs/ImageViewInfo.cpp
+    src/RendererStructs/ImageTransitionInfo.hpp
+    src/RendererStructs/ImageTransitionInfo.cpp
+    src/Image/KtxImage.cpp
+    src/Image/KtxImage.hpp
+)
+
+target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp ktx imgui tinygltf)
 
 target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)
+target_compile_definitions(sneed PRIVATE VULKAN_HPP_HANDLE_ERROR_OUT_OF_DATE_AS_SUCCESS)
+
+target_compile_definitions(sneed PRIVATE GLM_FORCE_DEPTH_ZERO_TO_ONE)

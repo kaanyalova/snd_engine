@@ -1,7 +1,4 @@
-#include "RendererStructs.hpp"
-
-#include "vk_mem_alloc_enums.hpp"
-#include "vulkan/vulkan.hpp"
+#include "BufferInfo.hpp"
 
 auto BufferInfo::vertex_staging_buffer() -> BufferInfo {
     return BufferInfo {
@@ -65,21 +62,5 @@ auto BufferInfo::image_staging_buffer() -> BufferInfo {
         .allocation_flags = vma::AllocationCreateFlagBits::eMapped |
                             vma::AllocationCreateFlagBits::eHostAccessSequentialWrite,
 
-    };
-}
-
-auto ImageInfo::r8g8b8a8Srgb() -> ImageInfo {
-    return ImageInfo {
-        .format = vk::Format::eR8G8B8A8Srgb,
-        .tiling = vk::ImageTiling::eOptimal,
-        .usage_flags = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled,
-        .memory_flags = vk::MemoryPropertyFlagBits::eDeviceLocal,
-    };
-}
-
-auto ImageTransitionInfo::dst_optimal_to_shader_optimal() -> ImageTransitionInfo {
-    return ImageTransitionInfo {
-        .from = vk::ImageLayout::eTransferDstOptimal,
-        .to = vk::ImageLayout::eShaderReadOnlyOptimal,
     };
 }

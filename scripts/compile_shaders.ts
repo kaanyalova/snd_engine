@@ -7,8 +7,9 @@ const slangc_binary = config.slangc_path;
 for (const shader_dir of config.shader_paths) {
   const glob = new Bun.Glob(shader_dir).scanSync();
 
-  console.log(`Loading vulkan libraries from ${config.vulkan_sdk_libs_path}`);
-  process.env.LD_LIBRARY_PATH = `${config.vulkan_sdk_libs_path}:${process.env.LD_LIBRARY_PATH}`;
+  const vulkan_sdk_libs_path = `${config.vulkan_sdk_path}/lib`;
+  console.log(`Loading vulkan libraries from ${vulkan_sdk_libs_path}`);
+  process.env.LD_LIBRARY_PATH = `${vulkan_sdk_libs_path}:${process.env.LD_LIBRARY_PATH}`;
 
 
   for (const file of glob) {

@@ -2,6 +2,8 @@
 
 #include <vulkan/vulkan.hpp>
 
+#include "vulkan/vulkan.hpp"
+
 auto Vertex::get_binding_description() -> vk::VertexInputBindingDescription {
     return vk::VertexInputBindingDescription {
         .binding = 0,
@@ -10,7 +12,7 @@ auto Vertex::get_binding_description() -> vk::VertexInputBindingDescription {
     };
 }
 
-auto Vertex::get_attribute_descriptions() -> std::array<vk::VertexInputAttributeDescription, 2> {
+auto Vertex::get_attribute_descriptions() -> std::vector<vk::VertexInputAttributeDescription> {
     return {
         vk::VertexInputAttributeDescription {
             .location = 0,
@@ -24,6 +26,14 @@ auto Vertex::get_attribute_descriptions() -> std::array<vk::VertexInputAttribute
             .binding = 0,
             .format = vk::Format::eR32G32B32Sfloat,
             .offset = offsetof(Vertex, color),
+        },
+
+        vk::VertexInputAttributeDescription {
+            .location = 2,
+            .binding = 0,
+            .format = vk::Format::eR32G32Sfloat,
+            .offset = offsetof(Vertex, texture_coord),
         }
+
     };
 }

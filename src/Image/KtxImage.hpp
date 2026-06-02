@@ -19,5 +19,5 @@ class KtxImage {
     ~KtxImage();
 
   private:
-    KtxImage(uint32_t width, uint32_t height, size_t size, uint8_t* data);
+    KtxImage(ktxTexture* texture, uint32_t width, uint32_t height, size_t size, uint8_t* data);
 };

@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 
 #include <SDL3/SDL_video.h>
+#include <imgui_impl_vulkan.h>
 #include <ktx.h>
 #include <ktxvulkan.h>
 
@@ -17,18 +18,24 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+#include <vk_mem_alloc_enums.hpp>
+#include <vk_mem_alloc_handles.hpp>
 #include <vk_mem_alloc_raii.hpp>
 #include <vk_mem_alloc_structs.hpp>
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
 
 #include "Image/KtxImage.hpp"
-#include "RendererStructs.hpp"
+#include "RendererInfoGui.hpp"
+#include "RendererStructs/BufferInfo.hpp"
+#include "RendererStructs/ImageInfo.hpp"
+#include "RendererStructs/ImageTransitionInfo.hpp"
+#include "RendererStructs/ImageViewInfo.hpp"
+#include "UniformBuffer.hpp"
 #include "Utils/FileUtils.hpp"
+#include "Utils/ImGuiUtils.hpp"
 #include "Utils/StringUtils.hpp"
 #include "Vertex.hpp"
-#include "vk_mem_alloc_enums.hpp"
-#include "vk_mem_alloc_handles.hpp"
 #include "vulkan/vulkan.hpp"
 
 Renderer::Renderer(Window& window, RendererSettings settings)
@@ -37,8 +44,16 @@ Renderer::Renderer(Window& window, RendererSettings settings)
     , m_enable_validation(settings.enable_validation)
     , m_validation_log_level(settings.validation_log_level)
     , m_validation_message_types(settings.validation_message_types)
-    , m_prefer_discrete_gpu(settings.prefer_discrete_gpu)
+    , m_gpu_preference(settings.gpu_preference)
     , m_window(window) {
+}
+
+auto Renderer::process() -> void {
+    update_clocks_before_draw();
+    draw_frame();
+    update_clocks_after_draw();
+
+    RendererInfoGui::set_frametime(m_last_frame_time);
 }
 
 auto Renderer::init_vulkan() -> void {
@@ -48,10 +63,11 @@ auto Renderer::init_vulkan() -> void {
     }
     create_surface();
     pick_physical_device();
+    get_physical_device_properties();
     create_logical_device();
     create_memory_allocator();
     create_swap_chain();
-    create_image_views();
+    create_swapchain_image_views();
     create_descriptor_set_layout();
     create_graphics_pipeline();
     create_command_pool();
@@ -59,6 +75,9 @@ auto Renderer::init_vulkan() -> void {
     create_index_buffer();
     create_uniform_buffers();
     create_descriptor_pool();
+    load_texture("./textures/test.ktx");
+    create_image_sampler();
+
     create_descriptor_sets();
     create_command_buffers();
     create_sync_objects();
@@ -109,6 +128,11 @@ auto Renderer::create_instance() -> void {
     m_instance = vk::raii::Instance(m_context, create_info);
 }
 
+/**
+ * @brief check if all the extensions in m_required_extensions are supported by the instance
+ *
+ * @return true if all extensions are supported, false otherwise
+ */
 auto Renderer::are_required_extensions_supported_by_instance() -> bool {
     std::vector<vk::ExtensionProperties> extension_properties =
         m_context.enumerateInstanceExtensionProperties();
@@ -122,6 +146,11 @@ auto Renderer::are_required_extensions_supported_by_instance() -> bool {
     });
 }
 
+/**
+ * @brief check if all the validation layers in m_validation_layers are supported by the instance
+ *
+ * @return true if all validation layers are supported, false otherwise
+ */
 auto Renderer::are_required_validation_layers_supported_by_instance() -> bool {
     std::vector<vk::LayerProperties> layer_properties =
         m_context.enumerateInstanceLayerProperties();
@@ -135,6 +164,12 @@ auto Renderer::are_required_validation_layers_supported_by_instance() -> bool {
     });
 }
 
+/**
+ * @brief Get the validation layers to enable
+ *
+ * @return If validation is enabled in the config and all the validation layers are supported
+ * return the validation layers, otherwise return an empty vector
+ */
 auto Renderer::get_validation_layers() -> std::vector<const char*> {
     if (m_enable_validation) {
         if (!are_required_extensions_supported_by_instance()) {
@@ -145,6 +180,13 @@ auto Renderer::get_validation_layers() -> std::vector<const char*> {
     return {};
 }
 
+/**
+ * @brief Check if the PhysicalDevice is suitable by checking if it supports the required features,
+ * extensions and queue families
+ *
+ * @param device the physical device to check
+ * @return true if the device is suitable, false otherwise
+ */
 auto Renderer::is_device_suitable(const vk::raii::PhysicalDevice& device) -> bool {
     const vk::PhysicalDeviceProperties device_properties = device.getProperties();
     std::vector<vk::QueueFamilyProperties> queue_family_properties =
@@ -177,6 +219,7 @@ auto Renderer::is_device_suitable(const vk::raii::PhysicalDevice& device) -> boo
     return is_suitable;
 }
 
+/** */
 auto Renderer::find_queue_families(const vk::raii::PhysicalDevice& device) -> FamilyIndices {
     std::vector<vk::QueueFamilyProperties> queue_family_properties =
         device.getQueueFamilyProperties();
@@ -232,10 +275,14 @@ auto Renderer::setup_debug_messenger() -> void {
     m_debug_messenger = m_instance.createDebugUtilsMessengerEXT(messenger_create_info);
 }
 
+/**
+ * @brief Pick the PhysicalDevice according to the m_gpu_preference, fallback to any GPU if
+ * the preference is not found
+ */
 auto Renderer::pick_physical_device() -> void {
     std::vector<vk::raii::PhysicalDevice> physical_devices = m_instance.enumeratePhysicalDevices();
 
-    if (m_prefer_discrete_gpu) {
+    if (m_gpu_preference == GpuPreference::Discrete) {
         const auto discrete_gpu_it =
             std::ranges::find_if(physical_devices, [&](const vk::raii::PhysicalDevice& device) {
                 return device.getProperties().deviceType == vk::PhysicalDeviceType::eDiscreteGpu &&
@@ -246,8 +293,7 @@ auto Renderer::pick_physical_device() -> void {
             m_physical_device = *discrete_gpu_it;
             return;
         }
-    } else {
-        // pick igpu over any gpu if m_prefer_discrete_gpu is false
+    } else if (m_gpu_preference == GpuPreference::Integrated) {
         const auto integrated_gpu_it =
             std::ranges::find_if(physical_devices, [&](const vk::raii::PhysicalDevice& device) {
                 return device.getProperties().deviceType ==
@@ -276,6 +322,11 @@ auto Renderer::pick_physical_device() -> void {
     throw std::runtime_error("failed to find a suitable GPU");
 }
 
+auto Renderer::get_physical_device_properties() -> void {
+    vk::PhysicalDeviceProperties properties = m_physical_device.getProperties();
+    m_max_sampler_anisotropy = properties.limits.maxSamplerAnisotropy;
+}
+
 auto Renderer::create_logical_device() -> void {
     m_family_indices = find_queue_families(m_physical_device);
     float queue_priority = 1.0f;
@@ -293,10 +344,17 @@ auto Renderer::create_logical_device() -> void {
         vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT>;
 
     auto feature_chain = DeviceFeaturesChain {
-        vk::PhysicalDeviceFeatures2 {},
-        vk::PhysicalDeviceVulkan11Features {.shaderDrawParameters = true},
-        vk::PhysicalDeviceVulkan13Features {.synchronization2 = true, .dynamicRendering = true},
-        vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT {.extendedDynamicState = true},
+        vk::PhysicalDeviceFeatures2 {
+            .features =
+                vk::PhysicalDeviceFeatures {
+                    .samplerAnisotropy = vk::True,
+                },
+        },
+        vk::PhysicalDeviceVulkan11Features {.shaderDrawParameters = vk::True},
+        vk::PhysicalDeviceVulkan13Features {
+            .synchronization2 = vk::True, .dynamicRendering = vk::True
+        },
+        vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT {.extendedDynamicState = vk::True},
     };
 
     std::vector<const char*> device_extensions = {
@@ -353,6 +411,12 @@ auto Renderer::debug_callback(
     return vk::False;
 }
 
+/**
+ * @brief Choose the swap surface format based on the available formats
+ *
+ * @param available_formats list of available formats by the PhysicalDevice
+ * @return vk::SurfaceFormatKHR the chosen surface format
+ */
 auto Renderer::choose_swap_surface_format(
     const std::vector<vk::SurfaceFormatKHR>& available_formats
 ) -> vk::SurfaceFormatKHR {
@@ -408,8 +472,9 @@ auto Renderer::create_swap_chain() -> void {
     auto surface_capabilities = m_physical_device.getSurfaceCapabilitiesKHR(m_surface);
     m_swap_chain_extent = choose_swap_extent(surface_capabilities);
 
-    m_swap_chain_surface_format =
-        choose_swap_surface_format(m_physical_device.getSurfaceFormatsKHR(m_surface));
+    std::vector<vk::SurfaceFormatKHR> surface_formats =
+        m_physical_device.getSurfaceFormatsKHR(m_surface);
+    m_swap_chain_surface_format = choose_swap_surface_format(surface_formats);
 
     uint32_t min_image_count = std::max(3u, surface_capabilities.minImageCount);
 
@@ -463,7 +528,7 @@ auto Renderer::create_swap_chain() -> void {
     m_swap_chain_images = m_swap_chain.getImages();
 }
 
-auto Renderer::create_image_views() -> void {
+auto Renderer::create_swapchain_image_views() -> void {
     m_swap_chain_image_views.clear();
 
     auto sub_resource_range = vk::ImageSubresourceRange {
@@ -486,7 +551,26 @@ auto Renderer::create_image_views() -> void {
     }
 }
 
-auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags properties) {
+auto Renderer::create_image_view(const vk::raii::Image& image, ImageViewInfo info)
+    -> vk::raii::ImageView {
+    auto view_info = vk::ImageViewCreateInfo {
+        .image = image,
+        .viewType = vk::ImageViewType::e2D,
+        .format = info.format,
+        .subresourceRange = vk::ImageSubresourceRange {
+            .aspectMask = info.aspect_flags,
+            .baseMipLevel = 0,
+            .levelCount = 1,
+            .baseArrayLayer = 0,
+            .layerCount = 1,
+        },
+    };
+
+    return vk::raii::ImageView(m_device, view_info);
+}
+
+auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags properties)
+    -> uint32_t {
     vk::PhysicalDeviceMemoryProperties physical_device_memory_properties =
         m_physical_device.getMemoryProperties();
 
@@ -504,10 +588,10 @@ auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags pr
     throw std::runtime_error("failed to find suitable memory type!");
 }
 
-[[nodiscard]] auto Renderer::create_shader_module(const std::vector<char>& code) const
+[[nodiscard]] auto Renderer::create_shader_module(const std::span<uint8_t>& code) const
     -> vk::raii::ShaderModule {
     auto shader_module_create_info = vk::ShaderModuleCreateInfo {
-        .codeSize = code.size() * sizeof(char),
+        .codeSize = code.size() * sizeof(uint8_t),
         .pCode = reinterpret_cast<const uint32_t*>(code.data()),
     };
 
@@ -517,8 +601,7 @@ auto Renderer::find_memory_type(uint32_t type_filter, vk::MemoryPropertyFlags pr
 
 auto Renderer::create_graphics_pipeline() -> void {
     // TODO: use relative paths here
-    std::vector<char> shader_code =
-        FileUtils::read_file("/home/kaan/Belgeler/0000_Projects/sneed/src/shaders/shader.spv");
+    std::vector<uint8_t> shader_code = FileUtils::read_file("./src/shaders/shader.spv");
     vk::raii::ShaderModule shader_module = create_shader_module(shader_code);
 
     auto vert_shader_stage_info = vk::PipelineShaderStageCreateInfo {
@@ -614,13 +697,13 @@ auto Renderer::create_graphics_pipeline() -> void {
     };
 
     vk::VertexInputBindingDescription binding_description = Vertex::get_binding_description();
-    std::array<vk::VertexInputAttributeDescription, 2> attribute_descriptions =
+    std::vector<vk::VertexInputAttributeDescription> attribute_descriptions =
         Vertex::get_attribute_descriptions();
 
     auto vertex_input_info = vk::PipelineVertexInputStateCreateInfo {
         .vertexBindingDescriptionCount = 1,
         .pVertexBindingDescriptions = &binding_description,
-        .vertexAttributeDescriptionCount = attribute_descriptions.size(),
+        .vertexAttributeDescriptionCount = static_cast<uint32_t>(attribute_descriptions.size()),
         .pVertexAttributeDescriptions = attribute_descriptions.data(),
     };
 
@@ -667,14 +750,10 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
     vk::raii::CommandBuffer& command_buffer = m_command_buffers[frame_index];
 
     command_buffer.begin(vk::CommandBufferBeginInfo {});
+
     transition_image_layout(
-        image_index,
-        vk::ImageLayout::eUndefined,
-        vk::ImageLayout::eColorAttachmentOptimal,
-        {},
-        vk::AccessFlagBits2::eColorAttachmentWrite,
-        vk::PipelineStageFlagBits2::eColorAttachmentOutput,
-        vk::PipelineStageFlagBits2::eColorAttachmentOutput
+        m_swap_chain_images[image_index],
+        ImageTransitionInfo::undefined_to_color_attachment_optimal()
     );
 
     auto clear_color_value = vk::ClearColorValue(std::array<float, 4> {0.0f, 0.0f, 0.0f, 1.0f});
@@ -687,6 +766,16 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
         .clearValue = vk::ClearValue {.color = clear_color_value},
     };
 
+    auto clear_depth_value = vk::ClearDepthStencilValue(1.0f, 0.0f);
+
+    auto depth_attachment_info = vk::RenderingAttachmentInfo {
+        .imageView = m_depth_image_view,
+        .imageLayout = vk::ImageLayout::eDepthAttachmentOptimal,
+        .loadOp = vk::AttachmentLoadOp::eClear,
+        .storeOp = vk::AttachmentStoreOp::eDontCare,
+        .clearValue = vk::ClearValue {.depthStencil = clear_depth_value},
+    };
+
     auto rendering_info = vk::RenderingInfo {
         .renderArea =
             vk::Rect2D {
@@ -696,6 +785,7 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
         .layerCount = 1,
         .colorAttachmentCount = 1,
         .pColorAttachments = &rendering_attachment_info,
+        .pDepthAttachment = &depth_attachment_info,
     };
 
     command_buffer.beginRendering(rendering_info);
@@ -731,9 +821,11 @@ auto Renderer::record_command_buffer(uint32_t image_index) -> void {
 
     command_buffer.drawIndexed(INDICES.size(), 1, 0, 0, 0);
 
+    ImGuiUtils::render(command_buffer);
+
     command_buffer.endRendering();
 
-    transition_image_layout(
+    transition_swapchain_image_layout(
         image_index,
         vk::ImageLayout::eColorAttachmentOptimal,
         vk::ImageLayout::ePresentSrcKHR,
@@ -784,11 +876,21 @@ auto Renderer::draw_frame() -> void {
         *in_flight_fences[frame_index], vk::True, std::numeric_limits<uint64_t>::max()
     );
 
-    m_device.resetFences(*in_flight_fences[frame_index]);
-
     auto [result, image_index] = m_swap_chain.acquireNextImage(
         std::numeric_limits<uint64_t>::max(), *m_present_complete_semaphores[frame_index], nullptr
     );
+
+    if (result == vk::Result::eErrorOutOfDateKHR) {
+        recreate_swap_chain();
+        return;
+    }
+
+    if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR) {
+        assert(result == vk::Result::eTimeout || result == vk::Result::eNotReady);
+        throw std::runtime_error("failed to acquire swap chain image!");
+    }
+
+    m_device.resetFences(*in_flight_fences[frame_index]);
 
     update_uniform_buffer(frame_index);
 
@@ -820,7 +922,12 @@ auto Renderer::draw_frame() -> void {
         .pImageIndices = &image_index,
     };
 
-    auto present_result = m_presentation_queue.presentKHR(present_info);
+    vk::Result present_result = m_presentation_queue.presentKHR(present_info);
+
+    if (present_result == vk::Result::eErrorOutOfDateKHR ||
+        present_result == vk::Result::eSuboptimalKHR) {
+        recreate_swap_chain();
+    }
 
     frame_index = (frame_index + 1) % MAX_FRAMES_IN_FLIGHT;
 }
@@ -829,7 +936,7 @@ auto Renderer::wait_idle() -> void {
     m_device.waitIdle();
 }
 
-auto Renderer::transition_image_layout(
+auto Renderer::transition_swapchain_image_layout(
     uint32_t image_index,
     vk::ImageLayout old_layout,
     vk::ImageLayout new_layout,
@@ -932,7 +1039,7 @@ auto Renderer::create_device_index_buffer(const void* data, vk::DeviceSize size)
 
 auto Renderer::copy_buffer_waited(vk::raii::Buffer& from, vk::raii::Buffer& to, vk::DeviceSize size)
     -> void {
-    run_single_time_commands([&](vk::raii::CommandBuffer& command_buffer) {
+    run_commands_then_wait([&](vk::raii::CommandBuffer& command_buffer) {
         command_buffer.copyBuffer(
             from,
             to,
@@ -946,16 +1053,26 @@ auto Renderer::copy_buffer_waited(vk::raii::Buffer& from, vk::raii::Buffer& to, 
 }
 
 auto Renderer::create_descriptor_set_layout() -> void {
-    auto ubo_layout_binding = vk::DescriptorSetLayoutBinding {
-        .binding = 0,
-        .descriptorType = vk::DescriptorType::eUniformBuffer,  // which kind of shaders it binds to
-        .descriptorCount = 1,
-        .stageFlags = vk::ShaderStageFlagBits::eVertex,
+    std::vector<vk::DescriptorSetLayoutBinding> layout_bindings = {
+        vk::DescriptorSetLayoutBinding {
+            .binding = 0,
+            .descriptorType =
+                vk::DescriptorType::eUniformBuffer,  // which kind of shaders it binds to
+            .descriptorCount = 1,
+            .stageFlags = vk::ShaderStageFlagBits::eVertex,
+        },
+
+        vk::DescriptorSetLayoutBinding {
+            .binding = 1,
+            .descriptorType = vk::DescriptorType::eCombinedImageSampler,
+            .descriptorCount = 1,
+            .stageFlags = vk::ShaderStageFlagBits::eFragment,
+        }
     };
 
     auto descriptor_set_layout_create_info = vk::DescriptorSetLayoutCreateInfo {
-        .bindingCount = 1,
-        .pBindings = &ubo_layout_binding,
+        .bindingCount = static_cast<uint32_t>(layout_bindings.size()),
+        .pBindings = layout_bindings.data(),
     };
 
     m_descriptor_set_layout =
@@ -978,18 +1095,28 @@ auto Renderer::create_uniform_buffers() -> void {
     }
 }
 
+auto Renderer::update_clocks_before_draw() -> void {
+    m_frame_start_time = std::chrono::high_resolution_clock::now();
+
+    m_elapsed_time = std::chrono::duration<float, std::chrono::seconds::period>(
+                         m_frame_start_time - m_start_time
+    )
+                         .count();
+}
+
+auto Renderer::update_clocks_after_draw() -> void {
+    std::chrono::high_resolution_clock::time_point frame_end_time =
+        std::chrono::high_resolution_clock::now();
+
+    m_last_frame_time = std::chrono::duration<float, std::chrono::milliseconds::period>(
+                            frame_end_time - m_frame_start_time
+    )
+                            .count();
+}
+
 auto Renderer::update_uniform_buffer(uint32_t current_image) -> void {
-    std::chrono::time_point<std::chrono::high_resolution_clock> start_time =
-        std::chrono::high_resolution_clock::now();
-
-    std::chrono::time_point<std::chrono::high_resolution_clock> end_time =
-        std::chrono::high_resolution_clock::now();
-
-    float time =
-        std::chrono::duration<float, std::chrono::seconds::period>(end_time - start_time).count();
-
     glm::mat4 model =
-        rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        rotate(glm::mat4(1.0f), m_elapsed_time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
     glm::mat4 view = lookAt(
         glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)
@@ -1017,16 +1144,37 @@ auto Renderer::update_uniform_buffer(uint32_t current_image) -> void {
 }
 
 auto Renderer::create_descriptor_pool() -> void {
-    auto desciptor_pool_size = vk::DescriptorPoolSize {
-        .type = vk::DescriptorType::eUniformBuffer,
-        .descriptorCount = MAX_FRAMES_IN_FLIGHT,
+    std::vector<vk::DescriptorPoolSize> pool_sizes = {
+        vk::DescriptorPoolSize {
+            .type = vk::DescriptorType::eUniformBuffer,
+            .descriptorCount = MAX_FRAMES_IN_FLIGHT,
+        },
+        vk::DescriptorPoolSize {
+            .type = vk::DescriptorType::eSampledImage,
+            .descriptorCount = IMGUI_IMPL_VULKAN_MINIMUM_SAMPLED_IMAGE_POOL_SIZE
+        },
+        vk::DescriptorPoolSize {
+            .type = vk::DescriptorType::eSampler,
+            .descriptorCount = IMGUI_IMPL_VULKAN_MINIMUM_SAMPLER_POOL_SIZE,
+        },
+        vk::DescriptorPoolSize {
+            .type = vk::DescriptorType::eCombinedImageSampler,
+            .descriptorCount = MAX_FRAMES_IN_FLIGHT,
+        }
+
     };
+
+    // auto desciptor_pool_size = vk::DescriptorPoolSize {
+    //     .type = vk::DescriptorType::eUniformBuffer,
+    //     .descriptorCount = MAX_FRAMES_IN_FLIGHT,
+    // };
 
     auto descriptor_pool_create_info = vk::DescriptorPoolCreateInfo {
         .flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet,
-        .maxSets = MAX_FRAMES_IN_FLIGHT,
-        .poolSizeCount = 1,
-        .pPoolSizes = &desciptor_pool_size,
+        .maxSets = MAX_FRAMES_IN_FLIGHT * 2 + IMGUI_IMPL_VULKAN_MINIMUM_SAMPLED_IMAGE_POOL_SIZE +
+                   IMGUI_IMPL_VULKAN_MINIMUM_SAMPLER_POOL_SIZE,
+        .poolSizeCount = static_cast<uint32_t>(pool_sizes.size()),
+        .pPoolSizes = pool_sizes.data(),
     };
 
     m_descriptor_pool = vk::raii::DescriptorPool(m_device, descriptor_pool_create_info);
@@ -1052,33 +1200,60 @@ auto Renderer::create_descriptor_sets() -> void {
             .range = sizeof(UniformBuffer),
         };
 
-        auto write_descriptor_set = vk::WriteDescriptorSet {
-            .dstSet = m_descriptor_sets[i],
-            .dstBinding = 0,
-            .dstArrayElement = 0,
-            .descriptorCount = 1,
-            .descriptorType = vk::DescriptorType::eUniformBuffer,
-            .pBufferInfo = &descriptor_buffer_info,
+        auto desciptor_image_info = vk::DescriptorImageInfo {
+            .sampler = m_texture_sampler,
+            .imageView = m_texture_image_view,
+            .imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal,
         };
 
-        m_device.updateDescriptorSets(write_descriptor_set, {});
+        std::vector<vk::WriteDescriptorSet> write_descriptor_sets = {
+            vk::WriteDescriptorSet {
+                .dstSet = m_descriptor_sets[i],
+                .dstBinding = 0,
+                .dstArrayElement = 0,
+                .descriptorCount = 1,
+                .descriptorType = vk::DescriptorType::eUniformBuffer,
+                .pBufferInfo = &descriptor_buffer_info,
+            },
+            vk::WriteDescriptorSet {
+                .dstSet = m_descriptor_sets[i],
+                .dstBinding = 1,
+                .dstArrayElement = 0,
+                .descriptorCount = 1,
+                .descriptorType = vk::DescriptorType::eCombinedImageSampler,
+                .pImageInfo = &desciptor_image_info,
+            }
+        };
+
+        m_device.updateDescriptorSets(write_descriptor_sets, {});
     }
 }
 
-// delete
-auto Renderer::create_texture_image() -> void {
-    KtxImage texture = KtxImage::from_file_name("todo.ktx");
+/**
+ * @brief Load the .ktx texture at file path to the m_texture_image and point an image view
+ * m_texture_image_view to it
+ *
+ * @param file_path
+ */
+auto Renderer::load_texture(const std::string& file_path) -> void {
+    KtxImage texture = KtxImage::from_file_name(file_path);
 
-    vma::raii::Image image = create_image(texture.width, texture.height, ImageInfo::r8g8b8a8Srgb());
+    std::println(
+        "loading image: {} with width: {}px, height {}px", file_path, texture.width, texture.height
+    );
+
+    m_texture_image = create_image(texture.width, texture.height, ImageInfo::r8g8b8a8_srgb());
 
     vma::raii::Buffer staging_buffer =
         create_and_map_buffer(texture.data, texture.size, BufferInfo::image_staging_buffer());
 
-    transition_image_layout(
-        image, vk::ImageLayout::eUndefined, vk::ImageLayout::eTransferDstOptimal
-    );
+    transition_image_layout(m_texture_image, ImageTransitionInfo::undefined_to_dst_optimal());
 
-    copy_buffer_to_image(staging_buffer, image, texture.width, texture.height);
+    copy_buffer_to_image(staging_buffer, m_texture_image, texture.width, texture.height);
+
+    transition_image_layout(m_texture_image, ImageTransitionInfo::dst_optimal_to_shader_optimal());
+
+    m_texture_image_view = create_image_view(m_texture_image, ImageViewInfo::eR8G8B8A8Srgb_color());
 }
 
 /// Create and allocate (on the GPU) an image
@@ -1110,13 +1285,13 @@ auto Renderer::create_image(uint32_t width, uint32_t height, ImageInfo info) -> 
     return image;
 }
 
-auto Renderer::transition_image_layout(
-    const vk::raii::Image& image, vk::ImageLayout old_layout, vk::ImageLayout new_layout
-) -> void {
-    run_single_time_commands([&](vk::raii::CommandBuffer& command_buffer) {
+auto Renderer::transition_image_layout(const vk::Image& image, ImageTransitionInfo info) -> void {
+    run_commands_then_wait([&](vk::raii::CommandBuffer& command_buffer) {
         auto barrier = vk::ImageMemoryBarrier {
-            .oldLayout = old_layout,
-            .newLayout = new_layout,
+            .srcAccessMask = info.source_access_flags,
+            .dstAccessMask = info.destination_accesss_flags,
+            .oldLayout = info.source,
+            .newLayout = info.destination,
             .image = image,
             .subresourceRange = vk::ImageSubresourceRange {
                 .aspectMask = vk::ImageAspectFlagBits::eColor,
@@ -1125,7 +1300,12 @@ auto Renderer::transition_image_layout(
                 .baseArrayLayer = 0,
                 .layerCount = 1,
             },
+
         };
+
+        command_buffer.pipelineBarrier(
+            info.source_stage_flags, info.destination_stage_flags, {}, {}, nullptr, barrier
+        );
     });
 }
 
@@ -1141,7 +1321,7 @@ auto Renderer::create_and_map_image(void* data, uint32_t width, uint32_t height,
 auto Renderer::copy_buffer_to_image(
     const vma::raii::Buffer& buffer, vma::raii::Image& destination, uint32_t width, uint32_t height
 ) -> void {
-    run_single_time_commands([&](vk::raii::CommandBuffer& command_buffer) {
+    run_commands_then_wait([&](vk::raii::CommandBuffer& command_buffer) {
         auto buffer_image_copy = vk::BufferImageCopy {
             .bufferOffset = 0,
             .bufferRowLength = 0,
@@ -1151,7 +1331,7 @@ auto Renderer::copy_buffer_to_image(
                     .aspectMask = vk::ImageAspectFlagBits::eColor,
                     .mipLevel = 0,
                     .baseArrayLayer = 0,
-                    .layerCount = 0,
+                    .layerCount = 1,
                 },
             .imageOffset =
                 vk::Offset3D {
@@ -1172,7 +1352,12 @@ auto Renderer::copy_buffer_to_image(
     });
 };
 
-auto Renderer::run_single_time_commands(
+/**
+ * @brief Create a new command buffer and run the given commands inside of it
+ *
+ * @param commands
+ */
+auto Renderer::run_commands_then_wait(
     std::function<void(vk::raii::CommandBuffer& command_buffer)> commands
 ) -> void {
     auto command_buffer_allocate_info = vk::CommandBufferAllocateInfo {
@@ -1203,7 +1388,66 @@ auto Renderer::run_single_time_commands(
     m_graphics_queue.waitIdle();
 }
 
+auto Renderer::create_image_sampler() -> void {
+    auto sampler_info = vk::SamplerCreateInfo {
+        .magFilter = vk::Filter::eLinear,
+        .minFilter = vk::Filter::eLinear,
+        .mipmapMode = vk::SamplerMipmapMode::eLinear,
+        .addressModeU = vk::SamplerAddressMode::eRepeat,
+        .addressModeV = vk::SamplerAddressMode::eRepeat,
+        .addressModeW = vk::SamplerAddressMode::eRepeat,
+        .maxAnisotropy = m_max_sampler_anisotropy,
+        .compareEnable = vk::False,
+        .compareOp = vk::CompareOp::eAlways,
+        .unnormalizedCoordinates = vk::False,
+    };
+
+    m_texture_sampler = vk::raii::Sampler(m_device, sampler_info);
+}
+
+auto Renderer::find_depth_format() -> vk::Format {
+    return find_supported_image_format(
+        {vk::Format::eD32Sfloat, vk::Format::eD32SfloatS8Uint, vk::Format::eD24UnormS8Uint},
+        vk::ImageTiling::eOptimal,
+        vk::FormatFeatureFlagBits::eDepthStencilAttachment
+    );
+}
+
+auto Renderer::create_depth_resources() -> void {
+    vk::Format depth_format = find_depth_format();
+
+    m_depth_image = create_image(
+        m_swap_chain_extent.width, m_swap_chain_extent.height, ImageInfo::depth_format(depth_format)
+    );
+
+    m_depth_image_view = create_image_view(m_depth_image, ImageViewInfo::depth(depth_format));
+    //  m_depth_image_view = create_image_view(m_depth_image, vk::Format format)
+}
+
+auto Renderer::find_supported_image_format(
+    const std::vector<vk::Format>& candidates,
+    vk::ImageTiling tiling,
+    vk::FormatFeatureFlags features
+) -> vk::Format {
+    for (const auto& format : candidates) {
+        vk::FormatProperties properties = m_physical_device.getFormatProperties(format);
+
+        if (tiling == vk::ImageTiling::eLinear &&
+            (properties.linearTilingFeatures & features) == features) {
+            return format;
+        }
+
+        if (tiling == vk::ImageTiling::eOptimal &&
+            (properties.optimalTilingFeatures & features) == features) {
+            return format;
+        }
+    }
+
+    throw std::runtime_error("failed to find supported format!");
+}
+
 auto Renderer::prepare() -> void {
+    m_start_time = std::chrono::high_resolution_clock::now();
     init_vulkan();
 }
 
@@ -1211,6 +1455,60 @@ auto Renderer::main_loop() -> void {
 }
 
 auto Renderer::cleanup() -> void {
+    m_device.waitIdle();
+
+    for (size_t i = 0; i < m_uniform_buffers.size(); i++) {
+        m_uniform_buffers[i].getAllocation().unmap();
+        m_uniform_buffers_mapped[i] = nullptr;
+    }
+
+    ImGuiUtils::cleanup();
+
+    cleanup_swap_chain();
+}
+
+auto Renderer::cleanup_swap_chain() -> void {
+    m_swap_chain_images.clear();
+    m_swap_chain = nullptr;
+}
+
+auto Renderer::recreate_swap_chain() -> void {
+    m_device.waitIdle();
+
+    cleanup_swap_chain();
+
+    create_swap_chain();
+    create_swapchain_image_views();
+}
+
+auto Renderer::create_imgui_init_info() -> ImGui_ImplVulkan_InitInfo {
+    // auto rendering_info = vk::PipelineRenderingCreateInfoKHR {
+    //     .colorAttachmentCount = 1,
+    //     .pColorAttachmentFormats = &m_swap_chain_surface_format.format,
+    // };
+
+    auto init_info = ImGui_ImplVulkan_InitInfo {
+        .Instance = *m_instance,
+        .PhysicalDevice = *m_physical_device,
+        .Device = *m_device,
+        .QueueFamily = m_family_indices.graphics_family,
+        .Queue = *m_graphics_queue,
+        .DescriptorPool = *m_descriptor_pool,
+        .MinImageCount = 3,
+        .ImageCount = static_cast<uint32_t>(m_swap_chain_images.size()),
+        .PipelineInfoMain =
+            ImGui_ImplVulkan_PipelineInfo {
+                .PipelineRenderingCreateInfo =
+                    vk::PipelineRenderingCreateInfoKHR {
+                        .colorAttachmentCount = 1,
+                        .pColorAttachmentFormats = &m_swap_chain_surface_format.format,
+                    },
+            },
+        .UseDynamicRendering = true,
+
+    };
+
+    return init_info;
 }
 
 Renderer::~Renderer() {
