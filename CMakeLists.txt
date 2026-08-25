@@ -10,6 +10,7 @@ set(CMAKE_C_COMPILER gcc)
 
 project(sneed)
 
+
 find_package(Vulkan REQUIRED)
 
 include(FetchContent)
@@ -39,7 +40,7 @@ FetchContent_MakeAvailable(Vma-Hpp)
 FetchContent_Declare(
     Ktx
     GIT_REPOSITORY https://github.com/KhronosGroup/KTX-Software
-    GIT_TAG bc8ec6c
+    GIT_TAG 79e071abf4e02c5b43a6a5b57b2db27137e1cef3
     GIT_SHALLOW 1
     SOURCE_SUBDIR lib/
 )
@@ -93,39 +94,68 @@ set(TINYGLTF_INSTALL OFF CACHE INTERNAL "" FORCE)
 
 FetchContent_MakeAvailable(tinygltf)
 
-add_executable(sneed
-    src/main.cpp
-    src/Renderer.cpp
-    src/Window.cpp
-    src/Window.hpp
-    src/Renderer.hpp
-    src/Utils/FileUtils.cpp
-    src/Utils/FileUtils.hpp
-    src/Utils/StringUtils.cpp
-    src/Utils/StringUtils.hpp
-    src/Utils/ImGuiUtils.cpp
-    src/Utils/ImGuiUtils.hpp
-    src/RendererInfoGui.hpp
-    src/RendererInfoGui.cpp
-    src/Vertex.hpp
-    src/Vertex.cpp
-    src/VmaUsage.cpp
-    src/RendererStructs/RendererStructs.hpp
-    src/RendererStructs/BufferInfo.hpp
-    src/RendererStructs/BufferInfo.cpp
-    src/RendererStructs/ImageInfo.hpp
-    src/RendererStructs/ImageInfo.cpp
-    src/RendererStructs/ImageViewInfo.hpp
-    src/RendererStructs/ImageViewInfo.cpp
-    src/RendererStructs/ImageTransitionInfo.hpp
-    src/RendererStructs/ImageTransitionInfo.cpp
-    src/Image/KtxImage.cpp
-    src/Image/KtxImage.hpp
+
+FetchContent_Declare(
+    stb_src
+    GIT_REPOSITORY https://github.com/nothings/stb
+    GIT_TAG 08c7e1f0d8a2b9f3e5c6d4b1e5f3c6d4b1e5f3c6
+    GIT_SHALLOW 1
 )
 
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp ktx imgui tinygltf)
+add_library(
+    stb INTERFACE
+    ${stb_src_SOURCE_DIR}
+)
+
+
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+
+add_executable(sneed
+    src/main.cpp
+    src/RendererInfoGui.cpp
+    src/RendererInfoGui.hpp
+    src/SlotMap.hpp
+    src/VmaUsage.cpp
+    src/Window.cpp
+    src/Window.hpp
+    src/Image/KtxImage.cpp
+    src/Image/KtxImage.hpp
+    src/Renderer/Vulkan/VulkanCommandBuffer.cpp
+    src/Renderer/Vulkan/VulkanCommandBuffer.hpp
+    src/DeletionQueue.cpp
+    src/DeletionQueue.hpp
+    src/Renderer/Vulkan/VulkanDevice.cpp
+    src/Renderer/Vulkan/VulkanDevice.hpp
+    src/Renderer/Vulkan/VulkanSwapchain.cpp
+    src/Renderer/Vulkan/VulkanSwapchain.hpp
+    src/Renderer/Vulkan/VulkanRenderer.cpp
+    src/Renderer/Vulkan/VulkanRenderer.hpp
+    src/Resources/GltfLoader.cpp
+    src/Resources/GltfLoader.hpp
+    src/Resources/Material.hpp
+    src/Resources/ResourceManager.cpp
+    src/Resources/SceneData.hpp
+    src/Utils/FileUtils.hpp
+    src/Utils/FileUtils.cpp
+    src/Utils/ImGuiUtils.hpp
+    src/Utils/ImGuiUtils.cpp
+    src/Utils/StringUtils.hpp
+    src/Utils/StringUtils.cpp
+)
+
+target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp ktx imgui tinygltf stb)
 
 target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)
 target_compile_definitions(sneed PRIVATE VULKAN_HPP_HANDLE_ERROR_OUT_OF_DATE_AS_SUCCESS)
 
 target_compile_definitions(sneed PRIVATE GLM_FORCE_DEPTH_ZERO_TO_ONE)
+
+
