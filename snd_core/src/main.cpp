@@ -3,9 +3,9 @@
 
 #include <print>
 
-#include "RendererInfoGui.hpp"
+#include "../RendererInfoGui.hpp"
+#include "../Window.hpp"
 #include "Utils/ImGuiUtils.hpp"
-#include "Window.hpp"
 
 auto main() -> int {
     /*

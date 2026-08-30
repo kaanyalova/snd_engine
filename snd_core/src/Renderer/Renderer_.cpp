@@ -1,5 +1,3 @@
-#include "Renderer.hpp"
-
 #include <SDL3/SDL_video.h>
 #include <imgui_impl_vulkan.h>
 #include <ktx.h>
@@ -36,6 +34,7 @@
 #include "./RendererStructs/ImageInfo.hpp"
 #include "./RendererStructs/ImageTransitionInfo.hpp"
 #include "./RendererStructs/ImageViewInfo.hpp"
+#include "Renderer.hpp"
 
 Renderer::Renderer(Window& window, RendererSettings settings)
     : m_required_extensions(std::move(settings.required_extensions))

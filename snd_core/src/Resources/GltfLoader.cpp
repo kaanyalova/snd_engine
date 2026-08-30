@@ -20,7 +20,9 @@
 #include <vector>
 
 #include "../Image/KtxImage.hpp"
+#include "Image/StbImage.hpp"
 #include "SceneData.hpp"
+#include "Utils/FileUtils.hpp"
 
 GltfLoader::GltfLoader(std::string base_directory) : m_base_directory(std::move(base_directory)) {
     tg3_error_stack_init(&m_error_stack);
@@ -29,11 +31,14 @@ GltfLoader::GltfLoader(std::string base_directory) : m_base_directory(std::move(
 
 auto GltfLoader::load_into_scene_from_path(SceneData& scene, const std::filesystem::path& path)
     -> void {
+    load_into_scene_from_path_with_opts(scene, path, m_default_parse_options);
 }
 
-auto load_into_scene_from_path_with_opts(
+auto GltfLoader::load_into_scene_from_path_with_opts(
     SceneData& scene, const std::filesystem::path& path, const tg3_parse_options& opts
 ) -> void {
+    std::vector<uint8_t> file = FileUtils::read_file(path);
+    load_into_scene_with_opts(scene, file, opts);
 }
 
 auto GltfLoader::load_into_scene(SceneData& scene, std::span<const uint8_t> bytes) -> void {
@@ -66,6 +71,12 @@ auto GltfLoader::load_into_scene_with_opts(
             traverse_node(scene_data, model_range, cache, model, node, glm::mat4x4(1.0f));
         }
     }
+
+    load_materials(scene_data, model_range, model);
+    load_textures(scene_data, model_range, model);
+    load_samplers(scene_data, model_range, model);
+
+    scene_data.models.emplace_back(model_range);
 };
 
 auto GltfLoader::traverse_node(
@@ -176,34 +187,37 @@ auto GltfLoader::push_primitive(
     // map the accessors, we only care about target[0] for now
     // the others are for this
     // https://github.com/KhronosGroup/glTF-Tutorials/blob/main/gltfTutorial/gltfTutorial_017_SimpleMorphTarget.md
-    const tg3_str_int_pair* target_attributes = primitive.targets[0];
-    size_t target_attribute_count = primitive.target_attribute_counts[0];
+    const tg3_str_int_pair* attributes = primitive.attributes;
 
     std::optional<AccessorView<glm::vec3>> position_accessor = std::nullopt;
     std::optional<AccessorView<glm::vec3>> normal_accessor = std::nullopt;
     std::optional<AccessorView<glm::vec2>> texture_coord_accessor = std::nullopt;
     std::optional<AccessorView<glm::vec3>> tangent_accessor = std::nullopt;
 
-    for (size_t i = 0; i < target_attribute_count; i++) {
-        const tg3_str_int_pair& target_pair = target_attributes[i];
-        tg3_str key_c_str = target_pair.key;
-        std::string_view key = std::string_view(key_c_str.data, key_c_str.len);
-        int32_t value = target_pair.value;
+    for (size_t i = 0; i < primitive.attributes_count; i++) {
+        tg3_str attribute_key_c_str = attributes[i].key;
+        std::string_view attribute_key =
+            std::string_view(attribute_key_c_str.data, attribute_key_c_str.len);
+        int32_t attribute_value = attributes[i].value;
 
-        if (key == "POSITION") {
-            position_accessor = get_accessor_view<glm::vec3>(&model.accessors[i], model);
+        if (attribute_key == "POSITION") {
+            position_accessor =
+                get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
         }
 
-        else if (key == "NORMAL") {
-            normal_accessor = get_accessor_view<glm::vec3>(&model.accessors[i], model);
+        else if (attribute_key == "NORMAL") {
+            normal_accessor =
+                get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
         }
 
-        else if (key == "TEXCOORD_0") {
-            texture_coord_accessor = get_accessor_view<glm::vec2>(&model.accessors[i], model);
+        else if (attribute_key == "TEXCOORD_0") {
+            texture_coord_accessor =
+                get_accessor_view<glm::vec2>(&model.accessors[attribute_value], model);
         }
 
-        else if (key == "TANGENT") {
-            tangent_accessor = get_accessor_view<glm::vec3>(&model.accessors[i], model);
+        else if (attribute_key == "TANGENT") {
+            tangent_accessor =
+                get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
         }
     }
 
@@ -337,32 +351,41 @@ auto GltfLoader::load_textures(SceneData& data, ModelRange& model_range, const t
         const tg3_texture& texture = model.textures[i];
         const tg3_image& image = model.images[texture.source];
 
-        std::span<const uint8_t> image_data;
+        std::vector<uint8_t> image_data = {};
         std::string_view mime_type = std::string_view(image.mime_type.data, image.mime_type.len);
 
-        if (mime_type != "image/ktx2") {
-            // the texture is stored inside the file itself
-            if (image.buffer_view != -1) {
-                const tg3_buffer_view& buffer_view = model.buffer_views[image.buffer_view];
-                const tg3_buffer& buffer = model.buffers[buffer_view.buffer];
+        // the texture is stored inside the file itself
+        if (image.uri.data == nullptr && image.buffer_view != -1) {
+            const tg3_buffer_view& buffer_view = model.buffer_views[image.buffer_view];
+            const tg3_buffer& buffer = model.buffers[buffer_view.buffer];
 
-                std::span<const uint8_t> image_bytes = std::span<const uint8_t>(
-                    buffer.data.data + buffer_view.byte_offset, buffer_view.byte_length
-                );
+            std::span<const uint8_t> image_bytes = std::span<const uint8_t>(
+                buffer.data.data + buffer_view.byte_offset, buffer_view.byte_length
+            );
 
+            if (mime_type == "image/ktx2") {
                 Image ktx_image = KtxImage::from_bytes(image_bytes);
                 image_data = ktx_image.data;
+            } else if (mime_type == "image/png" || mime_type == "image/jpeg") {
+                Image image = StbImage::from_bytes(image_bytes);
+                image_data = image.data;
+            } else {
+                throw std::runtime_error(
+                    std::format("unknown mime type for texture {}", mime_type)
+                );
             }
-            // the texture is stored in an external file
-            else {
-                std::string image_uri = std::string(image.uri.data, image.uri.len);
 
-                Image ktx_image = KtxImage::from_file_path(image_uri);
-                image_data = ktx_image.data;
-            }
+            // the texture is in an external file (somewhat unlikely?)
+        } else if (image.uri.data != nullptr) {
+            std::string image_uri = std::string(image.uri.data, image.uri.len);
+
+            Image ktx_image = KtxImage::from_file_path(image_uri);
+            image_data = ktx_image.data;
         } else {
-            throw std::runtime_error("unsupported image format");
+            throw std::runtime_error("failed to load texture");
         }
+
+        assert(image_data.size() != 0);
 
         data.image_data.append_range(image_data);
         data.last_element_offsets.image_data += image_data.size();

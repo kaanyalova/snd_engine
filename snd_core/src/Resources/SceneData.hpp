@@ -2,6 +2,7 @@
 
 #include <glm/ext/vector_float4.hpp>
 #include <glm/glm.hpp>
+#include <string>
 #include <vector>
 
 struct Vertex {
@@ -87,4 +88,6 @@ struct SceneData {
     std::vector<uint32_t> indices;
     std::vector<uint8_t> image_data;
     PushOffsets last_element_offsets;
+
+    auto get_scene_stats() -> std::string;
 };

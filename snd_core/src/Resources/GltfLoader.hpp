@@ -22,6 +22,7 @@ class GltfLoader {
     auto load_into_scene_with_opts(
         SceneData& scene_data, std::span<const uint8_t> bytes, const tg3_parse_options& opts
     ) -> void;
+
     auto load_into_scene(SceneData& scene, std::span<const uint8_t> bytes) -> void;
 
     auto load_into_scene_from_path(SceneData& scene, const std::filesystem::path& path) -> void;
@@ -76,7 +77,7 @@ class GltfLoader {
 
         return AccessorView<T> {
             .byte_stride = bytes_stride,
-            .length = static_cast<size_t>(accessor->count),
+            .length = static_cast<uint32_t>(accessor->count),
             .pointer = reinterpret_cast<const T*>(raw_pointer),
         };
     }
