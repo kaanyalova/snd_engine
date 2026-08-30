@@ -14,6 +14,6 @@ class ResourceManager {
     // auto add_mesh(std::span<Vertex> vertex_data, std::span<uint32_t> index_data) -> MeshHandle;
 
   private:
-    SceneData scene_data;
+    // SceneData scene_data;
     GltfLoader m_gltf_loader;
 };

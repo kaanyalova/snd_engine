@@ -5,7 +5,6 @@
 #include <tiny_gltf_v3.h>
 
 #include <cassert>
-#include <cstddef>
 #include <format>
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
@@ -212,7 +211,6 @@ auto GltfLoader::push_primitive(
                                 texture_coord_accessor.has_value();
 
     // check the cache here
-
     if (!does_accessors_exist) {
         throw std::runtime_error(
             std::format(

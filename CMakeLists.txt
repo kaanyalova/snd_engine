@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 set(CMAKE_CXX_STANDARD 23)
 
@@ -39,11 +38,14 @@ FetchContent_MakeAvailable(Vma-Hpp)
 # github's archives are completely broken for this one
 FetchContent_Declare(
     Ktx
-    GIT_REPOSITORY https://github.com/KhronosGroup/KTX-Software
-    GIT_TAG 79e071abf4e02c5b43a6a5b57b2db27137e1cef3
-    GIT_SHALLOW 1
-    SOURCE_SUBDIR lib/
+    GIT_REPOSITORY /home/kaan/KTX-Software
+    GIT_TAG main
+    # don't pull the submodules, they are just tests, and they are
+    # quite big
+    GIT_SUBMODULES ""
 )
+set(KTX_FEATURE_TESTS OFF CACHE BOOL "" FORCE)
+set(KTX_FEATURE_LOADTEST_APPS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(Ktx)
 
 
@@ -85,7 +87,7 @@ target_link_libraries(imgui PRIVATE Vulkan::Vulkan SDL3::SDL3)
 FetchContent_Declare(
     tinygltf
     URL https://github.com/syoyo/tinygltf/archive/refs/tags/v3.0.0.zip
-    URL_HASH SHA256=6e2583eb75d113446c593c249d6ac0ddb00662174935d4819317da2223934884
+    # URL_HASH SHA256=6e2583eb75d113446c593c249d6ac0ddb00662174935d4819317da2223934884
 )
 
 
@@ -118,44 +120,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 
-add_executable(sneed
-    src/main.cpp
-    src/RendererInfoGui.cpp
-    src/RendererInfoGui.hpp
-    src/SlotMap.hpp
-    src/VmaUsage.cpp
-    src/Window.cpp
-    src/Window.hpp
-    src/Image/KtxImage.cpp
-    src/Image/KtxImage.hpp
-    src/Renderer/Vulkan/VulkanCommandBuffer.cpp
-    src/Renderer/Vulkan/VulkanCommandBuffer.hpp
-    src/DeletionQueue.cpp
-    src/DeletionQueue.hpp
-    src/Renderer/Vulkan/VulkanDevice.cpp
-    src/Renderer/Vulkan/VulkanDevice.hpp
-    src/Renderer/Vulkan/VulkanSwapchain.cpp
-    src/Renderer/Vulkan/VulkanSwapchain.hpp
-    src/Renderer/Vulkan/VulkanRenderer.cpp
-    src/Renderer/Vulkan/VulkanRenderer.hpp
-    src/Resources/GltfLoader.cpp
-    src/Resources/GltfLoader.hpp
-    src/Resources/Material.hpp
-    src/Resources/ResourceManager.cpp
-    src/Resources/SceneData.hpp
-    src/Utils/FileUtils.hpp
-    src/Utils/FileUtils.cpp
-    src/Utils/ImGuiUtils.hpp
-    src/Utils/ImGuiUtils.cpp
-    src/Utils/StringUtils.hpp
-    src/Utils/StringUtils.cpp
-)
-
-target_link_libraries(sneed PRIVATE Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp ktx imgui tinygltf stb)
-
-target_compile_definitions(sneed PRIVATE VULKAN_HPP_NO_CONSTRUCTORS)
-target_compile_definitions(sneed PRIVATE VULKAN_HPP_HANDLE_ERROR_OUT_OF_DATE_AS_SUCCESS)
-
-target_compile_definitions(sneed PRIVATE GLM_FORCE_DEPTH_ZERO_TO_ONE)
+add_subdirectory(snd_core)
+add_subdirectory(snd_tools)
 
 
