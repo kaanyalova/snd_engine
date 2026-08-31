@@ -3,8 +3,8 @@
 #include <print>
 #include <string>
 
-#include "../../snd_cli_builder/src/CliBuilder.hpp"
-#include "Resources/GltfLoader.hpp"
+#include "snd_core/Resources/GltfLoader.hpp"
+#include "snd_cli_builder/CliBuilder.hpp"
 
 auto main(int argc, char** argv) -> int {
     auto builder = CliBuilder(argc, argv);

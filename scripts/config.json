@@ -1,6 +1,6 @@
 {
   "slangc_path": "../sdks/vulkan/1.4.335.0/x86_64/bin/slangc",
-  "shader_paths": ["../src/shaders/**/*.slang"],
+  "shader_paths": ["../shaders/**/*.slang"],
   "slangc_options": "-target spirv -profile spirv_1_4 -emit-spirv-directly -fvk-use-entrypoint-name -entry vertex_main -entry fragment_main",
   "vulkan_sdk_path": "../sdks/vulkan/1.4.335.0/x86_64/"
 }
