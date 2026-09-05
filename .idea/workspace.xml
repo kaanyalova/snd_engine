@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="88" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="20" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="RiderCppLiveTemplatesSettings" type="string" />
@@ -84,74 +84,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_cli_builder/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/snd_cli_builder/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_cli_builder/src/Cli.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_cli_builder/src/Cli.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_cli_builder/src/CliBuilder.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_cli_builder/src/CliBuilder.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_cli_builder/src/CommandBuilder.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_cli_builder/src/CommandBuilder.hpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/DeletionQueue.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/DeletionQueue.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Image/Image.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Image/KtxImage.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Image/KtxImage.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Image/StbImage.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Image/StbImage.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/DrawCommand.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/IRendererBackend.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/RenderGraph/FrameGraphBuilder.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/RenderGraph/FrameGraphResource.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/RenderGraph/FrameGraphResource.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Renderer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Renderer_.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Renderer_.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Sampler.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Shaders/ShaderManager.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Texture.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanCommandBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanCommandBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanDevice.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanDevice.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanRenderer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanRenderer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanScene.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanSwapchain.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Renderer/Vulkan/VulkanSwapchain.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/RendererInfoGui.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/RendererInfoGui.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/Component/Component.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/Component/ModelComponent.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/GltfLoader.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/GltfLoader.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/Material.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/ResourceManager.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/ResourceManager.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/Scene.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/Scene.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/SceneData.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/SceneData.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Resources/SceneNode.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/SlotMap.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/TemplateHelpers/IsLegitVariant.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/TemplateHelpers/VariantMatch.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Utils/FileUtils.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Utils/FileUtils.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Utils/HashUtils.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Utils/ImGuiUtils.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Utils/ImGuiUtils.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Utils/StringUtils.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Utils/StringUtils.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/VmaUsage.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Window.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/Window.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/shaders/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/src/shaders/shader.slang" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_tools/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_tools/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Image/Image.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Image/Image.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,8 +123,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed&quot;,
-    &quot;accountId&quot;: &quot;d56a6d9a-7b01-4884-a095-160befef7e9d&quot;
+    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed.git&quot;,
+    &quot;accountId&quot;: &quot;ebbfca58-e1e2-4539-b7fe-ee0f182a9efa&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -192,7 +134,7 @@
     <setting file="file:///usr/include/c++/16/optional" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/include/vulkan/vulkan_raii.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/include/vulkan/vulkan_structs.hpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/kaan/Belgeler/0000_Projects/sneed/snd_core/Resources/GltfLoader.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="rKtyKwDC" />

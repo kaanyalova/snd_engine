@@ -1,4 +1,4 @@
-#include "snd_core/Resources/SceneData.hpp"
+#include "snd_core/Resources/Scene/SceneData.hpp"
 
 #include <format>
 #include <string>

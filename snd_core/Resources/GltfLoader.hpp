@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Scene/Scene.hpp"
 #include "Scene/SceneData.hpp"
 #include "snd_core/Utils/HashUtils.hpp"
 
@@ -20,14 +21,14 @@ class GltfLoader {
     GltfLoader(std::string base_directory);
 
     auto load_into_scene_with_opts(
-        SceneData& scene_data, std::span<const uint8_t> bytes, const tg3_parse_options& opts
+        Scene& scene, std::span<const uint8_t> bytes, const tg3_parse_options& opts
     ) -> void;
 
-    auto load_into_scene(SceneData& scene, std::span<const uint8_t> bytes) -> void;
+    auto load_into_scene(Scene& scene, std::span<const uint8_t> bytes) -> void;
 
-    auto load_into_scene_from_path(SceneData& scene, const std::filesystem::path& path) -> void;
+    auto load_into_scene_from_path(Scene& scene, const std::filesystem::path& path) -> void;
     auto load_into_scene_from_path_with_opts(
-        SceneData& scene, const std::filesystem::path& path, const tg3_parse_options& opts
+        Scene& scene, const std::filesystem::path& path, const tg3_parse_options& opts
     ) -> void;
 
   private:
@@ -97,14 +98,12 @@ class GltfLoader {
             return hash;
         }
     };
-    const static uint32_t TEXTURES_OFFSET = 2;
-    const static uint32_t MATERIALS_OFFSET = 1;
 
     using GltfModelCache =
         std::unordered_map<PrimitiveInstanceKey, uint32_t, PrimitiveInstanceKeyHasher>;
 
     auto traverse_node(
-        SceneData& data,
+        Scene& scene,
         ModelRange& model_range,
         GltfModelCache& cache,
         const tg3_model& gltf_model,
@@ -125,20 +124,21 @@ class GltfLoader {
         GltfModelCache& cache
     ) -> void;
 
-    auto load_materials(SceneData& data, ModelRange& model_range, const tg3_model& model) -> void;
-    auto load_textures(SceneData& data, ModelRange& model_range, const tg3_model& model) -> void;
-    auto load_samplers(SceneData& data, ModelRange& model_range, const tg3_model& model) -> void;
+    auto load_materials(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
+    auto load_images(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
+
+    auto load_textures(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
+    auto load_samplers(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
 
     auto new_color_texture(SceneData& data) -> void;
 
-    auto get_texture_index_with_white_fallback(SceneData& data, int32_t index) -> uint32_t;
-    auto get_texture_index_with_black_fallback(SceneData& data, int32_t index) -> uint32_t;
-
     auto get_material_index_with_default_fallback(SceneData& data, int32_t index) -> uint32_t;
 
-    auto next_model_range(SceneData& data) -> ModelRange;
-
     auto tg3_str_to_string_view(const tg3_str& str) -> std::string_view;
+
+    auto load_image_with_mime_type_from_bytes(
+        std::span<const uint8_t> bytes, std::string_view mime_type
+    ) -> Image;
 
     [[nodiscard]] auto weave_vertex_data_from_accessors(
         const AccessorView<glm::vec3> positions,

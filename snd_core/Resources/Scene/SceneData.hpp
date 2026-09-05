@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "snd_core/Image/Image.hpp"
+
 struct Vertex {
     glm::vec3 position;
     glm::vec2 texture_coord;
@@ -44,7 +46,7 @@ struct MaterialData {
 };
 
 struct Texture {
-    IndexSpan image_data_span;
+    uint32_t image_index;
     uint32_t sampler_index;
 };
 
@@ -66,15 +68,11 @@ struct ModelRange {
     IndexSpan image_data;
 };
 
-struct PushOffsets {
-    uint32_t primitive_instances;
-    uint32_t primitives;
-    uint32_t materials;
-    uint32_t textures;
-    uint32_t samplers;
-    uint32_t vertices;
-    uint32_t indices;
-    uint32_t image_data;
+struct ImageData {
+    uint32_t width;
+    uint32_t height;
+    ImageFormat format;
+    IndexSpan data_span;
 };
 
 struct SceneData {
@@ -82,12 +80,12 @@ struct SceneData {
     std::vector<PrimitiveInstance> primitive_instances;
     std::vector<Primitive> primitives;
     std::vector<MaterialData> materials;
+    std::vector<ImageData> images;
     std::vector<Texture> textures;
     std::vector<SamplerData> samplers;
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     std::vector<uint8_t> image_data;
-    PushOffsets last_element_offsets;
 
     auto get_scene_stats() -> std::string;
 };
