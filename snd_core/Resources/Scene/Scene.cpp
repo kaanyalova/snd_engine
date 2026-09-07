@@ -1,66 +1,41 @@
 #include "snd_core/Resources/Scene/Scene.hpp"
 
-auto Scene::push_material(MaterialData&& material) -> void {
-    m_data.materials.emplace_back(material);
-}
-auto Scene::push_texture(Texture&& texture) -> void {
-    m_data.textures.emplace_back(texture);
-}
-auto Scene::push_image(ImageData&& image) -> void {
-    m_data.images.emplace_back(image);
-}
-auto Scene::push_primitive(std::vector<Vertex>&& vertices) -> void {
-}
-auto Scene::push_primitive_instance(PrimitiveInstance&& instance) -> void {
-}
-auto Scene::push_model(ModelRange model_range) -> void {
-}
-auto Scene::push_sampler(SamplerData&& sampler_data) -> void {
-}
+auto Scene::push_scene_data(const SceneData& other) -> void {
+    ModelRange model_range = {};
 
-auto Scene::new_model_range() -> ModelRange {
-    auto model_range = ModelRange {
-        .primitive_instances =
-            IndexSpan {
-                .index = static_cast<uint32_t>(m_data.primitive_instances.size()),
-                .length = 0,
-            },
-        .primitives =
-            IndexSpan {
-                .index = static_cast<uint32_t>(m_data.primitives.size()),
-                .length = 0,
-            },
-        .materials =
-            IndexSpan {
-                .index = static_cast<uint32_t>(m_data.materials.size()),
-                .length = 0,
-            },
-        .textures =
-            IndexSpan {
-                .index = static_cast<uint32_t>(m_data.textures.size()),
-                .length = 0,
-            },
-        .samplers =
-            IndexSpan {
-                .index = static_cast<uint32_t>(m_data.samplers.size()),
-                .length = 0,
-            },
-        .vertices =
-            IndexSpan {
-                .index = static_cast<uint32_t>(m_data.vertices.size()),
-                .length = 0,
-            },
-        .indices =
-            IndexSpan {
-                .index = static_cast<uint32_t>(m_data.indices.size()),
-                .length = 0,
-            },
-        .image_data = IndexSpan {
-            .index = static_cast<uint32_t>(m_data.image_data.size()),
-            .length = 0,
-        },
+    model_range.primitive_instances.index = m_data.primitive_instances.size();
+    model_range.primitive_instances.length = other.primitive_instances.size();
+    m_data.primitive_instances.append_range(other.primitive_instances);
 
-    };
+    model_range.primitives.index = m_data.primitives.size();
+    model_range.primitives.length = other.primitives.size();
+    m_data.primitives.append_range(other.primitives);
+
+    model_range.materials.index = m_data.materials.size();
+    model_range.materials.length = other.materials.size();
+    m_data.materials.append_range(other.materials);
+
+    model_range.textures.index = m_data.textures.size();
+    model_range.textures.length = other.textures.size();
+    m_data.textures.append_range(other.textures);
+
+    model_range.samplers.index = m_data.samplers.size();
+    model_range.samplers.length = other.samplers.size();
+    m_data.samplers.append_range(other.samplers);
+
+    model_range.vertices.index = m_data.vertices.size();
+    model_range.vertices.length = other.vertices.size();
+    m_data.vertices.append_range(other.vertices);
+
+    model_range.indices.index = m_data.indices.size();
+    model_range.indices.length = other.indices.size();
+    m_data.indices.append_range(other.indices);
+
+    model_range.image_data.index = m_data.image_data.size();
+    model_range.image_data.length = other.image_data.size();
+    m_data.image_data.append_range(other.image_data);
+
+    m_models.emplace_back(model_range);
 }
 
 auto Scene::get_texture_index_with_white_fallback(int32_t index) -> uint32_t {
@@ -68,7 +43,7 @@ auto Scene::get_texture_index_with_white_fallback(int32_t index) -> uint32_t {
         return 0;
     }
 
-    return index + TEXTURES_OFFSET + m_data.last_element_offsets.textures;
+    return index + TEXTURES_OFFSET;
 }
 
 auto Scene::get_texture_index_with_black_fallback(int32_t index) -> uint32_t {
@@ -76,7 +51,7 @@ auto Scene::get_texture_index_with_black_fallback(int32_t index) -> uint32_t {
         return 1;
     }
 
-    return index + TEXTURES_OFFSET + m_data.last_element_offsets.textures;
+    return index + TEXTURES_OFFSET;
 }
 
 auto Scene::get_material_index_with_default_fallback(SceneData& data, int32_t index) -> uint32_t {

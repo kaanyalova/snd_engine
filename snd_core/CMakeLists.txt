@@ -51,8 +51,9 @@ add_library(snd_core STATIC
         TemplateHelpers/VariantMatch.hpp
         TemplateHelpers/IsLegitVariant.hpp
         Resources/Scene/SceneData.cpp
-        Resources/Scene/ModelBuilder.cpp
-        Resources/Scene/ModelBuilder.hpp
+        Renderer/Vulkan/VulkanScene.cpp
+        Image/ImageUtils.cpp
+        Image/ImageUtils.hpp
 )
 
 # include dir is the parent so includes read "snd_core/Window.hpp"

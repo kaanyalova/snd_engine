@@ -18,14 +18,16 @@ class VulkanRenderer {
     VulkanRenderer(Window& window, const RendererSettings& settings);
 
     auto recreate_swapchain() -> void;
-    auto load_scene_data(const SceneData& scene_data) -> void;
     auto create_imgui_init_info() -> ImGui_ImplVulkan_InitInfo;
     auto process() -> void;
+    auto get_device() -> VulkanDevice& { return m_device.value(); }
+    auto get_swapchain() -> VulkanSwapchain& { return m_swapchain.value(); }
+
+    static auto convert_to_vulkan_image_format(ImageFormat imageFormat) -> vk::Format;
 
   private:
     auto create_device() -> void;
     auto create_swapchain() -> void;
-    auto render_scene(SceneData& scene_data) -> void;
 
     std::optional<VulkanDevice> m_device = std::nullopt;
     std::optional<VulkanSwapchain> m_swapchain = std::nullopt;

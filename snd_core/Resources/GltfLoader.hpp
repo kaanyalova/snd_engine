@@ -21,14 +21,14 @@ class GltfLoader {
     GltfLoader(std::string base_directory);
 
     auto load_into_scene_with_opts(
-        Scene& scene, std::span<const uint8_t> bytes, const tg3_parse_options& opts
+        SceneData& scene, std::span<const uint8_t> bytes, const tg3_parse_options& opts
     ) -> void;
 
-    auto load_into_scene(Scene& scene, std::span<const uint8_t> bytes) -> void;
+    auto load_into_scene(SceneData& scene, std::span<const uint8_t> bytes) -> void;
 
-    auto load_into_scene_from_path(Scene& scene, const std::filesystem::path& path) -> void;
+    auto load_into_scene_from_path(SceneData& scene, const std::filesystem::path& path) -> void;
     auto load_into_scene_from_path_with_opts(
-        Scene& scene, const std::filesystem::path& path, const tg3_parse_options& opts
+        SceneData& scene, const std::filesystem::path& path, const tg3_parse_options& opts
     ) -> void;
 
   private:
@@ -103,8 +103,7 @@ class GltfLoader {
         std::unordered_map<PrimitiveInstanceKey, uint32_t, PrimitiveInstanceKeyHasher>;
 
     auto traverse_node(
-        Scene& scene,
-        ModelRange& model_range,
+        SceneData& scene,
         GltfModelCache& cache,
         const tg3_model& gltf_model,
         const tg3_node& gltf_node,
@@ -120,15 +119,14 @@ class GltfLoader {
         int32_t primitive_index,
         SceneData& data,
         const tg3_model& model,
-        ModelRange& model_range,
         GltfModelCache& cache
     ) -> void;
 
-    auto load_materials(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
-    auto load_images(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
+    auto load_materials(SceneData& scene, const tg3_model& model) -> void;
+    auto load_images(SceneData& scene, ModelRange& model_range, const tg3_model& model) -> void;
 
-    auto load_textures(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
-    auto load_samplers(Scene& scene, ModelRange& model_range, const tg3_model& model) -> void;
+    auto load_textures(SceneData& scene, const tg3_model& model) -> void;
+    auto load_samplers(SceneData& scene, const tg3_model& model) -> void;
 
     auto new_color_texture(SceneData& data) -> void;
 

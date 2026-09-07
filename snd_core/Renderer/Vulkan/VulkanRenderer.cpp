@@ -9,6 +9,16 @@ VulkanRenderer::VulkanRenderer(Window& window, const RendererSettings& settings)
     create_swapchain();
 }
 
+auto VulkanRenderer::convert_to_vulkan_image_format(ImageFormat imageFormat) -> vk::Format {
+    switch (imageFormat) {
+        case ImageFormat::Undefined:
+            break;
+        case ImageFormat::Rgba8:
+            break;
+        case ImageFormat::Rgb8:
+            break;
+    }
+}
 auto VulkanRenderer::create_device() -> void {
     auto device_create_info = DeviceCreationInfo {
         .enable_validation = true,
@@ -32,7 +42,7 @@ auto VulkanRenderer::create_imgui_init_info() -> ImGui_ImplVulkan_InitInfo {
     auto init_info = ImGui_ImplVulkan_InitInfo {
         .Instance = *m_device->get_instance(),
         .PhysicalDevice = *m_device->get_physical_device(),
-        .Device = *m_device->get_device(),
+        .Device = *m_device->inner(),
         .QueueFamily = m_device->get_family_indices().graphics,
         .Queue = *m_device->get_queues().graphics,
         .DescriptorPool = nullptr,  // todo

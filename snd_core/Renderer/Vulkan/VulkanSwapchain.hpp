@@ -24,7 +24,7 @@ class VulkanSwapchain {
     vk::raii::SwapchainKHR m_swapchain = nullptr;
     std::vector<vk::Image> m_images = {};
     std::vector<vk::raii::ImageView> m_image_views = {};
-    std::vector<CommandBuffer> m_command_buffers = {};
+    std::vector<VulkanCommandBuffer> m_command_buffers = {};
     vk::Extent2D m_extent;
     vk::SurfaceFormatKHR m_surface_format;
     vma::raii::Image m_depth_image = nullptr;

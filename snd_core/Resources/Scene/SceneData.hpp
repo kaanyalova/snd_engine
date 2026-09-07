@@ -76,7 +76,6 @@ struct ImageData {
 };
 
 struct SceneData {
-    std::vector<ModelRange> models;  // these are the "scenes" in the gltf spec, i call them models
     std::vector<PrimitiveInstance> primitive_instances;
     std::vector<Primitive> primitives;
     std::vector<MaterialData> materials;

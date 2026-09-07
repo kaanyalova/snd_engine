@@ -5,10 +5,10 @@
 #include "snd_core/DeletionQueue.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
 
-class CommandBuffer {
+class VulkanCommandBuffer {
   public:
-    CommandBuffer() = default;
-    CommandBuffer(VulkanDevice& device);
+    VulkanCommandBuffer() = default;
+    VulkanCommandBuffer(VulkanDevice& device);
 
     auto inner() -> vk::raii::CommandPool&;
     auto push_deletion_function(std::function<void()>&& function) -> void;
@@ -16,7 +16,7 @@ class CommandBuffer {
 
     bool is_initialized = false;
 
-    ~CommandBuffer();
+    ~VulkanCommandBuffer();
 
   private:
     vk::raii::CommandPool m_command_pool = nullptr;

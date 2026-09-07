@@ -70,7 +70,7 @@ auto VulkanSwapchain::create() -> void {
         swap_chain_create_info.pQueueFamilyIndices = family_indices.data();
     }
 
-    m_swapchain = vk::raii::SwapchainKHR(m_device.get_device(), swap_chain_create_info);
+    m_swapchain = vk::raii::SwapchainKHR(m_device.inner(), swap_chain_create_info);
     m_images = m_swapchain.getImages();
 }
 
@@ -145,7 +145,7 @@ auto VulkanSwapchain::create_image_views() -> void {
 
     for (vk::Image image : m_images) {
         image_view_create_info.image = image;
-        m_image_views.emplace_back(m_device.get_device(), image_view_create_info);
+        m_image_views.emplace_back(m_device.inner(), image_view_create_info);
     }
 }
 
@@ -183,5 +183,5 @@ auto VulkanSwapchain::create_depth_images() -> void {
         }
     };
 
-    m_depth_image_view = m_device.get_device().createImageView(depth_image_view_create_info);
+    m_depth_image_view = m_device.inner().createImageView(depth_image_view_create_info);
 }

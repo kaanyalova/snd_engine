@@ -84,21 +84,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Image/ImageUtils.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Image/ImageUtils.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Image/Image.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Image/Image.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanCommandBuffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanCommandBuffer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanCommandBuffer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanCommandBuffer.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanDevice.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanDevice.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/home/kaan/Masaüstü/sneed" value="3Ix7bZ43rhYva8G0T2Ht4tupwTa" />
+    </persistenceIdMap>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileTemplateManagerImpl">
@@ -123,8 +136,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed.git&quot;,
-    &quot;accountId&quot;: &quot;ebbfca58-e1e2-4539-b7fe-ee0f182a9efa&quot;
+    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed&quot;,
+    &quot;accountId&quot;: &quot;d56a6d9a-7b01-4884-a095-160befef7e9d&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -146,60 +159,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0004768120065315" />
-      <entry key="S2" value="1.22097351495972" />
-      <entry key="S5" value="1.8218043209965709" />
-      <entry key="S10" value="2.3344137984658277" />
-      <entry key="S30" value="3.273404674041399" />
-      <entry key="S60" value="5.468106286681277" />
-      <entry key="M2" value="11.772868427612773" />
-      <entry key="M5" value="28.78222975821075" />
-      <entry key="M10" value="58.31714071381731" />
-      <entry key="M15" value="87.23216194035344" />
-      <entry key="M30" value="159.36103299389808" />
-      <entry key="H1" value="310.6234974678638" />
-      <entry key="H2" value="676.8783988155307" />
-      <entry key="H4" value="1204.5162947442168" />
-      <entry key="D1" value="2126.4522789595976" />
-      <entry key="W1" value="2360.1958224744153" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.000000000238119" />
+      <entry key="S30" value="1.0034223954683703" />
+      <entry key="S60" value="1.3679438625747637" />
+      <entry key="M2" value="5.637436662886402" />
+      <entry key="M5" value="32.57365717998894" />
+      <entry key="M10" value="89.09825015773285" />
+      <entry key="M15" value="142.98283437810892" />
+      <entry key="M30" value="279.39590851005306" />
+      <entry key="H1" value="531.8158801759629" />
+      <entry key="H2" value="996.7916785665589" />
+      <entry key="H4" value="1709.5817231045385" />
+      <entry key="D1" value="3292.3471491938517" />
+      <entry key="W1" value="3764.5753880799766" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="4.221373210192787E-4" />
-      <entry key="MS500" value="0.21540943828090073" />
-      <entry key="S2" value="0.9531468456210538" />
-      <entry key="S5" value="1.6544706675695187" />
-      <entry key="S10" value="2.1558062351694054" />
-      <entry key="S30" value="2.6985804766962502" />
-      <entry key="S60" value="3.2394075126628916" />
-      <entry key="M2" value="4.456537465918025" />
-      <entry key="M5" value="7.864425206393522" />
-      <entry key="M10" value="16.48634137403485" />
-      <entry key="M15" value="25.82585027397364" />
-      <entry key="M30" value="48.2042166532157" />
-      <entry key="H1" value="80.74715559436055" />
-      <entry key="H2" value="133.5291087346544" />
-      <entry key="H4" value="199.67002052835556" />
-      <entry key="D1" value="310.2830679846652" />
-      <entry key="W1" value="338.04057334523185" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="6.360015996725897E-236" />
+      <entry key="S2" value="1.595675368650716E-59" />
+      <entry key="S5" value="3.382062973138902E-24" />
+      <entry key="S10" value="2.4207553897785514E-12" />
+      <entry key="S30" value="3.7317577170905723E-4" />
+      <entry key="S60" value="0.06559149833467316" />
+      <entry key="M2" value="1.0436220587195528" />
+      <entry key="M5" value="7.28026017731026" />
+      <entry key="M10" value="18.63509686487161" />
+      <entry key="M15" value="28.62351671826085" />
+      <entry key="M30" value="53.75568425224998" />
+      <entry key="H1" value="105.45288162892989" />
+      <entry key="H2" value="200.30407028387594" />
+      <entry key="H4" value="326.7056890396566" />
+      <entry key="D1" value="570.3003939942932" />
+      <entry key="W1" value="638.5094627425491" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.008315392102154347" />
-      <entry key="MS500" value="0.3929374623550127" />
-      <entry key="S2" value="1.3625238023164725" />
-      <entry key="S5" value="2.7945535000700112" />
-      <entry key="S10" value="3.9842245628139517" />
-      <entry key="S30" value="5.670469824367161" />
-      <entry key="S60" value="8.49397214238867" />
-      <entry key="M2" value="16.070859487781544" />
-      <entry key="M5" value="36.52965541251356" />
-      <entry key="M10" value="74.70123294420554" />
-      <entry key="M15" value="112.96323028310168" />
-      <entry key="M30" value="207.48750017733371" />
-      <entry key="H1" value="391.3080738592328" />
-      <entry key="H2" value="810.3537408919149" />
-      <entry key="H4" value="1404.1442508681166" />
-      <entry key="D1" value="2436.7239675272385" />
-      <entry key="W1" value="2698.2346118363553" />
+      <entry key="MS100" value="4.762003131491133E-6" />
+      <entry key="MS500" value="0.08621005761419127" />
+      <entry key="S2" value="0.54186298342239" />
+      <entry key="S5" value="0.7826287424204778" />
+      <entry key="S10" value="0.8846630674068575" />
+      <entry key="S30" value="0.9637224558494648" />
+      <entry key="S60" value="1.4099334532499623" />
+      <entry key="M2" value="6.64563696339902" />
+      <entry key="M5" value="39.781171787337215" />
+      <entry key="M10" value="107.64157225483943" />
+      <entry key="M15" value="171.51096193504554" />
+      <entry key="M30" value="333.05931394406196" />
+      <entry key="H1" value="637.1783186354885" />
+      <entry key="H2" value="1197.0111626777564" />
+      <entry key="H4" value="2036.218395812143" />
+      <entry key="D1" value="3862.6271334800394" />
+      <entry key="W1" value="4403.081571395387" />
     </decayedShown>
   </component>
   <component name="ProjectApplicationVersion">
@@ -213,45 +226,63 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="38vjdlnidqb7iJNb0emP9ofFFAI" />
+  <component name="ProjectSessionTemplates">
+    <option name="inlineTemplate">
+      <template>
+        <option name="modeId" value="InlineAgent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="LOCAL" />
+      </template>
+    </option>
+  </component>
+  <component name="ProjectStatusUIService">{
+  &quot;uiKindId&quot;: &quot;Widget&quot;
+}</component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;CMake Application.snd_tools.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.sneed.executor&quot;: &quot;Debug&quot;,
-    &quot;CidrDebugProfileConversion&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ToolWindow.CMake.ShowToolbar&quot;: &quot;false&quot;,
-    &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/kaan/Belgeler/3000_Git/Zelda64Recomp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.keymap.KeymapConfigurable&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/kaan/Masaüstü/sneed/scripts/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.snd_tools.executor": "Run",
+    "CMake Application.sneed.executor": "Debug",
+    "CidrDebugProfileConversion": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ToolWindow.CMake.ShowToolbar": "false",
+    "cf.advertisement.text.overridden": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/kaan/Belgeler/3000_Git/Zelda64Recomp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "bun",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/home/kaan/Masaüstü/sneed/scripts/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/snd_core/Resources/Scene" />
@@ -262,11 +293,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.snd_tools">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Continuous" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sneed" TARGET_NAME="Continuous" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -418,6 +444,11 @@
       </method>
     </configuration>
     <configuration name="SDL_uclibc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sneed" TARGET_NAME="SDL_uclibc" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>

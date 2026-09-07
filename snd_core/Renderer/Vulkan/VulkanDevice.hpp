@@ -35,11 +35,12 @@ class VulkanDevice {
 
     VulkanDevice(const DeviceCreationInfo& info, Window& window);
 
+    auto inner() -> vk::raii::Device& { return m_device; }
+
     auto get_device_address(const vk::Buffer& buffer) -> vk::DeviceAddress;
     auto get_context() -> vk::raii::Context& { return m_vulkan_context; }
     auto get_instance() -> vk::raii::Instance& { return m_instance; }
     auto get_physical_device() -> vk::raii::PhysicalDevice& { return m_physical_device; }
-    auto get_device() -> vk::raii::Device& { return m_device; }
     auto get_allocator() -> vma::raii::Allocator& { return m_allocator; }
     auto get_command_pool() -> vk::raii::CommandPool& { return m_command_pool; }
     auto get_surface() -> vk::raii::SurfaceKHR& { return m_surface; }
