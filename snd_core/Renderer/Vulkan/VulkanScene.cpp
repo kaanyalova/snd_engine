@@ -154,3 +154,4 @@ auto VulkanScene::load_samplers() -> void {
         m_samplers.emplace_back(std::move(vulkan_sampler));
     }
 }
+
