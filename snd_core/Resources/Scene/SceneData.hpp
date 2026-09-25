@@ -2,6 +2,7 @@
 
 #include <glm/ext/vector_float4.hpp>
 #include <glm/glm.hpp>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -73,6 +74,8 @@ struct ImageData {
     uint32_t height;
     ImageFormat format;
     IndexSpan data_span;
+
+    auto view_of(std::span<const uint8_t> data) const -> ImageView;
 };
 
 struct SceneData {

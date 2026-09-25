@@ -1,13 +1,11 @@
 #pragma once
 
-#include <cstdint>
 #include <optional>
 #include <vector>
 
+#include "../../Renderer/Vulkan/Resources/VulkanScene.hpp"
 #include "SceneData.hpp"
-#include "snd_core/Image/Image.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
-#include "snd_core/Renderer/Vulkan/VulkanScene.hpp"
 #include "snd_core/Resources/Scene/SceneNode.hpp"
 
 enum class SceneLoadState : uint8_t {
@@ -27,8 +25,9 @@ class Scene {
 
     static auto get_texture_index_with_white_fallback(int32_t index) -> uint32_t;
     static auto get_texture_index_with_black_fallback(int32_t index) -> uint32_t;
-    static auto get_material_index_with_default_fallback(SceneData& data, int32_t index)
-        -> uint32_t;
+    static auto get_material_index_with_default_fallback(SceneData& data, int32_t index) -> uint32_t;
+
+    auto mark_loaded_on_gpu(VulkanScene* vulkan_scene) -> void;
 
   private:
     SceneNode m_root = SceneNode();
@@ -38,7 +37,7 @@ class Scene {
     // the ranges for each individual model thats loaded
     std::vector<ModelRange> m_models;
 
-    std::optional<VulkanScene> m_vulkan_scene = std::nullopt;
+    VulkanScene* m_vulkan_scene = nullptr;
     SceneLoadState m_scene_load_state = SceneLoadState::Unloaded;
 
     // the first two textures in a scene is black then white

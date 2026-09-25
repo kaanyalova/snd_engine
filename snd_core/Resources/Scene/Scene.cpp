@@ -60,3 +60,8 @@ auto Scene::get_material_index_with_default_fallback(SceneData& data, int32_t in
     }
     return static_cast<uint32_t>(index);
 }
+auto Scene::mark_loaded_on_gpu(VulkanScene* vulkan_scene) -> void {
+    m_scene_load_state = SceneLoadState::LoadedOnGpu;
+    m_vulkan_scene = vulkan_scene;
+    m_data = {};
+}

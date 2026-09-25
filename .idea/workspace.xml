@@ -84,11 +84,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/snd_core/Image/Image.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.hpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanVertexBuffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanVertexBuffer.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.clang-format" beforeDir="false" afterPath="$PROJECT_DIR$/.clang-format" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Image/Image.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Image/Image.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,8 +138,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed.git&quot;,
-    &quot;accountId&quot;: &quot;ebbfca58-e1e2-4539-b7fe-ee0f182a9efa&quot;
+    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed&quot;,
+    &quot;accountId&quot;: &quot;d56a6d9a-7b01-4884-a095-160befef7e9d&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -134,7 +149,7 @@
     <setting file="file:///usr/include/c++/16/optional" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/include/vulkan/vulkan_enums.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/include/vulkan/vulkan_raii.hpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file:///usr/include/vulkan/vulkan_structs.hpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file:///usr/include/vulkan/vulkan_structs.hpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="rKtyKwDC" />
@@ -149,57 +164,57 @@
       <entry key="MS500" value="1.0" />
       <entry key="S2" value="1.0" />
       <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.000000000238119" />
-      <entry key="S30" value="1.0034223954683703" />
-      <entry key="S60" value="1.3679438625747637" />
-      <entry key="M2" value="5.637436662886402" />
-      <entry key="M5" value="32.57365717998894" />
-      <entry key="M10" value="89.09825015773285" />
-      <entry key="M15" value="142.98283437810892" />
-      <entry key="M30" value="279.39590851005306" />
-      <entry key="H1" value="531.8158801759629" />
-      <entry key="H2" value="996.7916785665589" />
-      <entry key="H4" value="1709.5817231045385" />
-      <entry key="D1" value="3292.3471491938517" />
-      <entry key="W1" value="3764.5753880799766" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.00000000064548" />
+      <entry key="M2" value="1.000208170131703" />
+      <entry key="M5" value="1.7030803950505389" />
+      <entry key="M10" value="16.091609056186456" />
+      <entry key="M15" value="48.133256076907735" />
+      <entry key="M30" value="177.71003798306768" />
+      <entry key="H1" value="443.43897388006195" />
+      <entry key="H2" value="959.3487156740797" />
+      <entry key="H4" value="1927.6190959240148" />
+      <entry key="D1" value="5266.054129136371" />
+      <entry key="W1" value="6627.568669520594" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="6.360015996725897E-236" />
-      <entry key="S2" value="1.595675368650716E-59" />
-      <entry key="S5" value="3.382062973138902E-24" />
-      <entry key="S10" value="2.4207553897785514E-12" />
-      <entry key="S30" value="3.7317577170905723E-4" />
-      <entry key="S60" value="0.06559149833467316" />
-      <entry key="M2" value="1.0436220587195528" />
-      <entry key="M5" value="7.28026017731026" />
-      <entry key="M10" value="18.63509686487161" />
-      <entry key="M15" value="28.62351671826085" />
-      <entry key="M30" value="53.75568425224998" />
-      <entry key="H1" value="105.45288162892989" />
-      <entry key="H2" value="200.30407028387594" />
-      <entry key="H4" value="326.7056890396566" />
-      <entry key="D1" value="570.3003939942932" />
-      <entry key="W1" value="638.5094627425491" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="1.6150389684199049E-305" />
+      <entry key="S5" value="1.2124476226193485E-122" />
+      <entry key="S10" value="1.1355378836181925E-61" />
+      <entry key="S30" value="7.758282232035111E-21" />
+      <entry key="S60" value="1.9326880903534755E-10" />
+      <entry key="M2" value="3.9829345858119055E-5" />
+      <entry key="M5" value="0.12806176849451117" />
+      <entry key="M10" value="2.9860609377712453" />
+      <entry key="M15" value="9.612048585895444" />
+      <entry key="M30" value="37.7164230696494" />
+      <entry key="H1" value="96.3643525875935" />
+      <entry key="H2" value="200.37014842582403" />
+      <entry key="H4" value="376.1004174659653" />
+      <entry key="D1" value="929.4002661633481" />
+      <entry key="W1" value="1144.5568413967264" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.762003131491133E-6" />
-      <entry key="MS500" value="0.08621005761419127" />
-      <entry key="S2" value="0.54186298342239" />
-      <entry key="S5" value="0.7826287424204778" />
-      <entry key="S10" value="0.8846630674068575" />
-      <entry key="S30" value="0.9637224558494648" />
-      <entry key="S60" value="1.4099334532499623" />
-      <entry key="M2" value="6.64563696339902" />
-      <entry key="M5" value="39.781171787337215" />
-      <entry key="M10" value="107.64157225483943" />
-      <entry key="M15" value="171.51096193504554" />
-      <entry key="M30" value="333.05931394406196" />
-      <entry key="H1" value="637.1783186354885" />
-      <entry key="H2" value="1197.0111626777564" />
-      <entry key="H4" value="2036.218395812143" />
-      <entry key="D1" value="3862.6271334800394" />
-      <entry key="W1" value="4403.081571395387" />
+      <entry key="MS100" value="0.0018097423083796302" />
+      <entry key="MS500" value="0.2828286157114751" />
+      <entry key="S2" value="0.7292573869674495" />
+      <entry key="S5" value="0.88135796727974" />
+      <entry key="S10" value="0.9388066719403628" />
+      <entry key="S30" value="0.9791714056634877" />
+      <entry key="S60" value="0.989530902654678" />
+      <entry key="M2" value="0.9949987507384785" />
+      <entry key="M5" value="1.8278978133273966" />
+      <entry key="M10" value="19.063872938913114" />
+      <entry key="M15" value="57.717177480191964" />
+      <entry key="M30" value="215.37177583473766" />
+      <entry key="H1" value="539.7339904113666" />
+      <entry key="H2" value="1159.646324625836" />
+      <entry key="H4" value="2303.649188421269" />
+      <entry key="D1" value="6195.423580273521" />
+      <entry key="W1" value="7772.1200169038675" />
     </decayedShown>
   </component>
   <component name="ProjectApplicationVersion">
@@ -234,49 +249,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;CMake Application.snd_tools.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.sneed.executor&quot;: &quot;Debug&quot;,
-    &quot;CidrDebugProfileConversion&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ToolWindow.CMake.ShowToolbar&quot;: &quot;false&quot;,
-    &quot;cf.advertisement.text.overridden&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/kaan/Belgeler/3000_Git/Zelda64Recomp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/kaan/Masaüstü/sneed/scripts/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.snd_tools.executor": "Run",
+    "CMake Application.sneed.executor": "Debug",
+    "CidrDebugProfileConversion": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ToolWindow.CMake.ShowToolbar": "false",
+    "cf.advertisement.text.overridden": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/kaan/Belgeler/3000_Git/Zelda64Recomp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "bun",
+    "settings.editor.selected.configurable": "advanced.settings",
+    "ts.external.directory.path": "/home/kaan/Masaüstü/sneed/scripts/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources" />
       <recent name="$PROJECT_DIR$/snd_core/Resources/Scene" />
       <recent name="$PROJECT_DIR$/snd_tools/src" />
       <recent name="$PROJECT_DIR$/snd_cli_builder/src" />
       <recent name="$PROJECT_DIR$/snd_core" />
-      <recent name="$PROJECT_DIR$/snd_core/src" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.snd_tools">
@@ -435,6 +450,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="astcenc-avx2-static" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sneed" TARGET_NAME="astcenc-avx2-static" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -544,7 +564,6 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.Continuous" />
       <item itemvalue="CMake Application.ContinuousBuild" />
       <item itemvalue="CMake Application.ContinuousConfigure" />
       <item itemvalue="CMake Application.ContinuousCoverage" />
@@ -553,7 +572,7 @@
       <item itemvalue="CMake Application.ContinuousSubmit" />
       <item itemvalue="CMake Application.ContinuousTest" />
       <item itemvalue="CMake Application.ContinuousUpdate" />
-      <item itemvalue="CMake Application.Experimental" />
+      <item itemvalue="CMake Application.Continuous" />
       <item itemvalue="CMake Application.ExperimentalBuild" />
       <item itemvalue="CMake Application.ExperimentalConfigure" />
       <item itemvalue="CMake Application.ExperimentalCoverage" />
@@ -562,7 +581,7 @@
       <item itemvalue="CMake Application.ExperimentalSubmit" />
       <item itemvalue="CMake Application.ExperimentalTest" />
       <item itemvalue="CMake Application.ExperimentalUpdate" />
-      <item itemvalue="CMake Application.Nightly" />
+      <item itemvalue="CMake Application.Experimental" />
       <item itemvalue="CMake Application.NightlyBuild" />
       <item itemvalue="CMake Application.NightlyConfigure" />
       <item itemvalue="CMake Application.NightlyCoverage" />
@@ -572,30 +591,31 @@
       <item itemvalue="CMake Application.NightlySubmit" />
       <item itemvalue="CMake Application.NightlyTest" />
       <item itemvalue="CMake Application.NightlyUpdate" />
-      <item itemvalue="CMake Application.sneed" />
-      <item itemvalue="CMake Application.imgui" />
+      <item itemvalue="CMake Application.Nightly" />
+      <item itemvalue="CMake Application.SDL3-shared" />
+      <item itemvalue="CMake Application.SDL3_test" />
+      <item itemvalue="CMake Application.SDL_uclibc" />
+      <item itemvalue="CMake Application.astcenc-avx2-static" />
+      <item itemvalue="CMake Application.basisu_encoder" />
+      <item itemvalue="CMake Application.dfd2vk_inl" />
+      <item itemvalue="CMake Application.dfdutils" />
       <item itemvalue="CMake Application.glm" />
       <item itemvalue="CMake Application.gmock" />
       <item itemvalue="CMake Application.gmock_main" />
       <item itemvalue="CMake Application.gtest" />
       <item itemvalue="CMake Application.gtest_main" />
-      <item itemvalue="CMake Application.objUtil" />
-      <item itemvalue="CMake Application.ktx_version" />
-      <item itemvalue="CMake Application.astcenc-avx2-static" />
-      <item itemvalue="CMake Application.basisu_encoder" />
-      <item itemvalue="CMake Application.dfd2vk_inl" />
-      <item itemvalue="CMake Application.dfdutils" />
-      <item itemvalue="CMake Application.vk2dfd_inl" />
-      <item itemvalue="CMake Application.obj_basisu_cbind" />
+      <item itemvalue="CMake Application.imgui" />
       <item itemvalue="CMake Application.ktx" />
       <item itemvalue="CMake Application.ktx_read" />
-      <item itemvalue="CMake Application.SDL3-shared" />
-      <item itemvalue="CMake Application.SDL3_test" />
-      <item itemvalue="CMake Application.SDL_uclibc" />
+      <item itemvalue="CMake Application.ktx_version" />
       <item itemvalue="CMake Application.loader_example" />
+      <item itemvalue="CMake Application.objUtil" />
+      <item itemvalue="CMake Application.obj_basisu_cbind" />
       <item itemvalue="CMake Application.snd_cli_builder" />
       <item itemvalue="CMake Application.snd_core" />
       <item itemvalue="CMake Application.snd_tools" />
+      <item itemvalue="CMake Application.sneed" />
+      <item itemvalue="CMake Application.vk2dfd_inl" />
     </list>
   </component>
   <component name="RustProjectSettings">

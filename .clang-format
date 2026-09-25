@@ -1,6 +1,6 @@
 BasedOnStyle: Google
 IndentWidth: 4
-ColumnLimit: 100
+ColumnLimit: 120
 AccessModifierOffset: -2
 AllowShortFunctionsOnASingleLine: InlineOnly
 BreakConstructorInitializers: BeforeComma
@@ -13,3 +13,7 @@ BinPackArguments: false
 AlignAfterOpenBracket: BlockIndent
 BinPackParameters: false
 SpaceBeforeCpp11BracedList: true
+
+BreakBeforeBinaryOperators: NonAssignment
+BreakBinaryOperations: OnePerLine
+AlignOperands: DontAlign

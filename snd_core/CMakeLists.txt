@@ -22,7 +22,7 @@ add_library(snd_core STATIC
         Renderer/Vulkan/VulkanDevice.hpp
         Renderer/Vulkan/VulkanRenderer.cpp
         Renderer/Vulkan/VulkanRenderer.hpp
-        Renderer/Vulkan/VulkanScene.hpp
+        Renderer/Vulkan/Resources/VulkanScene.hpp
         Renderer/Vulkan/VulkanSwapchain.cpp
         Renderer/Vulkan/VulkanSwapchain.hpp
         DeletionQueue.cpp
@@ -51,9 +51,16 @@ add_library(snd_core STATIC
         TemplateHelpers/VariantMatch.hpp
         TemplateHelpers/IsLegitVariant.hpp
         Resources/Scene/SceneData.cpp
-        Renderer/Vulkan/VulkanScene.cpp
+        Renderer/Vulkan/Resources/VulkanScene.cpp
         Image/ImageUtils.cpp
         Image/ImageUtils.hpp
+        Renderer/Vulkan/Resources/VulkanImage.cpp
+        Renderer/Vulkan/Resources/VulkanImage.hpp
+        Renderer/Vulkan/Resources/VulkanSampler.cpp
+        Renderer/Vulkan/Resources/VulkanSampler.hpp
+        Renderer/Vulkan/Resources/VulkanVertexBuffer.cpp
+        Renderer/Vulkan/Resources/VulkanVertexBuffer.hpp
+        Image/Image.cpp
 )
 
 # include dir is the parent so includes read "snd_core/Window.hpp"
