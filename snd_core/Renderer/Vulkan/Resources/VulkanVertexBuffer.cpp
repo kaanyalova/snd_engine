@@ -12,8 +12,8 @@ VulkanVertexBuffer::VulkanVertexBuffer(
 }
 
 auto VulkanVertexBuffer::load_to_gpu() -> void {
-    vk::DeviceSize vertex_size = sizeof(Vertex) * m_indices.size();
-    vk::DeviceSize index_size = sizeof(uint32_t) * m_vertices.size();
+    vk::DeviceSize vertex_size = sizeof(Vertex) * m_vertices.size();
+    vk::DeviceSize index_size = sizeof(uint32_t) * m_indices.size();
 
     auto buffer_create_info = vk::BufferCreateInfo {
         .size = vertex_size + index_size,
@@ -31,8 +31,13 @@ auto VulkanVertexBuffer::load_to_gpu() -> void {
     m_buffer = m_renderer.get_device().get_allocator().createBuffer(buffer_create_info, allocation_create_info);
     const vma::raii::Allocation& allocation = m_buffer.getAllocation();
 
-    allocation.copyFromMemory(m_vertices.data(), 0, vertex_size);
-    allocation.copyFromMemory(m_indices.data(), vertex_size, index_size);
+    if (m_vertices.size() > 0) {
+        allocation.copyFromMemory(m_vertices.data(), 0, vertex_size);
+    }
+    
+    if (m_indices.size() > 0) {
+        allocation.copyFromMemory(m_indices.data(), vertex_size, index_size);
+    }
 }
 
 auto VulkanVertexBuffer::fetch_device_address() -> void {

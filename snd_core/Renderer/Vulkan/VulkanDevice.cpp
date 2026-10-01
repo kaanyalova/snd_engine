@@ -1,3 +1,5 @@
+#include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
+
 #include <algorithm>
 #include <print>
 #include <ranges>
@@ -5,18 +7,21 @@
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_raii.hpp>
 
-#include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
+#include "snd_core/Utils/StringUtils.hpp"
 
-VulkanDevice::VulkanDevice(const DeviceCreationInfo& info, Window& window) : m_info(info) {
+VulkanDevice::VulkanDevice(const DeviceCreationInfo& info, Window& window) : m_info(info), m_window(window) {
     create_instance();
-    // if (m_enable_validation) {
-    //     setup_debug_messenger();
-    // }
+    if (info.enable_validation) {
+        setup_debug_messenger();
+    }
+    create_surface();
     create_physical_device();
     get_physical_device_properties();
+    find_family_indices();
     create_logical_device();
     create_memory_allocator();
     find_depth_format();
+    create_command_pool();
 }
 
 auto VulkanDevice::create_instance() -> void {
@@ -33,9 +38,7 @@ auto VulkanDevice::create_instance() -> void {
     }
 
     m_required_extensions.insert(
-        m_required_extensions.end(),
-        m_info.sdl_required_extensions.begin(),
-        m_info.sdl_required_extensions.end()
+        m_required_extensions.end(), m_info.sdl_required_extensions.begin(), m_info.sdl_required_extensions.end()
     );
 
     // m_required_extensions.push_back(vk::KHRPortabilityEnumerationExtensionName);
@@ -73,8 +76,7 @@ auto VulkanDevice::create_instance() -> void {
  * @return true if all extensions are supported, false otherwise
  */
 auto VulkanDevice::are_required_extensions_supported_by_instance() -> bool {
-    std::vector<vk::ExtensionProperties> extension_properties =
-        m_vulkan_context.enumerateInstanceExtensionProperties();
+    std::vector<vk::ExtensionProperties> extension_properties = m_vulkan_context.enumerateInstanceExtensionProperties();
 
     return std::ranges::all_of(m_required_extensions, [&](const char* required_extension) -> bool {
         return std::ranges::any_of(
@@ -91,8 +93,9 @@ auto VulkanDevice::create_physical_device() -> void {
     if (m_info.gpu_preference == GpuPreference::Discrete) {
         const auto discrete_gpu_it =
             std::ranges::find_if(physical_devices, [&](const vk::raii::PhysicalDevice& device) {
-                return device.getProperties().deviceType == vk::PhysicalDeviceType::eDiscreteGpu &&
-                       is_device_suitable(device);
+                return device.getProperties().deviceType
+                    == vk::PhysicalDeviceType::eDiscreteGpu
+                    && is_device_suitable(device);
             });
 
         if (discrete_gpu_it != physical_devices.end()) {
@@ -102,9 +105,9 @@ auto VulkanDevice::create_physical_device() -> void {
     } else if (m_info.gpu_preference == GpuPreference::Integrated) {
         const auto integrated_gpu_it =
             std::ranges::find_if(physical_devices, [&](const vk::raii::PhysicalDevice& device) {
-                return device.getProperties().deviceType ==
-                           vk::PhysicalDeviceType::eIntegratedGpu &&
-                       is_device_suitable(device);
+                return device.getProperties().deviceType
+                    == vk::PhysicalDeviceType::eIntegratedGpu
+                    && is_device_suitable(device);
             });
 
         if (integrated_gpu_it != physical_devices.end()) {
@@ -114,10 +117,9 @@ auto VulkanDevice::create_physical_device() -> void {
     }
 
     // cannot find the preferred gpu, fallback to any one that works
-    auto fallback_it =
-        std::ranges::find_if(physical_devices, [&](const vk::raii::PhysicalDevice& device) {
-            return is_device_suitable(device);
-        });
+    auto fallback_it = std::ranges::find_if(physical_devices, [&](const vk::raii::PhysicalDevice& device) {
+        return is_device_suitable(device);
+    });
 
     if (fallback_it != physical_devices.end()) {
         m_physical_device = *fallback_it;
@@ -137,17 +139,14 @@ auto VulkanDevice::create_physical_device() -> void {
  */
 auto VulkanDevice::is_device_suitable(const vk::raii::PhysicalDevice& device) -> bool {
     const vk::PhysicalDeviceProperties device_properties = device.getProperties();
-    std::vector<vk::QueueFamilyProperties> queue_family_properties =
-        device.getQueueFamilyProperties();
-    std::vector<vk::ExtensionProperties> device_extension_properties =
-        device.enumerateDeviceExtensionProperties();
+    std::vector<vk::QueueFamilyProperties> queue_family_properties = device.getQueueFamilyProperties();
+    std::vector<vk::ExtensionProperties> device_extension_properties = device.enumerateDeviceExtensionProperties();
 
     const bool is_api_version_suitable = device_properties.apiVersion >= vk::ApiVersion13;
-    const bool has_graphics_queue = std::ranges::any_of(
-        queue_family_properties, [](const vk::QueueFamilyProperties& properties) {
+    const bool has_graphics_queue =
+        std::ranges::any_of(queue_family_properties, [](const vk::QueueFamilyProperties& properties) {
             return static_cast<bool>(properties.queueFlags & vk::QueueFlagBits::eGraphics);
-        }
-    );
+        });
 
     // TODO
     // const bool supports_required_extensions =
@@ -161,8 +160,7 @@ auto VulkanDevice::is_device_suitable(const vk::raii::PhysicalDevice& device) ->
     //         );
     //     });
 
-    const bool is_suitable =
-        is_api_version_suitable && has_graphics_queue;  // && supports_required_extensions;
+    const bool is_suitable = is_api_version_suitable && has_graphics_queue;  // && supports_required_extensions;
 
     return is_suitable;
 }
@@ -195,9 +193,7 @@ auto VulkanDevice::create_logical_device() -> void {
                 },
         },
         vk::PhysicalDeviceVulkan11Features {.shaderDrawParameters = vk::True},
-        vk::PhysicalDeviceVulkan13Features {
-            .synchronization2 = vk::True, .dynamicRendering = vk::True
-        },
+        vk::PhysicalDeviceVulkan13Features {.synchronization2 = vk::True, .dynamicRendering = vk::True},
         vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT {.extendedDynamicState = vk::True},
     };
 
@@ -224,26 +220,22 @@ auto VulkanDevice::create_logical_device() -> void {
 }
 
 auto VulkanDevice::find_family_indices() -> void {
-    std::vector<vk::QueueFamilyProperties> queue_family_properties =
-        m_physical_device.getQueueFamilyProperties();
+    std::vector<vk::QueueFamilyProperties> queue_family_properties = m_physical_device.getQueueFamilyProperties();
 
-    const auto graphics_queue_family_property = std::ranges::find_if(
-        queue_family_properties, [](const vk::QueueFamilyProperties& qfp) -> bool {
+    const auto graphics_queue_family_property =
+        std::ranges::find_if(queue_family_properties, [](const vk::QueueFamilyProperties& qfp) -> bool {
             return static_cast<bool>(qfp.queueFlags & vk::QueueFlagBits::eGraphics);
-        }
-    );
+        });
 
     if (graphics_queue_family_property == queue_family_properties.end()) {
         throw std::runtime_error("failed to find a graphics queue family");
     }
 
-    auto graphics_family_index = static_cast<uint32_t>(
-        std::distance(queue_family_properties.begin(), graphics_queue_family_property)
-    );
+    auto graphics_family_index =
+        static_cast<uint32_t>(std::distance(queue_family_properties.begin(), graphics_queue_family_property));
 
     // check if the graphics family also supports presentation
-    bool also_supports_presentation =
-        m_physical_device.getSurfaceSupportKHR(graphics_family_index, *m_surface);
+    bool also_supports_presentation = m_physical_device.getSurfaceSupportKHR(graphics_family_index, *m_surface);
 
     uint32_t presentation_family_index = 0;
 
@@ -294,8 +286,8 @@ auto VulkanDevice::find_depth_format() -> void {
     auto depth_format = std::ranges::find_if(depth_formats, [&](vk::Format format) -> bool {
         vk::FormatProperties2 format_properties = m_physical_device.getFormatProperties2(format);
         return static_cast<bool>(
-            format_properties.formatProperties.optimalTilingFeatures &
-            vk::FormatFeatureFlagBits::eDepthStencilAttachment
+            format_properties.formatProperties.optimalTilingFeatures
+            & vk::FormatFeatureFlagBits::eDepthStencilAttachment
         );
     });
 
@@ -304,4 +296,41 @@ auto VulkanDevice::find_depth_format() -> void {
     }
 
     m_depth_format = *depth_format;
+}
+auto VulkanDevice::create_surface() -> void {
+    m_surface = m_window.create_surface(*this);
+}
+
+auto VulkanDevice::setup_debug_messenger() -> void {
+    auto messenger_create_info = vk::DebugUtilsMessengerCreateInfoEXT {
+        .messageSeverity = m_validation_log_level,
+        .messageType = m_validation_message_types,
+        .pfnUserCallback = &debug_callback,
+    };
+
+    m_debug_messenger = m_instance.createDebugUtilsMessengerEXT(messenger_create_info);
+}
+
+auto VulkanDevice::debug_callback(
+    vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
+    vk::DebugUtilsMessageTypeFlagsEXT type,
+    const vk::DebugUtilsMessengerCallbackDataEXT* callback_data,
+    void* _user_data
+) -> vk::Bool32 {
+    std::string type_string = vk::to_string(type);
+    std::erase(type_string, '{');
+    std::erase(type_string, '}');
+    StringUtils::trim(type_string);
+
+    std::println("Validation Layer ({}) [{}] : {}", type_string, vk::to_string(severity), callback_data->pMessage);
+    return vk::False;
+}
+
+auto VulkanDevice::create_command_pool() -> void {
+    auto command_pool_create_info = vk::CommandPoolCreateInfo {
+        .flags = vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
+        .queueFamilyIndex = m_family_indices.graphics,
+    };
+
+    m_command_pool = vk::raii::CommandPool(m_device, command_pool_create_info);
 }

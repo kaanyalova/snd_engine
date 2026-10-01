@@ -9,6 +9,8 @@
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanSwapchain.hpp"
 
+struct RendererValidationSettings {};
+
 struct RendererSettings {
     bool enable_validation = true;
     GpuPreference gpu_preference = GpuPreference::Integrated;
@@ -26,9 +28,9 @@ class VulkanRenderer {
 
     auto get_device() -> VulkanDevice& { return m_device.value(); }
     auto get_swapchain() -> VulkanSwapchain& { return m_swapchain.value(); }
-    auto get_imgui_descriptor_pool() -> const vk::DescriptorPool& { return m_imgui_descriptor_pool; }
-    auto get_renderer_descriptor_pool() -> const vk::DescriptorPool& { return m_renderer_descriptor_pool; }
-    auto get_renderer_descriptor_set() -> const vk::DescriptorSet& { return m_renderer_descriptor_set; }
+    auto get_imgui_descriptor_pool() -> const vk::DescriptorPool& { return *m_imgui_descriptor_pool; }
+    auto get_renderer_descriptor_pool() -> const vk::DescriptorPool& { return *m_renderer_descriptor_pool; }
+    auto get_renderer_descriptor_set() -> const vk::DescriptorSet& { return *m_renderer_descriptor_set; }
 
     auto get_gpu_maximum_descriptor_set_count() -> uint32_t;
     static auto convert_to_vulkan_image_format(ImageFormat imageFormat) -> vk::Format;
@@ -86,6 +88,4 @@ class VulkanRenderer {
     auto create_renderer_descriptor_pool() -> void;
     auto create_renderer_descriptor_set_layout() -> void;
     auto allocate_renderer_descriptor_sets() -> void;
-
-    auto write_sampled_images_to_descriptor(const std::span<vk::ImageView> image_views, size_t start_index) -> void;
 };

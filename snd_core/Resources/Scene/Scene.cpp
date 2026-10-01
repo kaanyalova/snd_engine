@@ -1,5 +1,8 @@
 #include "snd_core/Resources/Scene/Scene.hpp"
 
+Scene::Scene(VulkanDevice& device) {
+}
+
 auto Scene::push_scene_data(const SceneData& other) -> void {
     ModelRange model_range = {};
 
@@ -34,6 +37,10 @@ auto Scene::push_scene_data(const SceneData& other) -> void {
     model_range.image_data.index = m_data.image_data.size();
     model_range.image_data.length = other.image_data.size();
     m_data.image_data.append_range(other.image_data);
+
+    model_range.images.index = m_data.images.size();
+    model_range.images.length = other.images.size();
+    m_data.images.append_range(other.images);
 
     m_models.emplace_back(model_range);
 }

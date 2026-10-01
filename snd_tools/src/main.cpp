@@ -3,20 +3,18 @@
 #include <print>
 #include <string>
 
-#include "snd_core/Resources/GltfLoader.hpp"
 #include "snd_cli_builder/CliBuilder.hpp"
+#include "snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp"
+#include "snd_core/Resources/GltfLoader.hpp"
+#include "snd_core/Resources/Scene/Scene.hpp"
 
 auto main(int argc, char** argv) -> int {
     auto builder = CliBuilder(argc, argv);
 
     auto cli =
         builder.add_command("dump-gltf", "Dump a .gltf file into a custom scene format")
-            .add_arg_with_default_value(
-                "input", "i", CommandArgumentTypeIdentifier::Path, std::nullopt, "Input file"
-            )
-            .add_arg_with_default_value(
-                "output", "o", CommandArgumentTypeIdentifier::Path, std::nullopt, "Output file"
-            )
+            .add_arg_with_default_value("input", "i", CommandArgumentTypeIdentifier::Path, std::nullopt, "Input file")
+            .add_arg_with_default_value("output", "o", CommandArgumentTypeIdentifier::Path, std::nullopt, "Output file")
             .on_execute([](const OnExecuteArguments& args) {
                 GltfLoader loader = GltfLoader("./");
                 SceneData scene_data;
@@ -24,6 +22,17 @@ auto main(int argc, char** argv) -> int {
                 loader.load_into_scene_from_path(scene_data, path);
                 std::string stats = scene_data.get_scene_stats();
                 std::println("{}", stats);
+
+                auto window = Window("test", 640, 480);
+                auto renderer = VulkanRenderer(window, RendererSettings {.enable_validation = true});
+                Scene scene = Scene(renderer.get_device());
+                scene.push_scene_data(scene_data);
+                auto gpu_scene = VulkanScene(renderer, scene);
+                renderer.submit_single_command(
+                    [&](vk::raii::CommandBuffer& command_buffer) { gpu_scene.run_create_commands(command_buffer); },
+                    nullptr
+                );
+                renderer.get_device().inner().waitIdle();
             })
             .build()
             .build();

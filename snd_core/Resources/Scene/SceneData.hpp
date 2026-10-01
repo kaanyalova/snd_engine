@@ -67,6 +67,7 @@ struct ModelRange {
     IndexSpan vertices;
     IndexSpan indices;
     IndexSpan image_data;
+    IndexSpan images;
 };
 
 struct ImageData {
@@ -79,15 +80,15 @@ struct ImageData {
 };
 
 struct SceneData {
-    std::vector<PrimitiveInstance> primitive_instances;
-    std::vector<Primitive> primitives;
-    std::vector<MaterialData> materials;
-    std::vector<ImageData> images;
-    std::vector<Texture> textures;
-    std::vector<SamplerData> samplers;
-    std::vector<Vertex> vertices;
-    std::vector<uint32_t> indices;
-    std::vector<uint8_t> image_data;
+    std::vector<PrimitiveInstance> primitive_instances = {};
+    std::vector<Primitive> primitives = {};
+    std::vector<MaterialData> materials = {};
+    std::vector<ImageData> images = {};
+    std::vector<Texture> textures = {};
+    std::vector<SamplerData> samplers = {};
+    std::vector<Vertex> vertices = {};
+    std::vector<uint32_t> indices = {};
+    std::vector<uint8_t> image_data = {};
 
     auto get_scene_stats() -> std::string;
 };

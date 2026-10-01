@@ -7,11 +7,13 @@
 
 class Scene;
 
-using CommandBufferRecordLambda = std::function<void(vk::CommandBuffer& command_buffer)>;
+using CommandBufferRecordLambda = std::function<void(vk::raii::CommandBuffer& command_buffer)>;
 
 class VulkanScene {
   public:
-    explicit VulkanScene(VulkanRenderer& device, Scene& scene);
+    explicit VulkanScene(VulkanRenderer& renderer, Scene& scene);
+    auto run_create_commands(vk::raii::CommandBuffer& command_buffer) -> void;
+    auto push_create_command(CommandBufferRecordLambda&& record) -> void;
 
   private:
     const Scene& m_scene;
@@ -30,6 +32,4 @@ class VulkanScene {
     auto load_images_to_gpu() -> void;
     auto load_samplers_to_gpu() -> void;
     auto bind_samplers_to_descriptors() -> void;
-
-    auto push_create_command(CommandBufferRecordLambda&& record) -> void;
 };

@@ -12,7 +12,7 @@ class VulkanSampler {
 
     ~VulkanSampler();
 
-    auto inner() const -> const vk::Sampler& { return m_sampler; }
+    auto inner() const -> const vk::Sampler& { return *m_sampler; }
     auto set_slot(uint32_t slot) -> void { m_bound_slot = slot; }
 
   private:

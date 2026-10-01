@@ -29,8 +29,7 @@ GltfLoader::GltfLoader(std::string base_directory) : m_base_directory(std::move(
     tg3_parse_options_init(&m_default_parse_options);
 }
 
-auto GltfLoader::load_into_scene_from_path(SceneData& scene, const std::filesystem::path& path)
-    -> void {
+auto GltfLoader::load_into_scene_from_path(SceneData& scene, const std::filesystem::path& path) -> void {
     load_into_scene_from_path_with_opts(scene, path, m_default_parse_options);
 }
 
@@ -50,13 +49,7 @@ auto GltfLoader::load_into_scene_with_opts(
 ) -> void {
     tg3_model model;
     tg3_parse_auto(
-        &model,
-        &m_error_stack,
-        bytes.data(),
-        bytes.size(),
-        m_base_directory.c_str(),
-        m_base_directory.length(),
-        &opts
+        &model, &m_error_stack, bytes.data(), bytes.size(), m_base_directory.c_str(), m_base_directory.length(), &opts
     );
     unwrap_error_stack();
 
@@ -71,6 +64,7 @@ auto GltfLoader::load_into_scene_with_opts(
         }
     }
 
+    load_images(scene, model);
     load_materials(scene, model);
     load_textures(scene, model);
     load_samplers(scene, model);
@@ -114,8 +108,7 @@ auto GltfLoader::unwrap_error_stack() -> void {
 
         for (size_t i = 0; i < m_error_stack.count; i++) {
             const tg3_error_entry& error = m_error_stack.entries[i];
-            std::string error_message =
-                std::format("{}: {}\n", get_severity_string(error.severity), error.message);
+            std::string error_message = std::format("{}: {}\n", get_severity_string(error.severity), error.message);
         }
 
         throw std::runtime_error(error_messages);
@@ -143,12 +136,10 @@ auto GltfLoader::get_node_transform(const tg3_node& node) -> glm::mat4x4 {
         transform = glm::make_mat4(node.matrix);
     } else {
         // or stored in translation, rotation, scale
-        const glm::vec3 translation =
-            glm::vec3(node.translation[0], node.translation[1], node.translation[2]);
+        const glm::vec3 translation = glm::vec3(node.translation[0], node.translation[1], node.translation[2]);
         transform = glm::translate(transform, translation);
 
-        const glm::quat rotation =
-            glm::quat(node.rotation[3], node.rotation[0], node.rotation[1], node.rotation[2]);
+        const glm::quat rotation = glm::quat(node.rotation[3], node.rotation[0], node.rotation[1], node.rotation[2]);
         transform *= glm::mat4_cast(rotation);
 
         const glm::vec3 scale = glm::vec3(node.scale[0], node.scale[1], node.scale[2]);
@@ -190,40 +181,33 @@ auto GltfLoader::push_primitive(
 
     for (size_t i = 0; i < primitive.attributes_count; i++) {
         tg3_str attribute_key_c_str = attributes[i].key;
-        std::string_view attribute_key =
-            std::string_view(attribute_key_c_str.data, attribute_key_c_str.len);
+        std::string_view attribute_key = std::string_view(attribute_key_c_str.data, attribute_key_c_str.len);
         int32_t attribute_value = attributes[i].value;
 
         if (attribute_key == "POSITION") {
-            position_accessor =
-                get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
+            position_accessor = get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
         }
 
         else if (attribute_key == "NORMAL") {
-            normal_accessor =
-                get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
+            normal_accessor = get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
         }
 
         else if (attribute_key == "TEXCOORD_0") {
-            texture_coord_accessor =
-                get_accessor_view<glm::vec2>(&model.accessors[attribute_value], model);
+            texture_coord_accessor = get_accessor_view<glm::vec2>(&model.accessors[attribute_value], model);
         }
 
         else if (attribute_key == "TANGENT") {
-            tangent_accessor =
-                get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
+            tangent_accessor = get_accessor_view<glm::vec3>(&model.accessors[attribute_value], model);
         }
     }
 
-    bool does_accessors_exist = position_accessor.has_value() && normal_accessor.has_value() &&
-                                texture_coord_accessor.has_value();
+    bool does_accessors_exist =
+        position_accessor.has_value() && normal_accessor.has_value() && texture_coord_accessor.has_value();
 
     // check the cache here
     if (!does_accessors_exist) {
         throw std::runtime_error(
-            std::format(
-                "One of the accessors for the primitive at index {} doesn't exist", primitive_index
-            )
+            std::format("One of the accessors for the primitive at index {} doesn't exist", primitive_index)
         );
     }
 
@@ -274,9 +258,8 @@ auto GltfLoader::load_materials(SceneData& scene, const tg3_model& model) -> voi
         const tg3_material& material = model.materials[i];
 
         auto material_data = MaterialData {
-            .base_color_texture_index = Scene::get_texture_index_with_white_fallback(
-                material.pbr_metallic_roughness.base_color_texture.index
-            ),
+            .base_color_texture_index =
+                Scene::get_texture_index_with_white_fallback(material.pbr_metallic_roughness.base_color_texture.index),
             .base_color_texture_factor = glm::vec4(
                 material.pbr_metallic_roughness.base_color_factor[0],
                 material.pbr_metallic_roughness.base_color_factor[1],
@@ -286,29 +269,21 @@ auto GltfLoader::load_materials(SceneData& scene, const tg3_model& model) -> voi
             .metallic_roughness_texture_index = Scene::get_texture_index_with_white_fallback(
                 material.pbr_metallic_roughness.metallic_roughness_texture.index
             ),
-            .roughness_factor =
-                static_cast<float>(material.pbr_metallic_roughness.roughness_factor),
+            .roughness_factor = static_cast<float>(material.pbr_metallic_roughness.roughness_factor),
             .metallic_factor = static_cast<float>(material.pbr_metallic_roughness.metallic_factor),
-            .normal_texture_index =
-                Scene::get_texture_index_with_black_fallback(material.normal_texture.index),
+            .normal_texture_index = Scene::get_texture_index_with_black_fallback(material.normal_texture.index),
             .normal_texture_scale = static_cast<float>(material.normal_texture.scale),
-            .occlusion_texture_index =
-                Scene::get_texture_index_with_white_fallback(material.occlusion_texture.index),
+            .occlusion_texture_index = Scene::get_texture_index_with_white_fallback(material.occlusion_texture.index),
             .occlusion_texture_strength = static_cast<float>(material.occlusion_texture.strength),
-            .emissive_texture_index =
-                Scene::get_texture_index_with_black_fallback(material.emissive_texture.index),
-            .emissive_texture_factor = glm::vec3(
-                material.emissive_factor[0],
-                material.emissive_factor[1],
-                material.emissive_factor[2]
-            ),
+            .emissive_texture_index = Scene::get_texture_index_with_black_fallback(material.emissive_texture.index),
+            .emissive_texture_factor =
+                glm::vec3(material.emissive_factor[0], material.emissive_factor[1], material.emissive_factor[2]),
         };
 
         scene.materials.emplace_back(material_data);
     }
 }
-auto GltfLoader::load_images(SceneData& scene, ModelRange& model_range, const tg3_model& model)
-    -> void {
+auto GltfLoader::load_images(SceneData& scene, const tg3_model& model) -> void {
     for (size_t i = 0; i < model.images_count; i++) {
         const tg3_image image = model.images[i];
         std::string_view mime_type = tg3_str_to_string_view(image.mime_type);
@@ -320,9 +295,8 @@ auto GltfLoader::load_images(SceneData& scene, ModelRange& model_range, const tg
             const tg3_buffer_view& buffer_view = model.buffer_views[image.buffer_view];
             const tg3_buffer& buffer = model.buffers[buffer_view.buffer];
 
-            std::span<const uint8_t> image_bytes = std::span<const uint8_t>(
-                buffer.data.data + buffer_view.byte_offset, buffer_view.byte_length
-            );
+            std::span<const uint8_t> image_bytes =
+                std::span<const uint8_t>(buffer.data.data + buffer_view.byte_offset, buffer_view.byte_length);
 
             image_data = load_image_with_mime_type_from_bytes(image_bytes, mime_type);
         } else if (image.uri.data == nullptr && image.buffer_view != -1) {
@@ -334,6 +308,19 @@ auto GltfLoader::load_images(SceneData& scene, ModelRange& model_range, const tg
         } else {
             throw std::runtime_error("failed to load texture");
         }
+
+        auto image_meta = ImageData {
+            .width = image_data.width,
+            .height = image_data.height,
+            .format = image_data.format,
+            .data_span = IndexSpan {
+                .index = static_cast<uint32_t>(scene.image_data.size()),
+                .length = static_cast<uint32_t>(image_data.data.size()),
+            },
+        };
+
+        scene.image_data.append_range(image_data.data);
+        scene.images.emplace_back(image_meta);
     }
 }
 
@@ -377,12 +364,14 @@ auto GltfLoader::weave_vertex_data_from_accessors(
     return vertices;
 }
 
+auto GltfLoader::get_material_index_with_default_fallback(SceneData& data, int32_t index) -> uint32_t {
+    return 0;  // TODO!
+}
 auto GltfLoader::tg3_str_to_string_view(const tg3_str& str) -> std::string_view {
     return std::string_view(str.data, str.len);
 }
-auto GltfLoader::load_image_with_mime_type_from_bytes(
-    std::span<const uint8_t> bytes, std::string_view mime_type
-) -> Image {
+auto GltfLoader::load_image_with_mime_type_from_bytes(std::span<const uint8_t> bytes, std::string_view mime_type)
+    -> Image {
     Image image;
 
     if (mime_type == "image/ktx2") {

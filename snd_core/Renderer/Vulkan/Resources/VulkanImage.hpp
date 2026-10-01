@@ -15,8 +15,8 @@ class VulkanScene;
 class VulkanImage {
   public:
     VulkanImage(VulkanRenderer& renderer, VulkanScene& scene, const ImageView& image);
-    auto inner() const -> const vk::Image& { return m_image; }
-    auto inner_view() const -> const vk::ImageView& { return m_image_view; }
+    auto inner() const -> const vk::Image& { return *m_image; }
+    auto inner_view() const -> const vk::ImageView& { return *m_image_view; }
 
     // this is to be called when the image is loaded by the scene and it is bound to the descriptor
     auto set_slot(uint32_t slot) -> void { m_bound_slot = slot; }
@@ -29,6 +29,10 @@ class VulkanImage {
     vma::raii::Image m_image = nullptr;
     vk::raii::ImageView m_image_view = nullptr;
     vma::raii::Buffer m_buffer = nullptr;
+
+    uint32_t m_width = 0;
+    uint32_t m_height = 0;
+    ImageFormat m_format = ImageFormat::Undefined;
 
     int32_t m_bound_slot = -1;
 

@@ -61,6 +61,7 @@ add_library(snd_core STATIC
         Renderer/Vulkan/Resources/VulkanVertexBuffer.cpp
         Renderer/Vulkan/Resources/VulkanVertexBuffer.hpp
         Image/Image.cpp
+        Resources/Scene/SceneNode.cpp
 )
 
 # include dir is the parent so includes read "snd_core/Window.hpp"

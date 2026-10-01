@@ -4,16 +4,19 @@
 #include "vk_mem_alloc_structs.hpp"
 #include "vulkan/vulkan.hpp"
 
-VulkanSwapchain::VulkanSwapchain(VulkanDevice& device, Window& window)
-    : m_device(device), m_window(window) {
+VulkanSwapchain::VulkanSwapchain(VulkanDevice& device, Window& window) : m_device(device), m_window(window) {
     create();
     create_image_views();
     create_depth_images();
 }
+auto VulkanSwapchain::wait_on_fence_for_frame() -> void {
+    auto _ =
+        m_device.inner().waitForFences(*m_in_flight_fences[m_frame_index], true, std::numeric_limits<uint64_t>::max());
+    m_device.inner().resetFences(*m_in_flight_fences[m_frame_index]);
+}
 
 auto VulkanSwapchain::create() -> void {
-    auto surface_capabilities =
-        m_device.get_physical_device().getSurfaceCapabilitiesKHR(m_device.get_surface());
+    auto surface_capabilities = m_device.get_physical_device().getSurfaceCapabilitiesKHR(m_device.get_surface());
 
     m_extent = choose_extent(surface_capabilities);
 
@@ -25,21 +28,18 @@ auto VulkanSwapchain::create() -> void {
 
     // clamp it between the surface's capabilities
     if (surface_capabilities.maxImageCount > 0) {
-        min_image_count = std::clamp(
-            min_image_count, surface_capabilities.minImageCount, surface_capabilities.maxImageCount
-        );
+        min_image_count =
+            std::clamp(min_image_count, surface_capabilities.minImageCount, surface_capabilities.maxImageCount);
     }
 
     uint32_t image_count = surface_capabilities.minImageCount + 1;
 
-    if (surface_capabilities.maxImageCount > 0 &&
-        image_count > surface_capabilities.maxImageCount) {
+    if (surface_capabilities.maxImageCount > 0 && image_count > surface_capabilities.maxImageCount) {
         image_count = surface_capabilities.maxImageCount;
     }
 
-    vk::PresentModeKHR present_mode = choose_present_mode(
-        m_device.get_physical_device().getSurfacePresentModesKHR(*m_device.get_surface())
-    );
+    vk::PresentModeKHR present_mode =
+        choose_present_mode(m_device.get_physical_device().getSurfacePresentModesKHR(*m_device.get_surface()));
 
     auto swap_chain_create_info = vk::SwapchainCreateInfoKHR {
         .flags = vk::SwapchainCreateFlagsKHR(),
@@ -74,8 +74,7 @@ auto VulkanSwapchain::create() -> void {
     m_images = m_swapchain.getImages();
 }
 
-auto VulkanSwapchain::choose_extent(const vk::SurfaceCapabilitiesKHR& capabilities)
-    -> vk::Extent2D {
+auto VulkanSwapchain::choose_extent(const vk::SurfaceCapabilitiesKHR& capabilities) -> vk::Extent2D {
     if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
         return capabilities.currentExtent;
     }
@@ -83,12 +82,8 @@ auto VulkanSwapchain::choose_extent(const vk::SurfaceCapabilitiesKHR& capabiliti
     auto [width, height] = m_window.size();
 
     return vk::Extent2D {
-        .width = std::clamp<uint32_t>(
-            width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width
-        ),
-        .height = std::clamp<uint32_t>(
-            height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height
-        ),
+        .width = std::clamp<uint32_t>(width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width),
+        .height = std::clamp<uint32_t>(height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height),
     };
 }
 
@@ -98,13 +93,14 @@ auto VulkanSwapchain::choose_extent(const vk::SurfaceCapabilitiesKHR& capabiliti
  * @param available_formats list of available formats by the PhysicalDevice
  * @return vk::SurfaceFormatKHR the chosen surface format
  */
-auto VulkanSwapchain::choose_surface_format(
-    const std::vector<vk::SurfaceFormatKHR>& available_formats
-) -> vk::SurfaceFormatKHR {
+auto VulkanSwapchain::choose_surface_format(const std::vector<vk::SurfaceFormatKHR>& available_formats)
+    -> vk::SurfaceFormatKHR {
     auto available_format_it =
         std::ranges::find_if(available_formats, [](const vk::SurfaceFormatKHR& available_format) {
-            return available_format.format == vk::Format::eB8G8R8A8Srgb &&
-                   available_format.colorSpace == vk::ColorSpaceKHR::eSrgbNonlinear;
+            return available_format.format
+                == vk::Format::eB8G8R8A8Srgb
+                && available_format.colorSpace
+                == vk::ColorSpaceKHR::eSrgbNonlinear;
         });
 
     if (available_format_it != available_formats.end()) {
@@ -155,12 +151,15 @@ auto VulkanSwapchain::create_depth_images() -> void {
     auto image_create_info = vk::ImageCreateInfo {
         .imageType = vk::ImageType::e2D,
         .format = m_device.get_depth_format(),
-        .extent = vk::Extent3D {
-            .width = window_size.first,
-            .height = window_size.second,
-            .depth = 1,
-        },
-
+        .extent =
+            vk::Extent3D {
+                .width = window_size.first,
+                .height = window_size.second,
+                .depth = 1,
+            },
+        .mipLevels = 1,
+        .arrayLayers = 1,
+        .usage = vk::ImageUsageFlagBits::eDepthStencilAttachment,
     };
 
     auto vma_allocation_create_info = vma::AllocationCreateInfo {
@@ -168,9 +167,7 @@ auto VulkanSwapchain::create_depth_images() -> void {
         .usage = vma::MemoryUsage::eAuto,
     };
 
-    m_depth_image = m_device.get_allocator().createImage(
-        image_create_info, vma_allocation_create_info, nullptr
-    );
+    m_depth_image = m_device.get_allocator().createImage(image_create_info, vma_allocation_create_info, nullptr);
 
     auto depth_image_view_create_info = vk::ImageViewCreateInfo {
         .image = m_depth_image,
@@ -180,6 +177,8 @@ auto VulkanSwapchain::create_depth_images() -> void {
             .aspectMask = vk::ImageAspectFlagBits::eDepth,
             .baseMipLevel = 0,
             .levelCount = 1,
+            .baseArrayLayer = 0,
+            .layerCount = 1,
         }
     };
 

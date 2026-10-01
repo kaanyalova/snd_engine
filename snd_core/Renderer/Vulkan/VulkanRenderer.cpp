@@ -8,6 +8,7 @@ VulkanRenderer::VulkanRenderer(Window& window, const RendererSettings& settings)
     create_swapchain();
     create_renderer_descriptor_pool();
     create_renderer_descriptor_set_layout();
+    allocate_renderer_descriptor_sets();
 }
 
 auto VulkanRenderer::get_gpu_maximum_descriptor_set_count() -> uint32_t {
@@ -55,7 +56,11 @@ auto VulkanRenderer::submit_single_command(CommandBufferRecordLambda&& record, v
         .pCommandBuffers = &*command_buffer,
     };
 
-    m_device->get_queues().graphics.submit(submit_info, *fence);
+    if (fence == nullptr) {
+        m_device->get_queues().graphics.submit(submit_info, nullptr);
+    } else {
+        m_device->get_queues().graphics.submit(submit_info, *fence);
+    }
 }
 
 auto VulkanRenderer::get_next_free_image_slots(uint32_t count) -> uint32_t {
@@ -74,6 +79,7 @@ auto VulkanRenderer::create_device() -> void {
     auto device_create_info = DeviceCreationInfo {
         .enable_validation = true,
         .gpu_preference = GpuPreference::Integrated,
+        .sdl_required_extensions = m_window.get_required_vulkan_extensions(),
 
     };
 
@@ -149,11 +155,11 @@ auto VulkanRenderer::create_renderer_descriptor_set_layout() -> void {
     vk::StructureChain<vk::DescriptorSetLayoutCreateInfo, vk::DescriptorSetLayoutBindingFlagsCreateInfo>
         descriptor_set_layout_create_info = {
             vk::DescriptorSetLayoutCreateInfo {
-                .bindingCount = 1,
+                .bindingCount = static_cast<uint32_t>(bindings.size()),
                 .pBindings = bindings.data(),
             },
             vk::DescriptorSetLayoutBindingFlagsCreateInfo {
-                .bindingCount = 1,
+                .bindingCount = static_cast<uint32_t>(descriptor_binding_flags.size()),
                 .pBindingFlags = descriptor_binding_flags.data(),
             }
         };

@@ -4,7 +4,7 @@
 
 #include "snd_core/Resources/Scene/Scene.hpp"
 
-VulkanScene::VulkanScene(VulkanRenderer& device, Scene& scene) : m_scene(scene), m_renderer(device) {
+VulkanScene::VulkanScene(VulkanRenderer& renderer, Scene& scene) : m_scene(scene), m_renderer(renderer) {
     load_images_to_gpu();
     load_vertices_to_gpu();
 
@@ -12,6 +12,11 @@ VulkanScene::VulkanScene(VulkanRenderer& device, Scene& scene) : m_scene(scene),
     bind_images_to_descriptors();
     bind_samplers_to_descriptors();
     scene.mark_loaded_on_gpu(this);
+}
+auto VulkanScene::run_create_commands(vk::raii::CommandBuffer& command_buffer) -> void {
+    for (auto& command_lambda : m_scene_create_commands) {
+        command_lambda(command_buffer);
+    }
 }
 
 auto VulkanScene::push_create_command(CommandBufferRecordLambda&& record) -> void {
@@ -84,10 +89,10 @@ auto VulkanScene::bind_samplers_to_descriptors() -> void {
 
     auto descriptor_write = vk::WriteDescriptorSet {
         .dstSet = m_renderer.get_renderer_descriptor_set(),
-        .dstBinding = static_cast<uint32_t>(VulkanRenderer::DescriptorSetBindings::SampledImages),
+        .dstBinding = static_cast<uint32_t>(VulkanRenderer::DescriptorSetBindings::Samplers),
         .dstArrayElement = slot_start,
         .descriptorCount = static_cast<uint32_t>(m_samplers.size()),
-        .descriptorType = vk::DescriptorType::eSampledImage,
+        .descriptorType = vk::DescriptorType::eSampler,
         .pImageInfo = sampler_image_infos.data(),
     };
 

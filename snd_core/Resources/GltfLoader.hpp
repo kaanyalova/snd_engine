@@ -20,9 +20,8 @@ class GltfLoader {
   public:
     GltfLoader(std::string base_directory);
 
-    auto load_into_scene_with_opts(
-        SceneData& scene, std::span<const uint8_t> bytes, const tg3_parse_options& opts
-    ) -> void;
+    auto load_into_scene_with_opts(SceneData& scene, std::span<const uint8_t> bytes, const tg3_parse_options& opts)
+        -> void;
 
     auto load_into_scene(SceneData& scene, std::span<const uint8_t> bytes) -> void;
 
@@ -56,8 +55,7 @@ class GltfLoader {
     // get a pointer to the actual data inside an tg3_accessor, assuming what is inside
     // the accessor is of type T
     template <typename T>
-    auto get_accessor_view(const tg3_accessor* accessor, const tg3_model& model)
-        -> AccessorView<T> {
+    auto get_accessor_view(const tg3_accessor* accessor, const tg3_model& model) -> AccessorView<T> {
         uint32_t bytes_stride = 0;
 
         size_t accessor_offset = accessor->byte_offset;
@@ -99,8 +97,7 @@ class GltfLoader {
         }
     };
 
-    using GltfModelCache =
-        std::unordered_map<PrimitiveInstanceKey, uint32_t, PrimitiveInstanceKeyHasher>;
+    using GltfModelCache = std::unordered_map<PrimitiveInstanceKey, uint32_t, PrimitiveInstanceKeyHasher>;
 
     auto traverse_node(
         SceneData& scene,
@@ -123,7 +120,7 @@ class GltfLoader {
     ) -> void;
 
     auto load_materials(SceneData& scene, const tg3_model& model) -> void;
-    auto load_images(SceneData& scene, ModelRange& model_range, const tg3_model& model) -> void;
+    auto load_images(SceneData& scene, const tg3_model& model) -> void;
 
     auto load_textures(SceneData& scene, const tg3_model& model) -> void;
     auto load_samplers(SceneData& scene, const tg3_model& model) -> void;
@@ -134,9 +131,7 @@ class GltfLoader {
 
     auto tg3_str_to_string_view(const tg3_str& str) -> std::string_view;
 
-    auto load_image_with_mime_type_from_bytes(
-        std::span<const uint8_t> bytes, std::string_view mime_type
-    ) -> Image;
+    auto load_image_with_mime_type_from_bytes(std::span<const uint8_t> bytes, std::string_view mime_type) -> Image;
 
     [[nodiscard]] auto weave_vertex_data_from_accessors(
         const AccessorView<glm::vec3> positions,

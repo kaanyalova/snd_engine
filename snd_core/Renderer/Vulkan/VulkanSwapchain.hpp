@@ -17,9 +17,13 @@ class VulkanSwapchain {
     auto get_image_views() -> std::vector<vk::raii::ImageView>& { return m_image_views; }
     auto get_surface_format() -> vk::SurfaceFormatKHR& { return m_surface_format; }
 
+    auto wait_on_fence_for_frame() -> void;
+
   private:
     Window& m_window;
     VulkanDevice& m_device;
+
+    uint64_t m_frame_index = 0;
 
     vk::raii::SwapchainKHR m_swapchain = nullptr;
     std::vector<vk::Image> m_images = {};
@@ -40,8 +44,6 @@ class VulkanSwapchain {
     auto create_depth_images() -> void;
 
     auto choose_extent(const vk::SurfaceCapabilitiesKHR& capabilities) -> vk::Extent2D;
-    auto choose_surface_format(const std::vector<vk::SurfaceFormatKHR>& available_formats)
-        -> vk::SurfaceFormatKHR;
-    auto choose_present_mode(const std::vector<vk::PresentModeKHR>& available_modes)
-        -> vk::PresentModeKHR;
+    auto choose_surface_format(const std::vector<vk::SurfaceFormatKHR>& available_formats) -> vk::SurfaceFormatKHR;
+    auto choose_present_mode(const std::vector<vk::PresentModeKHR>& available_modes) -> vk::PresentModeKHR;
 };

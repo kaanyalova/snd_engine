@@ -61,6 +61,19 @@ class VulkanDevice {
     vk::Format m_depth_format = vk::Format::eUndefined;
     FamilyIndices m_family_indices = {};
     DeviceQueues m_queues = {};
+    vk::raii::DebugUtilsMessengerEXT m_debug_messenger = nullptr;
+
+    vk::Flags<vk::DebugUtilsMessageSeverityFlagBitsEXT> m_validation_log_level =
+        vk::DebugUtilsMessageSeverityFlagBitsEXT::eError
+        | vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning
+        | vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo;
+
+    vk::Flags<vk::DebugUtilsMessageTypeFlagBitsEXT> m_validation_message_types =
+        vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral
+        | vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance
+        | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation;
+
+    Window& m_window;
 
     std::vector<const char*> m_required_extensions;
     std::vector<const char*> m_validation_layers = {};
@@ -73,6 +86,16 @@ class VulkanDevice {
     auto create_logical_device() -> void;
     auto create_memory_allocator() -> void;
     auto find_depth_format() -> void;
+    auto create_surface() -> void;
+    auto setup_debug_messenger() -> void;
+    auto create_command_pool() -> void;
+
+    static auto debug_callback(
+        vk::DebugUtilsMessageSeverityFlagBitsEXT severity,
+        vk::DebugUtilsMessageTypeFlagsEXT type,
+        const vk::DebugUtilsMessengerCallbackDataEXT* callback_data,
+        void* _user_data
+    ) -> vk::Bool32;
 
     auto are_required_extensions_supported_by_instance() -> bool;
     auto is_device_suitable(const vk::raii::PhysicalDevice& device) -> bool;

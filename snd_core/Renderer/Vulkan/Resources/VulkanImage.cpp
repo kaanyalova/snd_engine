@@ -1,7 +1,12 @@
 #include "VulkanImage.hpp"
 
 #include "../VulkanRenderer.hpp"
+#include "VulkanScene.hpp"
 VulkanImage::VulkanImage(VulkanRenderer& renderer, VulkanScene& scene, const ImageView& image) : m_renderer(renderer) {
+    m_width = image.width;
+    m_height = image.height;
+    m_format = image.format;
+
     allocate_image(image);
     allocate_image_buffer(image);
     copy_image_data_to_buffer(image);
@@ -11,6 +16,7 @@ VulkanImage::VulkanImage(VulkanRenderer& renderer, VulkanScene& scene, const Ima
 auto VulkanImage::allocate_image(const ImageView& image) -> void {
     // todo: the image type is probably rgba8, and the gpu probably supports it but its better
     // to convert it to a format that i am sure that the gpu supports and the image format is
+
     auto image_create_info = vk::ImageCreateInfo {
         .imageType = vk::ImageType::e2D,
         .format = vk::Format::eR8G8B8A8Srgb,
@@ -21,6 +27,7 @@ auto VulkanImage::allocate_image(const ImageView& image) -> void {
                 .depth = 1,
             },
         .mipLevels = 1,
+        .arrayLayers = 1,
         .samples = vk::SampleCountFlagBits::e1,
         .tiling = vk::ImageTiling::eOptimal,
         .usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled,
@@ -49,7 +56,7 @@ auto VulkanImage::allocate_image(const ImageView& image) -> void {
 }
 
 auto VulkanImage::copy_buffer_to_image(VulkanScene& scene) -> void {
-    auto command = [&](const vk::CommandBuffer& command_buffer) {
+    auto command = [&](const vk::raii::CommandBuffer& command_buffer) {
         auto image_barrier = vk::ImageMemoryBarrier2 {
             .srcStageMask = vk::PipelineStageFlagBits2::eNone,
             .srcAccessMask = vk::AccessFlagBits2::eNone,
@@ -71,7 +78,25 @@ auto VulkanImage::copy_buffer_to_image(VulkanScene& scene) -> void {
         };
 
         command_buffer.pipelineBarrier2(barrier_dependency_info);
-        command_buffer.copyBufferToImage(m_buffer, m_image, vk::ImageLayout::eTransferDstOptimal, {});
+        command_buffer.copyBufferToImage(
+            m_buffer,
+            m_image,
+            vk::ImageLayout::eTransferDstOptimal,
+            {vk::BufferImageCopy {
+                .bufferOffset = 0,
+                .imageSubresource =
+                    vk::ImageSubresourceLayers {
+                        .aspectMask = vk::ImageAspectFlagBits::eColor,
+                        .mipLevel = 0,
+                        .layerCount = 1,
+                    },
+                .imageExtent = vk::Extent3D {
+                    .width = m_width,
+                    .height = m_height,
+                    .depth = 1,
+                },
+            }}
+        );
 
         // todo: support mips
         // std::vector<vk::BufferImageCopy> copy_regions = {};
@@ -118,6 +143,7 @@ auto VulkanImage::allocate_image_buffer(const ImageView& image) -> void {
 auto VulkanImage::copy_image_data_to_buffer(const ImageView& image) -> void {
     void* buffer = m_buffer.getAllocation().map();
     std::memcpy(buffer, image.data.data(), image.data.size());
+    m_buffer.getAllocation().unmap();
 }
 
 VulkanImage::~VulkanImage() {
