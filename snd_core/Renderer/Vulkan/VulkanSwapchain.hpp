@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "snd_core/Renderer/Vulkan/VulkanCommandBuffer.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
@@ -18,6 +19,7 @@ class VulkanSwapchain {
     auto get_surface_format() -> vk::SurfaceFormatKHR& { return m_surface_format; }
 
     auto wait_on_fence_for_frame() -> void;
+    auto acquire_next_image() -> void;
 
   private:
     Window& m_window;
@@ -35,8 +37,8 @@ class VulkanSwapchain {
     vk::raii::ImageView m_depth_image_view = nullptr;
 
     // Sync
-    std::vector<vk::raii::Semaphore> m_present_complete_semaphores = {};
-    std::vector<vk::raii::Semaphore> m_render_finished_semaphores = {};
+    std::vector<vk::raii::Semaphore> m_image_acquired_semaphores = {};
+    std::vector<vk::raii::Semaphore> m_submit_semaphores = {};
     std::vector<vk::raii::Fence> m_in_flight_fences = {};
 
     auto create() -> void;

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_C_COMPILER gcc)
 
-project(sneed)
+project(snd)
 
 
 find_package(Vulkan REQUIRED)

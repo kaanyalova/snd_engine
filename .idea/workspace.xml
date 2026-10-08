@@ -86,29 +86,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneNode.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanVertexBuffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanVertexBuffer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanDevice.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanDevice.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanDevice.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanDevice.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSwapchain.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/GltfLoader.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/Scene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Resources/Scene/SceneData.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_tools/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_tools/src/main.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

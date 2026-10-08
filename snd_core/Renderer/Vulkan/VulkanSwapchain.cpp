@@ -1,6 +1,8 @@
 
 #include "snd_core/Renderer/Vulkan/VulkanSwapchain.hpp"
 
+#include <limits>
+
 #include "vk_mem_alloc_structs.hpp"
 #include "vulkan/vulkan.hpp"
 
@@ -183,4 +185,9 @@ auto VulkanSwapchain::create_depth_images() -> void {
     };
 
     m_depth_image_view = m_device.inner().createImageView(depth_image_view_create_info);
+}
+
+auto VulkanSwapchain::acquire_next_image() -> void {
+    // m_swapchain.acquireNextImage(std::numeric_limits<uint64_t>::max(), m_image_acquired_semaphores[m_frame_index],
+    // nullptr, )
 }

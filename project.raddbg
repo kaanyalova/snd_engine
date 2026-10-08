@@ -1,0 +1,8 @@
+// raddbg 0.9.30 project file
+
+target:
+{
+  executable: "./build/debug/snd_tools/snd_tools"
+  working_directory: "./build/debug/snd_tools/"
+  enabled: 1
+}
