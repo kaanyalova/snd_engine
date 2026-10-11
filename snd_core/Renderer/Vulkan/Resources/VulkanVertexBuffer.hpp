@@ -2,8 +2,9 @@
 #include <span>
 #include <vk_mem_alloc_raii.hpp>
 
-#include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
 #include "snd_core/Resources/Scene/SceneData.hpp"
+
+class VulkanRenderer;
 
 class VulkanVertexBuffer {
   public:

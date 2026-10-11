@@ -3,6 +3,8 @@
 #include <vk_mem_alloc.hpp>
 #include <vulkan/vulkan.hpp>
 
+#include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
+
 VulkanVertexBuffer::VulkanVertexBuffer(
     VulkanRenderer& renderer, std::span<const Vertex> vertices, std::span<const uint32_t> indices
 )
@@ -34,7 +36,7 @@ auto VulkanVertexBuffer::load_to_gpu() -> void {
     if (m_vertices.size() > 0) {
         allocation.copyFromMemory(m_vertices.data(), 0, vertex_size);
     }
-    
+
     if (m_indices.size() > 0) {
         allocation.copyFromMemory(m_indices.data(), vertex_size, index_size);
     }

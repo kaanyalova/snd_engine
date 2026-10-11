@@ -5,6 +5,7 @@
 
 #include "snd_cli_builder/CliBuilder.hpp"
 #include "snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp"
+#include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
 #include "snd_core/Resources/GltfLoader.hpp"
 #include "snd_core/Resources/Scene/Scene.hpp"
 
@@ -23,16 +24,16 @@ auto main(int argc, char** argv) -> int {
                 std::string stats = scene_data.get_scene_stats();
                 std::println("{}", stats);
 
-                auto window = Window("test", 640, 480);
-                auto renderer = VulkanRenderer(window, RendererSettings {.enable_validation = true});
-                Scene scene = Scene(renderer.get_device());
-                scene.push_scene_data(scene_data);
-                auto gpu_scene = VulkanScene(renderer, scene);
-                renderer.submit_single_command(
-                    [&](vk::raii::CommandBuffer& command_buffer) { gpu_scene.run_create_commands(command_buffer); },
-                    nullptr
-                );
-                renderer.get_device().inner().waitIdle();
+                // auto window = Window("test", 640, 480);
+                // auto renderer = VulkanRenderer(window, RendererSettings {.enable_validation = true});
+                // Scene scene = Scene(renderer.get_device());
+                // scene.push_scene_data(scene_data);
+                // auto gpu_scene = VulkanScene(renderer, scene);
+                // renderer.submit_single_command(
+                // [&](vk::raii::CommandBuffer& command_buffer) { gpu_scene.run_create_commands(command_buffer); },
+                // nullptr
+                // );
+                // renderer.get_device().inner().waitIdle();
             })
             .build()
             .build();

@@ -50,6 +50,8 @@ class GltfLoader {
             HashUtils::hash_combine(hash, reinterpret_cast<uintptr_t>(pointer));
             return hash;
         }
+
+        auto operator==(const AccessorView&) const -> bool = default;
     };
 
     // get a pointer to the actual data inside an tg3_accessor, assuming what is inside
@@ -85,10 +87,12 @@ class GltfLoader {
         AccessorView<glm::vec3> positions;
         AccessorView<glm::vec2> texture_coords;
         AccessorView<glm::vec3> normals;
+
+        auto operator==(const PrimitiveInstanceKey&) const -> bool = default;
     };
 
     struct PrimitiveInstanceKeyHasher {
-        auto operator()(const PrimitiveInstanceKey& key) -> size_t const {
+        auto operator()(const PrimitiveInstanceKey& key) const -> size_t const {
             size_t hash = 0;
             HashUtils::hash_combine(hash, key.positions.hash());
             HashUtils::hash_combine(hash, key.texture_coords.hash());
@@ -98,13 +102,16 @@ class GltfLoader {
     };
 
     using GltfModelCache = std::unordered_map<PrimitiveInstanceKey, uint32_t, PrimitiveInstanceKeyHasher>;
+    // maps indices of primitives to their instances
+    using InstancesOfPrimitives = std::vector<std::vector<PrimitiveInstance>>;
 
     auto traverse_node(
         SceneData& scene,
         GltfModelCache& cache,
         const tg3_model& gltf_model,
         const tg3_node& gltf_node,
-        const glm::mat4x4& parent_transform
+        const glm::mat4x4& parent_transform,
+        InstancesOfPrimitives& instances_of_primitives
     ) -> void;
 
     auto unwrap_error_stack() -> void;
@@ -116,7 +123,8 @@ class GltfLoader {
         int32_t primitive_index,
         SceneData& data,
         const tg3_model& model,
-        GltfModelCache& cache
+        GltfModelCache& cache,
+        InstancesOfPrimitives& instances_of_primitives
     ) -> void;
 
     auto load_materials(SceneData& scene, const tg3_model& model) -> void;
@@ -139,6 +147,14 @@ class GltfLoader {
         const AccessorView<glm::vec3> normals,
         const tg3_model& model
     ) -> std::vector<Vertex>;
+
+    /**
+     * @brief Linearly arrange the primitive instances from m_instances_of_primitives to
+     * the scene.primitive_instances and make scene.primitives to point to the ranges
+     *
+     * As the vulkan draw commands requires grouping of instances of primitives by the primitives themselves
+     */
+    auto build_primitive_instance_array(const InstancesOfPrimitives& instances_of_primitives, SceneData& scene) -> void;
 
     std::string m_base_directory;
     tg3_error_stack m_error_stack;

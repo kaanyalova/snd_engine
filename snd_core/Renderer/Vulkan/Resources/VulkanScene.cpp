@@ -1,8 +1,14 @@
 #include "VulkanScene.hpp"
 
 #include <ranges>
+#include <vector>
 
+#include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
+#include "snd_core/Resources/Component/ModelComponent.hpp"
 #include "snd_core/Resources/Scene/Scene.hpp"
+#include "vk_mem_alloc_enums.hpp"
+#include "vk_mem_alloc_structs.hpp"
+#include "vulkan/vulkan.hpp"
 
 VulkanScene::VulkanScene(VulkanRenderer& renderer, Scene& scene) : m_scene(scene), m_renderer(renderer) {
     load_images_to_gpu();
@@ -101,4 +107,27 @@ auto VulkanScene::bind_samplers_to_descriptors() -> void {
     for (size_t i = 0; i < m_samplers.size(); i++) {
         m_samplers[i]->set_slot(slot_start + i);
     }
+}
+
+auto VulkanScene::build_indirect_draw_commands() -> void {
+    std::vector<vk::DrawIndexedIndirectCommand> draw_commands;
+
+    const SceneNode& node = m_scene.get_root_node();
+    const auto& components = node.get_components();
+
+    for (const auto& component : components) {
+        if (auto model = dynamic_cast<const ModelComponent*>(component.get())) {
+            auto range = model->get_model_range();
+        }
+    }
+}
+
+auto VulkanScene::model_range_to_draw_command(const ModelRange& model_range) -> vk::DrawIndexedIndirectCommand {
+    auto command = vk::DrawIndexedIndirectCommand {
+        .indexCount = model_range.indices.length,
+        .instanceCount = model_range.primitive_instances.index,
+        .firstIndex = model_range.indices.index,
+        .vertexOffset = static_cast<int32_t>(model_range.vertices.index),
+        .firstInstance = model_range.primitive_instances.index,
+    };
 }

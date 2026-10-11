@@ -1,4 +1,7 @@
 #include "VulkanSampler.hpp"
+
+#include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
+
 VulkanSampler::VulkanSampler(VulkanRenderer& renderer, const SamplerData& sampler_data) : m_renderer(renderer) {
     create_sampler(sampler_data);
 }

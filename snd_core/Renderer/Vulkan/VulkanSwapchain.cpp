@@ -188,6 +188,8 @@ auto VulkanSwapchain::create_depth_images() -> void {
 }
 
 auto VulkanSwapchain::acquire_next_image() -> void {
-    // m_swapchain.acquireNextImage(std::numeric_limits<uint64_t>::max(), m_image_acquired_semaphores[m_frame_index],
-    // nullptr, )
+    m_image_index =
+        m_swapchain
+            .acquireNextImage(std::numeric_limits<uint64_t>::max(), m_image_acquired_semaphores[m_frame_index], nullptr)
+            .value;
 }

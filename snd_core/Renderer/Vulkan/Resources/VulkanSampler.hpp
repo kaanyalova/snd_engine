@@ -1,6 +1,9 @@
 #pragma once
-#include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
+#include <vulkan/vulkan_raii.hpp>
+
 #include "snd_core/Resources/Scene/SceneData.hpp"
+
+class VulkanRenderer;
 
 /**
  * A sampler that's allocated on the GPU and bound to one of the slots of the

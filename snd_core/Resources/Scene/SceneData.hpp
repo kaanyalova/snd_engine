@@ -30,6 +30,9 @@ struct IndexSpan {
 struct Primitive {
     uint32_t material_index;
     IndexSpan vertex_span;
+    IndexSpan instances;
+
+    auto view_of_instances(std::span<const PrimitiveInstance> buffer) const -> std::span<const PrimitiveInstance>;
 };
 
 struct MaterialData {
@@ -60,6 +63,7 @@ struct SamplerData {
 
 struct ModelRange {
     IndexSpan primitive_instances;
+
     IndexSpan primitives;
     IndexSpan materials;
     IndexSpan textures;

@@ -2,12 +2,14 @@
 
 #include <imgui_impl_vulkan.h>
 
+#include <memory>
 #include <optional>
 
-#include "../../Resources/Scene/SceneData.hpp"
 #include "Resources/VulkanImage.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanSwapchain.hpp"
+
+class VulkanScene;
 
 struct RendererValidationSettings {};
 
@@ -49,6 +51,8 @@ class VulkanRenderer {
         Samplers = 1,
     };
 
+    ~VulkanRenderer();
+
     // auto allocate_samplers(std::span<SamplerData> samplers) -> std::vector<>;
 
   private:
@@ -74,6 +78,8 @@ class VulkanRenderer {
     std::vector<CommandBufferRecordLambda> m_remaining_records;
 
     RendererSettings m_settings;
+
+    std::unique_ptr<VulkanScene> m_loaded_scene;  // = nullptr, does not compile if you set it though wtf
 
     Window& m_window;
 

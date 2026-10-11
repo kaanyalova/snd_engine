@@ -17,6 +17,8 @@ class VulkanSwapchain {
     auto get_images() -> std::vector<vk::Image>& { return m_images; }
     auto get_image_views() -> std::vector<vk::raii::ImageView>& { return m_image_views; }
     auto get_surface_format() -> vk::SurfaceFormatKHR& { return m_surface_format; }
+    auto get_frame_index() -> uint32_t { return m_frame_index; }
+    auto get_image_index() -> uint32_t { return m_image_index; }
 
     auto wait_on_fence_for_frame() -> void;
     auto acquire_next_image() -> void;
@@ -25,7 +27,8 @@ class VulkanSwapchain {
     Window& m_window;
     VulkanDevice& m_device;
 
-    uint64_t m_frame_index = 0;
+    uint32_t m_frame_index = 0;
+    uint32_t m_image_index = 0;
 
     vk::raii::SwapchainKHR m_swapchain = nullptr;
     std::vector<vk::Image> m_images = {};

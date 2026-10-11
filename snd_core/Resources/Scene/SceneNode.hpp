@@ -7,6 +7,8 @@
 class SceneNode {
   public:
     SceneNode();
+    auto get_children() const -> const std::vector<SceneNode>& { return children; }
+    auto get_components() const -> const std::vector<std::unique_ptr<Component>>& { return components; }
 
   private:
     SceneNode* parent;

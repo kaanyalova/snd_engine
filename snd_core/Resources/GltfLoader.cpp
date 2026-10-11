@@ -1,7 +1,8 @@
 
-#define TINYGLTF3_IMPLEMENTATION
-#include "snd_core/Resources/GltfLoader.hpp"
+#include <cstdint>
 
+#include "snd_core/Resources/Scene/SceneData.hpp"
+#define TINYGLTF3_IMPLEMENTATION
 #include <tiny_gltf_v3.h>
 
 #include <cassert>
@@ -21,6 +22,7 @@
 
 #include "snd_core/Image/KtxImage.hpp"
 #include "snd_core/Image/StbImage.hpp"
+#include "snd_core/Resources/GltfLoader.hpp"
 #include "snd_core/Resources/Scene/Scene.hpp"
 #include "snd_core/Utils/FileUtils.hpp"
 
@@ -54,13 +56,14 @@ auto GltfLoader::load_into_scene_with_opts(
     unwrap_error_stack();
 
     GltfModelCache cache = {};
+    InstancesOfPrimitives instances_of_primitives = {};
 
     for (size_t i = 0; i < model.scenes_count; i++) {
         const tg3_scene& tg3_scene = model.scenes[i];
 
         for (size_t i = 0; i < tg3_scene.nodes_count; i++) {
             const tg3_node& node = model.nodes[tg3_scene.nodes[i]];
-            traverse_node(scene, cache, model, node, glm::mat4x4(1.0f));
+            traverse_node(scene, cache, model, node, glm::mat4x4(1.0f), instances_of_primitives);
         }
     }
 
@@ -68,6 +71,7 @@ auto GltfLoader::load_into_scene_with_opts(
     load_materials(scene, model);
     load_textures(scene, model);
     load_samplers(scene, model);
+    build_primitive_instance_array(instances_of_primitives, scene);
 };
 
 auto GltfLoader::traverse_node(
@@ -75,7 +79,8 @@ auto GltfLoader::traverse_node(
     GltfModelCache& cache,
     const tg3_model& gltf_model,
     const tg3_node& gltf_node,
-    const glm::mat4x4& parent_transform
+    const glm::mat4x4& parent_transform,
+    InstancesOfPrimitives& instances_of_primitives
 ) -> void {
     const glm::mat4x4 local = get_node_transform(gltf_node);
     const glm::mat4x4 world = parent_transform * local;
@@ -87,7 +92,7 @@ auto GltfLoader::traverse_node(
 
         for (size_t i = 0; i < mesh.primitives_count; i++) {
             const tg3_primitive& primitive = mesh.primitives[i];
-            push_primitive(primitive, world, i, scene, gltf_model, cache);
+            push_primitive(primitive, world, i, scene, gltf_model, cache, instances_of_primitives);
 
             // push_primitive(m_c, SceneData &data, const tg3_model &model, const tg3_primitive
             // &primitive, ModelRange &model_range, int32_t primitive_index, glm::mat4
@@ -98,7 +103,7 @@ auto GltfLoader::traverse_node(
     for (size_t i = 0; i < gltf_node.children_count; i++) {
         uint32_t node_index = gltf_node.children[i];
         const tg3_node& child_node = gltf_model.nodes[node_index];
-        traverse_node(scene, cache, gltf_model, child_node, world);
+        traverse_node(scene, cache, gltf_model, child_node, world, instances_of_primitives);
     }
 }
 
@@ -159,7 +164,8 @@ auto GltfLoader::push_primitive(
     int32_t primitive_index,
     SceneData& data,
     const tg3_model& model,
-    GltfModelCache& cache
+    GltfModelCache& cache,
+    InstancesOfPrimitives& instances_of_primitives
 ) -> void {
     if (primitive.mode != TG3_MODE_TRIANGLES) {
         std::println(
@@ -211,13 +217,44 @@ auto GltfLoader::push_primitive(
         );
     }
 
-    // always push the instance
-    data.primitive_instances.emplace_back(
-        PrimitiveInstance {
+    auto cache_key = PrimitiveInstanceKey {
+        .positions = position_accessor.value(),
+        .texture_coords = texture_coord_accessor.value(),
+        .normals = normal_accessor.value(),
+    };
+
+    PrimitiveInstance primitive_instance;
+    bool is_cached = cache.contains(cache_key);
+    uint32_t scene_primitive_index = 0;
+
+    if (is_cached) {
+        scene_primitive_index = cache.at(cache_key);
+
+        primitive_instance = PrimitiveInstance {
             .transform = world_transform,
-            .primitive_index = static_cast<uint32_t>(data.primitives.size()),
-        }
-    );
+            .primitive_index = scene_primitive_index,
+        };
+    } else {
+        // the primitive is the next one on the array of primitives as we are about to push the primitive
+        scene_primitive_index = data.primitives.size();
+
+        primitive_instance = PrimitiveInstance {
+            .transform = world_transform,
+            .primitive_index = scene_primitive_index,
+        };
+
+        instances_of_primitives.emplace_back(std::vector<PrimitiveInstance>());
+    }
+
+    instances_of_primitives[scene_primitive_index].emplace_back(primitive_instance);
+
+    // always push the instance
+    // data.primitive_instances.emplace_back(
+    //    PrimitiveInstance {
+    //        .transform = world_transform,
+    //        .primitive_index = static_cast<uint32_t>(data.primitives.size()),
+    //    }
+    //);
 
     // push the data if it isn't in the cache
     std::vector<Vertex> vertices = weave_vertex_data_from_accessors(
@@ -385,4 +422,22 @@ auto GltfLoader::load_image_with_mime_type_from_bytes(std::span<const uint8_t> b
     }
 
     return image;
+}
+
+auto GltfLoader::build_primitive_instance_array(const InstancesOfPrimitives& instances_of_primitives, SceneData& scene)
+    -> void {
+    for (size_t i = 0; i < instances_of_primitives.size(); i++) {
+        const std::vector<PrimitiveInstance>& instances = instances_of_primitives[i];
+        Primitive& primitive = scene.primitives[i];
+
+        size_t start_index = scene.primitive_instances.size();
+        size_t count = instances.size();
+
+        scene.primitive_instances.append_range(instances);
+
+        primitive.instances = IndexSpan {
+            .index = static_cast<uint32_t>(start_index),
+            .length = static_cast<uint32_t>(count),
+        };
+    }
 }

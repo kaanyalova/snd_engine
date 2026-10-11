@@ -12,7 +12,11 @@ auto ImageData::view_of(std::span<const uint8_t> data) const -> ImageView {
     };
 }
 auto SceneData::get_scene_stats() -> std::string {
-    std::string scene_stats = std::format(
+    std::string stats = "";
+
+    stats += "Scene stats\n";
+    stats += "-------------------------- \n";
+    std::string counts = std::format(
         "Scene stats:\n {}  primitive instances\n {} primitives\n {} materials\n {} "
         "textures\n {} samplers\n {} vertices\n {} indices\n {:.2f}mb image data\n {:.2f}mb vertex "
         "data",
@@ -26,6 +30,25 @@ auto SceneData::get_scene_stats() -> std::string {
         static_cast<double>(image_data.size()) / 1024.0 / 1024.0,
         static_cast<double>(vertices.size() * sizeof(Vertex)) / 1024.0 / 1024.0
     );
+    stats += counts + "\n";
 
-    return scene_stats;
+    stats += "-------------------------- \n";
+    stats += "Instance ranges \n";
+
+    for (size_t i = 0; i < primitives.size(); i++) {
+        Primitive& primitive = primitives[i];
+
+        std::string range = std::format(
+            "Primitive {} [{}..{}] ({} instances) \n",
+            i,
+            primitive.instances.index,
+            primitive.instances.index + primitive.instances.length,
+            primitive.instances.length
+        );
+
+        stats += range;
+    }
+
+    stats += "-------------------------- \n";
+    return stats;
 }

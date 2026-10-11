@@ -1,5 +1,6 @@
 #include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
 
+#include "snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanSwapchain.hpp"
 
@@ -209,4 +210,9 @@ auto VulkanRenderer::create_imgui_init_info() -> ImGui_ImplVulkan_InitInfo {
 }
 
 auto VulkanRenderer::process() -> void {
+    m_swapchain->wait_on_fence_for_frame();
+    m_swapchain->acquire_next_image();
+}
+
+VulkanRenderer::~VulkanRenderer() {
 }
