@@ -1,14 +1,15 @@
 #pragma once
 
 #include <optional>
+#include <string>
 #include <vector>
 
-#include "../../Renderer/Vulkan/Resources/VulkanScene.hpp"
-#include "SceneData.hpp"
-#include "glm/fwd.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
+#include "snd_core/Resources/Scene/BakedScene.hpp"
+#include "snd_core/Resources/Scene/SceneData.hpp"
 #include "snd_core/Resources/Scene/SceneNode.hpp"
 
+struct BakedScene;
 enum class SceneLoadState : uint8_t {
     Unloaded,
     LoadedOnCpu,
@@ -20,18 +21,6 @@ enum class SceneLoadState : uint8_t {
 // - group them by model->primitive so i can draw duplicate primitives in a single command of the indirect whatever
 // - build indirect draw ranges from the primitive instances
 // -
-
-struct ScenePrimitiveInstance {
-    uint32_t primitive_index;
-    glm::mat4x4 transform;
-    uint32_t node_transform_index;
-};
-
-struct BakedScene {
-    std::vector<IndexSpan> primitive_draw_ranges;
-    std::vector<ScenePrimitiveInstance> baked_primitives;
-    std::vector<glm::mat4x4> scene_node_transforms;
-};
 
 /*
   for (i, primitive) in primitive_ranges:
@@ -47,28 +36,39 @@ struct BakedScene {
 
 class Scene {
   public:
-    Scene(VulkanDevice& device);
+    Scene();
 
     auto get_data() const -> const SceneData& { return m_data; }
     auto push_scene_data(const SceneData& other) -> void;
-    auto get_root_node() const -> const SceneNode& { return m_root; }
+    auto get_root_node() -> SceneNode& { return m_root_node; }
+    auto get_root_node() const -> const SceneNode& { return m_root_node; }
+
     auto get_models() const -> const std::vector<ModelRange>& { return m_models; }
 
     static auto get_texture_index_with_white_fallback(int32_t index) -> uint32_t;
     static auto get_texture_index_with_black_fallback(int32_t index) -> uint32_t;
     static auto get_material_index_with_default_fallback(SceneData& data, int32_t index) -> uint32_t;
 
-    auto mark_loaded_on_gpu(VulkanScene* vulkan_scene) -> void;
+    auto mark_loaded_on_gpu() -> void;
+
+    auto bake_scene() -> void;
+    auto get_baked_scene_data() const -> const BakedScene& { return m_baked_scene.value(); }
+
+    auto traverse_and_bake_scene_primitive_instances(SceneNode* node) -> void;
+    auto sort_primitive_instances_and_build_ranges() -> void;
+    auto traverse_and_bake_scene_node_transforms(SceneNode* node) -> void;
+    auto get_stats() -> std::string;
 
   private:
-    SceneNode m_root = SceneNode();
+    SceneNode m_root_node = SceneNode();
 
     // the data is arranged linearly for each field
     SceneData m_data;
     // the ranges for each individual model thats loaded
     std::vector<ModelRange> m_models;
 
-    VulkanScene* m_vulkan_scene = nullptr;
+    std::optional<BakedScene> m_baked_scene = std::nullopt;
+
     SceneLoadState m_scene_load_state = SceneLoadState::Unloaded;
 
     // the first two textures in a scene is black then white

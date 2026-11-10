@@ -45,9 +45,6 @@ add_library(snd_core STATIC
         Utils/ImGuiUtils.cpp
         Utils/StringUtils.hpp
         Utils/StringUtils.cpp
-        Renderer/RenderGraph/FrameGraphBuilder.hpp
-        Renderer/RenderGraph/FrameGraphResource.cpp
-        Renderer/RenderGraph/FrameGraphResource.hpp
         TemplateHelpers/VariantMatch.hpp
         TemplateHelpers/IsLegitVariant.hpp
         Resources/Scene/SceneData.cpp
@@ -58,10 +55,36 @@ add_library(snd_core STATIC
         Renderer/Vulkan/Resources/VulkanImage.hpp
         Renderer/Vulkan/Resources/VulkanSampler.cpp
         Renderer/Vulkan/Resources/VulkanSampler.hpp
-        Renderer/Vulkan/Resources/VulkanVertexBuffer.cpp
-        Renderer/Vulkan/Resources/VulkanVertexBuffer.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanVertexBuffer.cpp
+        Renderer/Vulkan/Resources/Buffers/VulkanVertexBuffer.hpp
         Image/Image.cpp
         Resources/Scene/SceneNode.cpp
+        Resources/Scene/SceneTestData.cpp
+        Resources/Scene/SceneTestData.hpp
+        Resources/Scene/BakedScene.cpp
+        Resources/Scene/BakedScene.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanMaterialBuffer.cpp
+        Renderer/Vulkan/Resources/Buffers/VulkanMaterialBuffer.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanSceneTransformBuffer.cpp
+        Renderer/Vulkan/Resources/Buffers/VulkanSceneTransformBuffer.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanSceneBuffer.cpp
+        Renderer/Vulkan/Resources/Buffers/VulkanSceneBuffer.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanBakedPrimitiveInstanceBuffer.cpp
+        Renderer/Vulkan/Resources/Buffers/VulkanBakedPrimitiveInstanceBuffer.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanPrimitiveBuffer.cpp
+        Renderer/Vulkan/Resources/Buffers/VulkanPrimitiveBuffer.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanBuffer.cpp
+        Renderer/Vulkan/Resources/Buffers/VulkanBuffer.hpp
+        Renderer/Vulkan/Resources/Buffers/VulkanIndirectCommandBuffer.hpp
+
+        Resources/Component/CameraComponent.cpp
+        Resources/Component/CameraComponent.hpp
+        Renderer/RenderGraph/RenderPass.cpp
+        Renderer/RenderGraph/RenderPass.hpp
+        Renderer/RenderGraph/RenderGraph.cpp
+        Renderer/RenderGraph/RenderGraph.hpp
+        Renderer/RenderGraphImpl/TestRenderPass.cpp
+        Renderer/RenderGraphImpl/TestRenderPass.hpp
 )
 
 # include dir is the parent so includes read "snd_core/Window.hpp"

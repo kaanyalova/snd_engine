@@ -7,7 +7,7 @@
 
 class VulkanCommandBuffer {
   public:
-    VulkanCommandBuffer() = default;
+    VulkanCommandBuffer() = delete;
     VulkanCommandBuffer(VulkanDevice& device);
 
     auto inner() -> vk::raii::CommandPool&;

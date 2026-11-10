@@ -113,7 +113,7 @@ auto GltfLoader::unwrap_error_stack() -> void {
 
         for (size_t i = 0; i < m_error_stack.count; i++) {
             const tg3_error_entry& error = m_error_stack.entries[i];
-            std::string error_message = std::format("{}: {}\n", get_severity_string(error.severity), error.message);
+            error_messages += std::format("{}: {}\n", get_severity_string(error.severity), error.message);
         }
 
         throw std::runtime_error(error_messages);

@@ -2,3 +2,5 @@
 
 SceneNode::SceneNode() {
 }
+SceneNode::SceneNode(glm::mat4 transform) : m_transform(transform) {
+}

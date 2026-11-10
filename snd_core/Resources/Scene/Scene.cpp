@@ -1,6 +1,8 @@
 #include "snd_core/Resources/Scene/Scene.hpp"
 
-Scene::Scene(VulkanDevice& device) {
+#include <ranges>
+
+Scene::Scene() {
 }
 
 auto Scene::push_scene_data(const SceneData& other) -> void {
@@ -8,10 +10,20 @@ auto Scene::push_scene_data(const SceneData& other) -> void {
 
     model_range.primitive_instances.index = m_data.primitive_instances.size();
     model_range.primitive_instances.length = other.primitive_instances.size();
-    m_data.primitive_instances.append_range(other.primitive_instances);
 
     model_range.primitives.index = m_data.primitives.size();
     model_range.primitives.length = other.primitives.size();
+
+    // fix others local primitive_instances to use the actual scene data
+    for (const auto& instance : other.primitive_instances) {
+        m_data.primitive_instances.emplace_back(
+            PrimitiveInstance {
+                .transform = instance.transform,
+                .primitive_index = instance.primitive_index + model_range.primitives.index,
+            }
+        );
+    }
+
     m_data.primitives.append_range(other.primitives);
 
     model_range.materials.index = m_data.materials.size();
@@ -67,8 +79,87 @@ auto Scene::get_material_index_with_default_fallback(SceneData& data, int32_t in
     }
     return static_cast<uint32_t>(index);
 }
-auto Scene::mark_loaded_on_gpu(VulkanScene* vulkan_scene) -> void {
+auto Scene::mark_loaded_on_gpu() -> void {
     m_scene_load_state = SceneLoadState::LoadedOnGpu;
-    m_vulkan_scene = vulkan_scene;
     m_data = {};
+}
+
+auto Scene::bake_scene() -> void {
+    m_baked_scene = BakedScene {};
+
+    traverse_and_bake_scene_node_transforms(&m_root_node);
+    traverse_and_bake_scene_primitive_instances(&m_root_node);
+    sort_primitive_instances_and_build_ranges();
+}
+
+auto Scene::traverse_and_bake_scene_primitive_instances(SceneNode* node) -> void {
+    for (const auto& model : node->get_model_components()) {
+        const ModelRange& model_range = model.get_model_range();
+
+        for (size_t i = 0; i < model_range.primitive_instances.length; i++) {
+            size_t instance_index = model_range.primitive_instances.index + i;
+            const PrimitiveInstance& instance = m_data.primitive_instances[instance_index];
+
+            auto baked_instance = BakedPrimitiveInstance {
+                .primitive_index = instance.primitive_index,
+                .node_transform_index = node->get_baked_transform_index(),
+                .transform = instance.transform,
+            };
+
+            m_baked_scene->primitive_instances.emplace_back(baked_instance);
+        }
+    }
+
+    for (auto& child : node->get_mutable_children()) {
+        traverse_and_bake_scene_primitive_instances(child.get());
+    }
+}
+
+auto Scene::sort_primitive_instances_and_build_ranges() -> void {
+    std::ranges::sort(m_baked_scene->primitive_instances, [](BakedPrimitiveInstance& lhs, BakedPrimitiveInstance& rhs) {
+        return lhs.primitive_index < rhs.primitive_index;
+    });
+
+    auto chunks = std::views::chunk_by(
+        m_baked_scene->primitive_instances, [](BakedPrimitiveInstance& lhs, BakedPrimitiveInstance& rhs) {
+            return lhs.primitive_index == rhs.primitive_index;
+        }
+    );
+
+    for (const auto& chunk : chunks) {
+        auto span = IndexSpan {
+            .index = static_cast<uint32_t>(chunk.begin() - m_baked_scene->primitive_instances.begin()),
+            .length = static_cast<uint32_t>(chunk.size()),
+        };
+
+        m_baked_scene->primitive_draw_ranges.emplace_back(span);
+    }
+}
+
+auto Scene::traverse_and_bake_scene_node_transforms(SceneNode* node) -> void {
+    if (node->has_parent()) {
+        node->set_transform(node->get_parent()->get_transform() * node->get_transform());
+    }
+
+    if (m_baked_scene.has_value()) {
+        node->set_baked_transform_index(m_baked_scene->scene_node_transforms.size());
+        m_baked_scene->scene_node_transforms.emplace_back(node->get_transform());
+    }
+
+    for (auto& child : node->get_mutable_children()) {
+        traverse_and_bake_scene_node_transforms(child.get());
+    }
+}
+
+auto Scene::get_stats() -> std::string {
+    std::string result;
+    result += m_data.get_scene_stats();
+
+    if (m_baked_scene.has_value()) {
+        result += m_baked_scene->get_stats();
+    } else {
+        result += "Scene is not baked\n";
+    }
+
+    return result;
 }

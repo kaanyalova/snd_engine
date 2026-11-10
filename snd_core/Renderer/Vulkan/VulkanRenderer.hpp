@@ -26,6 +26,11 @@ class VulkanRenderer {
 
     auto recreate_swapchain() -> void;
     auto create_imgui_init_info() -> ImGui_ImplVulkan_InitInfo;
+    auto run_draw_commands(
+        const vk::CommandBuffer& command_buffer, const std::vector<vk::DrawIndexedIndirectCommand>& commands
+    ) -> void;
+    auto begin_rendering() -> void;
+    auto set_up_dynamic_state() -> void;
     auto process() -> void;
 
     auto get_device() -> VulkanDevice& { return m_device.value(); }

@@ -6,9 +6,13 @@
 
 class ModelComponent : public Component {
   public:
-    auto get_model_range() const -> const ModelRange& { return model_range; }
+    ModelComponent(ModelRange model_range);
+
+    auto get_model_range() const -> const ModelRange& { return m_model_range; }
+    // auto set_transform(const glm::mat4x4& transform) -> void { /* TODO */ }
+    auto set_material_index(uint32_t index) -> void { /* TODO */ }
 
   private:
-    ModelRange model_range;
-    glm::mat4x4 transform;
+    ModelRange m_model_range;
+    uint64_t m_scene_transform_index;
 };

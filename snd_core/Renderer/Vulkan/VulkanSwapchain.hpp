@@ -23,6 +23,12 @@ class VulkanSwapchain {
     auto wait_on_fence_for_frame() -> void;
     auto acquire_next_image() -> void;
 
+    auto get_current_frames_command_buffer() -> const vk::CommandBuffer& { return m_command_buffers[m_frame_index]; }
+
+    auto transition_current_image_to_attachment() -> void;
+    auto transition_images_to_presentation() -> void;
+    auto reset_current_command_buffer() -> void;
+
   private:
     Window& m_window;
     VulkanDevice& m_device;
@@ -33,7 +39,7 @@ class VulkanSwapchain {
     vk::raii::SwapchainKHR m_swapchain = nullptr;
     std::vector<vk::Image> m_images = {};
     std::vector<vk::raii::ImageView> m_image_views = {};
-    std::vector<VulkanCommandBuffer> m_command_buffers = {};
+    std::vector<vk::raii::CommandBuffer> m_command_buffers = {};
     vk::Extent2D m_extent;
     vk::SurfaceFormatKHR m_surface_format;
     vma::raii::Image m_depth_image = nullptr;
@@ -51,4 +57,6 @@ class VulkanSwapchain {
     auto choose_extent(const vk::SurfaceCapabilitiesKHR& capabilities) -> vk::Extent2D;
     auto choose_surface_format(const std::vector<vk::SurfaceFormatKHR>& available_formats) -> vk::SurfaceFormatKHR;
     auto choose_present_mode(const std::vector<vk::PresentModeKHR>& available_modes) -> vk::PresentModeKHR;
+
+    auto create_command_buffers() -> void;
 };

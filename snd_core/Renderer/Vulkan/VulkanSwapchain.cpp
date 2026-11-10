@@ -45,7 +45,7 @@ auto VulkanSwapchain::create() -> void {
 
     auto swap_chain_create_info = vk::SwapchainCreateInfoKHR {
         .flags = vk::SwapchainCreateFlagsKHR(),
-        .surface = *m_device.get_surface(),
+        .surface = m_device.get_surface(),
         .minImageCount = min_image_count,
         .imageFormat = m_surface_format.format,
         .imageColorSpace = m_surface_format.colorSpace,
@@ -123,6 +123,14 @@ auto VulkanSwapchain::choose_present_mode(const std::vector<vk::PresentModeKHR>&
 
     return vk::PresentModeKHR::eFifo;
 }
+auto VulkanSwapchain::create_command_buffers() -> void {
+    auto command_buffer_allocate_info = vk::CommandBufferAllocateInfo {
+        .commandPool = m_device.get_command_pool(),
+        .commandBufferCount = MAX_FRAMES_IN_FLIGHT,
+    };
+
+    m_command_buffers = m_device.inner().allocateCommandBuffers(command_buffer_allocate_info);
+}
 
 auto VulkanSwapchain::create_image_views() -> void {
     m_image_views.clear();
@@ -192,4 +200,8 @@ auto VulkanSwapchain::acquire_next_image() -> void {
         m_swapchain
             .acquireNextImage(std::numeric_limits<uint64_t>::max(), m_image_acquired_semaphores[m_frame_index], nullptr)
             .value;
+}
+auto VulkanSwapchain::transition_current_image_to_attachment() -> void {
+}
+auto VulkanSwapchain::reset_current_command_buffer() -> void {
 }

@@ -186,8 +186,8 @@ auto VulkanRenderer::recreate_swapchain() -> void {
 
 auto VulkanRenderer::create_imgui_init_info() -> ImGui_ImplVulkan_InitInfo {
     auto init_info = ImGui_ImplVulkan_InitInfo {
-        .Instance = *m_device->get_instance(),
-        .PhysicalDevice = *m_device->get_physical_device(),
+        .Instance = m_device->get_instance(),
+        .PhysicalDevice = m_device->get_physical_device(),
         .Device = *m_device->inner(),
         .QueueFamily = m_device->get_family_indices().graphics,
         .Queue = *m_device->get_queues().graphics,
@@ -209,10 +209,58 @@ auto VulkanRenderer::create_imgui_init_info() -> ImGui_ImplVulkan_InitInfo {
     return init_info;
 }
 
+auto VulkanRenderer::run_draw_commands(
+    const vk::CommandBuffer& command_buffer, const std::vector<vk::DrawIndexedIndirectCommand>& commands
+) -> void {
+    auto begin_info = vk::CommandBufferBeginInfo {
+        .flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit,
+    };
+    command_buffer.reset();
+    command_buffer.begin(begin_info);
+}
+
+auto VulkanRenderer::begin_rendering() -> void {
+    auto color_attachment_info = vk::RenderingAttachmentInfo {};
+    auto depth_attachment_info = vk::RenderingAttachmentInfo {};
+
+    auto rendering_info = vk::RenderingInfo {
+        .renderArea =
+            vk::Rect2D {
+                .extent =
+                    vk::Extent2D {
+                        .width = m_window.size().first,
+                        .height = m_window.size().second,
+                    },
+            },
+        .layerCount = 1,
+        .colorAttachmentCount = 1,
+        .pColorAttachments = &color_attachment_info,
+        .pDepthAttachment = &depth_attachment_info,
+    };
+}
+
+auto VulkanRenderer::set_up_dynamic_state() -> void {
+}
+
 auto VulkanRenderer::process() -> void {
     m_swapchain->wait_on_fence_for_frame();
     m_swapchain->acquire_next_image();
-}
+    m_swapchain->reset_current_command_buffer();
+    m_swapchain->get_current_frames_command_buffer().begin(vk::CommandBufferBeginInfo {});
+    m_swapchain->transition_current_image_to_attachment();
 
+    begin_rendering();
+    set_up_dynamic_state();
+    // bind pipeline
+    // bind descriptor sets
+    // bind empty vertex buffer?
+    // bind index buffer
+    // push constants
+    // draw indirect
+    m_swapchain->transition_images_to_presentation();
+    m_swapchain->get_current_frames_command_buffer().end();
+    // submit command buffer
+    // m_swapchain->present();
+}
 VulkanRenderer::~VulkanRenderer() {
 }

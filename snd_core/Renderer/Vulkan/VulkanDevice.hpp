@@ -37,13 +37,13 @@ class VulkanDevice {
 
     auto inner() -> vk::raii::Device& { return m_device; }
 
-    auto get_device_address(const vk::Buffer& buffer) -> vk::DeviceAddress;
-    auto get_context() -> vk::raii::Context& { return m_vulkan_context; }
-    auto get_instance() -> vk::raii::Instance& { return m_instance; }
-    auto get_physical_device() -> vk::raii::PhysicalDevice& { return m_physical_device; }
-    auto get_allocator() -> vma::raii::Allocator& { return m_allocator; }
-    auto get_command_pool() -> vk::raii::CommandPool& { return m_command_pool; }
-    auto get_surface() -> vk::raii::SurfaceKHR& { return m_surface; }
+    auto get_address(const vk::Buffer& buffer) -> vk::DeviceAddress;
+    auto get_context() const -> const vk::raii::Context& { return m_vulkan_context; }
+    auto get_instance() const -> const vk::Instance& { return *m_instance; }
+    auto get_physical_device() const -> const vk::PhysicalDevice& { return *m_physical_device; }
+    auto get_allocator() const -> const vma::raii::Allocator& { return m_allocator; }
+    auto get_command_pool() const -> const vk::CommandPool& { return *m_command_pool; }
+    auto get_surface() const -> const vk::SurfaceKHR& { return *m_surface; }
     auto get_depth_format() -> vk::Format { return m_depth_format; }
     auto get_family_indices() -> FamilyIndices& { return m_family_indices; }
     auto get_queues() -> DeviceQueues& { return m_queues; }

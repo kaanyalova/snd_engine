@@ -12,12 +12,12 @@
 
 VulkanScene::VulkanScene(VulkanRenderer& renderer, Scene& scene) : m_scene(scene), m_renderer(renderer) {
     load_images_to_gpu();
-    load_vertices_to_gpu();
-
+    load_scene_buffers();
     load_samplers_to_gpu();
     bind_images_to_descriptors();
     bind_samplers_to_descriptors();
-    scene.mark_loaded_on_gpu(this);
+
+    scene.mark_loaded_on_gpu();
 }
 auto VulkanScene::run_create_commands(vk::raii::CommandBuffer& command_buffer) -> void {
     for (auto& command_lambda : m_scene_create_commands) {
@@ -59,11 +59,6 @@ auto VulkanScene::bind_images_to_descriptors() -> void {
     for (size_t i = 0; i < m_images.size(); i++) {
         m_images[i]->set_slot(slot_start + i);
     }
-}
-
-auto VulkanScene::load_vertices_to_gpu() -> void {
-    m_vertex_buffer =
-        std::make_unique<VulkanVertexBuffer>(m_renderer, m_scene.get_data().vertices, m_scene.get_data().indices);
 }
 
 auto VulkanScene::load_images_to_gpu() -> void {
@@ -110,24 +105,55 @@ auto VulkanScene::bind_samplers_to_descriptors() -> void {
 }
 
 auto VulkanScene::build_indirect_draw_commands() -> void {
-    std::vector<vk::DrawIndexedIndirectCommand> draw_commands;
-
     const SceneNode& node = m_scene.get_root_node();
-    const auto& components = node.get_components();
+    const auto& components = node.get_model_components();
 
-    for (const auto& component : components) {
-        if (auto model = dynamic_cast<const ModelComponent*>(component.get())) {
-            auto range = model->get_model_range();
-        }
+    m_draw_indexed_indirect_commands = std::vector<vk::DrawIndexedIndirectCommand>(components.size());
+
+    for (const auto& model : components) {
+        m_draw_indexed_indirect_commands.emplace_back(model_range_to_draw_command(model.get_model_range()));
     }
 }
 
 auto VulkanScene::model_range_to_draw_command(const ModelRange& model_range) -> vk::DrawIndexedIndirectCommand {
     auto command = vk::DrawIndexedIndirectCommand {
         .indexCount = model_range.indices.length,
-        .instanceCount = model_range.primitive_instances.index,
+        .instanceCount = model_range.primitive_instances.length,
         .firstIndex = model_range.indices.index,
         .vertexOffset = static_cast<int32_t>(model_range.vertices.index),
         .firstInstance = model_range.primitive_instances.index,
+    };
+
+    return command;
+}
+
+auto VulkanScene::load_scene_buffers() -> void {
+    m_vertex_buffer =
+        std::make_unique<VulkanVertexBuffer>(m_renderer, m_scene.get_data().vertices, m_scene.get_data().indices);
+
+    m_material_buffer = std::make_unique<VulkanMaterialBuffer>(m_renderer, m_scene.get_data().materials);
+
+    m_primitives_buffer = std::make_unique<VulkanPrimitiveBuffer>(m_renderer, m_scene.get_data().primitives);
+
+    m_primitive_instance_buffer = std::make_unique<VulkanBakedPrimitiveInstanceBuffer>(
+        m_renderer, m_scene.get_baked_scene_data().primitive_instances
+    );
+
+    m_scene_transform_buffer =
+        std::make_unique<VulkanSceneTransformBuffer>(m_renderer, m_scene.get_baked_scene_data().scene_node_transforms);
+
+    m_indirect_command_buffer =
+        std::make_unique<VulkanIndirectCommandBuffer>(m_renderer, m_draw_indexed_indirect_commands);
+
+    m_scene_buffer = std::make_unique<VulkanSceneBuffer>(m_renderer, get_gpu_scene_data());
+}
+
+auto VulkanScene::get_gpu_scene_data() -> VulkanSceneData {
+    return VulkanSceneData {
+        .vertices = m_vertex_buffer->get_device_address(),
+        .scene_transforms = m_scene_transform_buffer->get_device_address(),
+        .primitive_instances = m_primitive_instance_buffer->get_device_address(),
+        .primitives = m_primitives_buffer->get_device_address(),
+        .materials = m_material_buffer->get_device_address(),
     };
 }

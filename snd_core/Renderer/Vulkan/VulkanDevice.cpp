@@ -182,6 +182,7 @@ auto VulkanDevice::create_logical_device() -> void {
     using DeviceFeaturesChain = vk::StructureChain<
         vk::PhysicalDeviceFeatures2,
         vk::PhysicalDeviceVulkan11Features,
+        vk::PhysicalDeviceVulkan12Features,
         vk::PhysicalDeviceVulkan13Features,
         vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT>;
 
@@ -193,6 +194,9 @@ auto VulkanDevice::create_logical_device() -> void {
                 },
         },
         vk::PhysicalDeviceVulkan11Features {.shaderDrawParameters = vk::True},
+        // scalarBlockLayout lets the shader structs follow c++/glm alignment, bufferDeviceAddress is
+        // what the scene data buffers hand to the shaders as PhysicalStorageBuffer pointers
+        vk::PhysicalDeviceVulkan12Features {.scalarBlockLayout = vk::True, .bufferDeviceAddress = vk::True},
         vk::PhysicalDeviceVulkan13Features {.synchronization2 = vk::True, .dynamicRendering = vk::True},
         vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT {.extendedDynamicState = vk::True},
     };
@@ -269,7 +273,7 @@ auto VulkanDevice::create_memory_allocator() -> void {
     m_allocator = vma::raii::createAllocator(m_instance, m_device, vma_allocator_create_info);
 }
 
-auto VulkanDevice::get_device_address(const vk::Buffer& buffer) -> vk::DeviceAddress {
+auto VulkanDevice::get_address(const vk::Buffer& buffer) -> vk::DeviceAddress {
     auto device_address_info = vk::BufferDeviceAddressInfo {
         .buffer = buffer,
     };

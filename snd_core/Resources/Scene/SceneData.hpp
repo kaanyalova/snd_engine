@@ -35,6 +35,7 @@ struct Primitive {
     auto view_of_instances(std::span<const PrimitiveInstance> buffer) const -> std::span<const PrimitiveInstance>;
 };
 
+// somehow 16 byte aligned
 struct MaterialData {
     uint32_t base_color_texture_index;
     glm::vec4 base_color_texture_factor;
@@ -63,7 +64,6 @@ struct SamplerData {
 
 struct ModelRange {
     IndexSpan primitive_instances;
-
     IndexSpan primitives;
     IndexSpan materials;
     IndexSpan textures;
