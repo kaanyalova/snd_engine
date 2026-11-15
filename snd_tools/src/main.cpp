@@ -6,7 +6,7 @@
 #include <string>
 
 #include "snd_cli_builder/CliBuilder.hpp"
-#include "snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp"
+#include "snd_core/Renderer/Vulkan/VulkanScene.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
 #include "snd_core/Resources/GltfLoader.hpp"
 #include "snd_core/Resources/Scene/Scene.hpp"

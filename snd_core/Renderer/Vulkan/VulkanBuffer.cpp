@@ -4,9 +4,8 @@
 
 #include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
 
-VulkanBuffer::VulkanBuffer(VulkanRenderer& renderer) : m_renderer(renderer) {}
-
-auto VulkanBuffer::create_mapped_buffer(vk::DeviceSize size, vk::BufferUsageFlags usage) -> void {
+VulkanBuffer::VulkanBuffer(VulkanRenderer& renderer, vk::DeviceSize size, vk::BufferUsageFlags usage)
+    : m_renderer(renderer), m_size(size) {
     auto buffer_create_info = vk::BufferCreateInfo {
         .size = size,
         .usage = usage | vk::BufferUsageFlagBits::eShaderDeviceAddress,

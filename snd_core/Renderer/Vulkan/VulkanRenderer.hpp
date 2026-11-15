@@ -5,8 +5,8 @@
 #include <memory>
 #include <optional>
 
-#include "Resources/VulkanImage.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
+#include "snd_core/Renderer/Vulkan/VulkanImage.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanSwapchain.hpp"
 
 class VulkanScene;
@@ -51,9 +51,11 @@ class VulkanRenderer {
     auto get_next_free_image_slots(uint32_t count) -> uint32_t;
     auto get_next_free_sampler_slots(uint32_t count) -> uint32_t;
 
+    // Theres at least 4 descriptor sets according to the vulkan spec
     enum class DescriptorSetBindings : uint8_t {
         SampledImages = 0,
         Samplers = 1,
+        Transient = 2,
     };
 
     ~VulkanRenderer();

@@ -128,24 +128,56 @@ auto VulkanScene::model_range_to_draw_command(const ModelRange& model_range) -> 
 }
 
 auto VulkanScene::load_scene_buffers() -> void {
-    m_vertex_buffer =
-        std::make_unique<VulkanVertexBuffer>(m_renderer, m_scene.get_data().vertices, m_scene.get_data().indices);
+    const SceneData& scene_data = m_scene.get_data();
+    const BakedScene& baked_scene_data = m_scene.get_baked_scene_data();
 
-    m_material_buffer = std::make_unique<VulkanMaterialBuffer>(m_renderer, m_scene.get_data().materials);
+    vk::DeviceSize vertex_size = sizeof(Vertex) * scene_data.vertices.size();
 
-    m_primitives_buffer = std::make_unique<VulkanPrimitiveBuffer>(m_renderer, m_scene.get_data().primitives);
-
-    m_primitive_instance_buffer = std::make_unique<VulkanBakedPrimitiveInstanceBuffer>(
-        m_renderer, m_scene.get_baked_scene_data().primitive_instances
+    m_vertex_buffer = std::make_unique<VulkanBuffer>(
+        m_renderer,
+        vertex_size + sizeof(uint32_t) * scene_data.indices.size(),
+        vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eIndexBuffer
     );
+    m_vertex_buffer->upload(scene_data.vertices);
+    m_vertex_buffer->upload(scene_data.indices, vertex_size);
 
-    m_scene_transform_buffer =
-        std::make_unique<VulkanSceneTransformBuffer>(m_renderer, m_scene.get_baked_scene_data().scene_node_transforms);
+    m_material_buffer = std::make_unique<VulkanBuffer>(
+        m_renderer, sizeof(MaterialData) * scene_data.materials.size(), vk::BufferUsageFlagBits::eStorageBuffer
+    );
+    m_material_buffer->upload(scene_data.materials);
 
-    m_indirect_command_buffer =
-        std::make_unique<VulkanIndirectCommandBuffer>(m_renderer, m_draw_indexed_indirect_commands);
+    m_primitives_buffer = std::make_unique<VulkanBuffer>(
+        m_renderer, sizeof(Primitive) * scene_data.primitives.size(), vk::BufferUsageFlagBits::eStorageBuffer
+    );
+    m_primitives_buffer->upload(scene_data.primitives);
 
-    m_scene_buffer = std::make_unique<VulkanSceneBuffer>(m_renderer, get_gpu_scene_data());
+    m_primitive_instance_buffer = std::make_unique<VulkanBuffer>(
+        m_renderer,
+        sizeof(BakedPrimitiveInstance) * baked_scene_data.primitive_instances.size(),
+        vk::BufferUsageFlagBits::eStorageBuffer
+    );
+    m_primitive_instance_buffer->upload(baked_scene_data.primitive_instances);
+
+    m_scene_transform_buffer = std::make_unique<VulkanBuffer>(
+        m_renderer,
+        sizeof(glm::mat4x4) * baked_scene_data.scene_node_transforms.size(),
+        vk::BufferUsageFlagBits::eStorageBuffer
+    );
+    m_scene_transform_buffer->upload(baked_scene_data.scene_node_transforms);
+
+    m_indirect_command_buffer = std::make_unique<VulkanBuffer>(
+        m_renderer,
+        sizeof(vk::DrawIndexedIndirectCommand) * m_draw_indexed_indirect_commands.size(),
+        vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eStorageBuffer
+            | vk::BufferUsageFlagBits::eIndirectBuffer
+    );
+    m_indirect_command_buffer->upload(m_draw_indexed_indirect_commands);
+
+    const VulkanSceneData scene_data_on_gpu = get_gpu_scene_data();
+    m_scene_buffer = std::make_unique<VulkanBuffer>(
+        m_renderer, sizeof(VulkanSceneData), vk::BufferUsageFlagBits::eStorageBuffer
+    );
+    m_scene_buffer->copy_to_buffer(&scene_data_on_gpu, 0, sizeof(VulkanSceneData));
 }
 
 auto VulkanScene::get_gpu_scene_data() -> VulkanSceneData {

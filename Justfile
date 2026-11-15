@@ -21,3 +21,7 @@ run_tools_release:
 
 add_vulkan_sdk_to_path:
     cd scripts && eval $(bun run print_sdk_bin_export.ts)
+
+clean:
+    rm -rf build/debug
+    rm -rf build/release

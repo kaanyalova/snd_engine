@@ -22,7 +22,7 @@ add_library(snd_core STATIC
         Renderer/Vulkan/VulkanDevice.hpp
         Renderer/Vulkan/VulkanRenderer.cpp
         Renderer/Vulkan/VulkanRenderer.hpp
-        Renderer/Vulkan/Resources/VulkanScene.hpp
+        Renderer/Vulkan/VulkanScene.hpp
         Renderer/Vulkan/VulkanSwapchain.cpp
         Renderer/Vulkan/VulkanSwapchain.hpp
         DeletionQueue.cpp
@@ -48,34 +48,21 @@ add_library(snd_core STATIC
         TemplateHelpers/VariantMatch.hpp
         TemplateHelpers/IsLegitVariant.hpp
         Resources/Scene/SceneData.cpp
-        Renderer/Vulkan/Resources/VulkanScene.cpp
+        Renderer/Vulkan/VulkanScene.cpp
         Image/ImageUtils.cpp
         Image/ImageUtils.hpp
-        Renderer/Vulkan/Resources/VulkanImage.cpp
-        Renderer/Vulkan/Resources/VulkanImage.hpp
-        Renderer/Vulkan/Resources/VulkanSampler.cpp
-        Renderer/Vulkan/Resources/VulkanSampler.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanVertexBuffer.cpp
-        Renderer/Vulkan/Resources/Buffers/VulkanVertexBuffer.hpp
+        Renderer/Vulkan/VulkanImage.cpp
+        Renderer/Vulkan/VulkanImage.hpp
+        Renderer/Vulkan/VulkanSampler.cpp
+        Renderer/Vulkan/VulkanSampler.hpp
         Image/Image.cpp
         Resources/Scene/SceneNode.cpp
         Resources/Scene/SceneTestData.cpp
         Resources/Scene/SceneTestData.hpp
         Resources/Scene/BakedScene.cpp
         Resources/Scene/BakedScene.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanMaterialBuffer.cpp
-        Renderer/Vulkan/Resources/Buffers/VulkanMaterialBuffer.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanSceneTransformBuffer.cpp
-        Renderer/Vulkan/Resources/Buffers/VulkanSceneTransformBuffer.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanSceneBuffer.cpp
-        Renderer/Vulkan/Resources/Buffers/VulkanSceneBuffer.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanBakedPrimitiveInstanceBuffer.cpp
-        Renderer/Vulkan/Resources/Buffers/VulkanBakedPrimitiveInstanceBuffer.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanPrimitiveBuffer.cpp
-        Renderer/Vulkan/Resources/Buffers/VulkanPrimitiveBuffer.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanBuffer.cpp
-        Renderer/Vulkan/Resources/Buffers/VulkanBuffer.hpp
-        Renderer/Vulkan/Resources/Buffers/VulkanIndirectCommandBuffer.hpp
+        Renderer/Vulkan/VulkanBuffer.cpp
+        Renderer/Vulkan/VulkanBuffer.hpp
 
         Resources/Component/CameraComponent.cpp
         Resources/Component/CameraComponent.hpp
@@ -94,4 +81,6 @@ target_link_libraries(snd_core PUBLIC Vulkan::Vulkan SDL3::SDL3 glm::glm VulkanM
 
 target_compile_definitions(snd_core PUBLIC VULKAN_HPP_NO_CONSTRUCTORS)
 target_compile_definitions(snd_core PUBLIC VULKAN_HPP_HANDLE_ERROR_OUT_OF_DATE_AS_SUCCESS)
+# vma-hpp-raii doesn't like the spaceship operator now, idk what changed
+target_compile_definitions(snd_core PUBLIC VULKAN_HPP_NO_SPACESHIP_OPERATOR)
 target_compile_definitions(snd_core PUBLIC GLM_FORCE_DEPTH_ZERO_TO_ONE)

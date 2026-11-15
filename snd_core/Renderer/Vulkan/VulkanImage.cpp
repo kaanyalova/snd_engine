@@ -1,6 +1,6 @@
 #include "VulkanImage.hpp"
 
-#include "../VulkanRenderer.hpp"
+#include "VulkanRenderer.hpp"
 #include "VulkanScene.hpp"
 VulkanImage::VulkanImage(VulkanRenderer& renderer, VulkanScene& scene, const ImageView& image) : m_renderer(renderer) {
     m_width = image.width;

@@ -1,6 +1,6 @@
 #include "snd_core/Renderer/Vulkan/VulkanRenderer.hpp"
 
-#include "snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp"
+#include "snd_core/Renderer/Vulkan/VulkanScene.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanDevice.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanSwapchain.hpp"
 

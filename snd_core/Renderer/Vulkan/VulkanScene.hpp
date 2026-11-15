@@ -4,15 +4,9 @@
 #include <memory>
 #include <vector>
 
-#include "Buffers/VulkanBakedPrimitiveInstanceBuffer.hpp"
-#include "Buffers/VulkanIndirectCommandBuffer.hpp"
-#include "Buffers/VulkanMaterialBuffer.hpp"
-#include "Buffers/VulkanSceneBuffer.hpp"
-#include "Buffers/VulkanSceneTransformBuffer.hpp"
-#include "Buffers/VulkanVertexBuffer.hpp"
+#include "VulkanBuffer.hpp"
 #include "VulkanImage.hpp"
 #include "VulkanSampler.hpp"
-#include "snd_core/Renderer/Vulkan/Resources/Buffers/VulkanPrimitiveBuffer.hpp"
 #include "snd_core/Resources/Scene/SceneData.hpp"
 #include "vk_mem_alloc_raii.hpp"
 #include "vulkan/vulkan.hpp"
@@ -21,6 +15,14 @@ class Scene;
 class VulkanRenderer;
 
 using CommandBufferRecordLambda = std::function<void(vk::raii::CommandBuffer& command_buffer)>;
+
+struct VulkanSceneData {
+    vk::DeviceAddress vertices;
+    vk::DeviceAddress scene_transforms;
+    vk::DeviceAddress primitive_instances;
+    vk::DeviceAddress primitives;
+    vk::DeviceAddress materials;
+};
 
 class VulkanScene {
   public:
@@ -44,14 +46,14 @@ class VulkanScene {
     // which gets invalidated when the vector reallocates
     std::vector<std::unique_ptr<VulkanImage>> m_images = {};
 
-    std::unique_ptr<VulkanVertexBuffer> m_vertex_buffer = nullptr;
-    std::unique_ptr<VulkanMaterialBuffer> m_material_buffer = nullptr;
-    std::unique_ptr<VulkanPrimitiveBuffer> m_primitives_buffer = nullptr;
-    std::unique_ptr<VulkanBakedPrimitiveInstanceBuffer> m_primitive_instance_buffer = nullptr;
-    std::unique_ptr<VulkanSceneTransformBuffer> m_scene_transform_buffer = nullptr;
-    std::unique_ptr<VulkanIndirectCommandBuffer> m_indirect_command_buffer = nullptr;
+    std::unique_ptr<VulkanBuffer> m_vertex_buffer = nullptr;
+    std::unique_ptr<VulkanBuffer> m_material_buffer = nullptr;
+    std::unique_ptr<VulkanBuffer> m_primitives_buffer = nullptr;
+    std::unique_ptr<VulkanBuffer> m_primitive_instance_buffer = nullptr;
+    std::unique_ptr<VulkanBuffer> m_scene_transform_buffer = nullptr;
+    std::unique_ptr<VulkanBuffer> m_indirect_command_buffer = nullptr;
 
-    std::unique_ptr<VulkanSceneBuffer> m_scene_buffer = nullptr;
+    std::unique_ptr<VulkanBuffer> m_scene_buffer = nullptr;
 
     std::vector<CommandBufferRecordLambda> m_scene_create_commands = {};
     std::vector<vk::DrawIndexedIndirectCommand> m_draw_indexed_indirect_commands = {};
