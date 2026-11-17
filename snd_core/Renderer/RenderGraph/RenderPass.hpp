@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BufferAttachment.hpp"
 #include "RenderGraph.hpp"
 #include "snd_core/Renderer/RenderGraph/ColorAttachment.hpp"
 #include "snd_core/Renderer/Vulkan/VulkanBuffer.hpp"
@@ -17,15 +18,16 @@ class RenderPass {
 
     class Builder {
         auto with_shader(std::string_view shader_name) -> Builder;
-
+        
         // color attachments are bound to VulkanRenderer::DescriptorSetBindings::Transient which is 2
         auto with_new_color_attachment(
             std::string_view name, uint32_t binding, AccessFlags flags, ColorAttachment attachment
-        ) -> Builder;
-        auto with_exiting_color_attachment(std::string_view name, AccessFlags flags, uint32_t binding) -> Builder;
+        ) -> Builder&;
+        auto with_exiting_color_attachment(std::string_view name, AccessFlags flags, uint32_t binding) -> Builder&;
 
-        auto with_new_buffer() -> void;
-        auto with_existing_buffer() -> void;
+        // Buffers are bound to the buffer referenced by the push constant
+        auto with_new_buffer(std::string_view name, AccessFlags flags, BufferAttachment attachment) -> Builder&;
+        auto with_existing_buffer(std::string_view name, AccessFlags flags) -> Builder&;
 
         auto build() -> RenderPass;
     };

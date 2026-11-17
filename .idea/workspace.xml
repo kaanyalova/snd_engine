@@ -24,57 +24,57 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
-      <config projectName="Project" targetName="ContinuousUpdate" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ContinuousStart" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="loader_example" />
-      <config projectName="Project" targetName="ExperimentalTest" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="NightlyStart" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ktx_version" />
-      <config projectName="Project" targetName="ContinuousCoverage" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="gtest" />
-      <config projectName="Project" targetName="NightlyCoverage" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="vk2dfd_inl" />
-      <config projectName="Project" targetName="NightlyUpdate" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="SDL3_test" />
-      <config projectName="Project" targetName="ExperimentalSubmit" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="dfd2vk_inl" />
-      <config projectName="Project" targetName="NightlyTest" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ktx" />
-      <config projectName="Project" targetName="ExperimentalCoverage" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="NightlyConfigure" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="obj_basisu_cbind" />
-      <config projectName="Project" targetName="ExperimentalBuild" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="NightlyMemCheck" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ContinuousConfigure" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ExperimentalStart" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ExperimentalConfigure" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="NightlyBuild" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ContinuousSubmit" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ContinuousTest" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ExperimentalMemCheck" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="snd_cli_builder" />
-      <config projectName="Project" targetName="astcenc-avx2-static" />
-      <config projectName="Project" targetName="Experimental" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ExperimentalUpdate" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ContinuousMemCheck" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="Continuous" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="glm" />
-      <config projectName="Project" targetName="Nightly" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="ContinuousBuild" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="objUtil" />
-      <config projectName="Project" targetName="NightlySubmit" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="snd_core" />
-      <config projectName="Project" targetName="basisu_encoder" />
-      <config projectName="Project" targetName="ktx_read" />
-      <config projectName="Project" targetName="gtest_main" />
-      <config projectName="Project" targetName="dfdutils" />
-      <config projectName="Project" targetName="SDL3-shared" />
-      <config projectName="Project" targetName="gmock_main" />
-      <config projectName="Project" targetName="NightlyMemoryCheck" folderName="CTestDashboardTargets" />
-      <config projectName="Project" targetName="SDL_uclibc" />
-      <config projectName="Project" targetName="gmock" />
-      <config projectName="Project" targetName="imgui" />
-      <config projectName="Project" targetName="snd_tools" />
+      <config projectName="snd" targetName="NightlyUpdate" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ContinuousStart" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ContinuousCoverage" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ContinuousUpdate" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ExperimentalTest" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ktx_version" />
+      <config projectName="snd" targetName="gtest" />
+      <config projectName="snd" targetName="NightlyStart" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ExperimentalStart" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="NightlyBuild" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ContinuousSubmit" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="obj_basisu_cbind" />
+      <config projectName="snd" targetName="ExperimentalBuild" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="imgui" />
+      <config projectName="snd" targetName="ExperimentalConfigure" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="dfdutils" />
+      <config projectName="snd" targetName="NightlyConfigure" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="objUtil" />
+      <config projectName="snd" targetName="ContinuousMemCheck" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="SDL_uclibc" />
+      <config projectName="snd" targetName="gmock" />
+      <config projectName="snd" targetName="snd_core" />
+      <config projectName="snd" targetName="basisu_encoder" />
+      <config projectName="snd" targetName="ExperimentalUpdate" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="Experimental" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="loader_example" />
+      <config projectName="snd" targetName="NightlyCoverage" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="glm" />
+      <config projectName="snd" targetName="SDL3_test" />
+      <config projectName="snd" targetName="Continuous" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="NightlyMemoryCheck" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="snd_cli_builder" />
+      <config projectName="snd" targetName="astcenc-avx2-static" />
+      <config projectName="snd" targetName="ContinuousTest" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="snd_tools" />
+      <config projectName="snd" targetName="gmock_main" />
+      <config projectName="snd" targetName="NightlyMemCheck" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ContinuousConfigure" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="SDL3-shared" />
+      <config projectName="snd" targetName="gtest_main" />
+      <config projectName="snd" targetName="ExperimentalMemCheck" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ktx" />
+      <config projectName="snd" targetName="ExperimentalSubmit" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="dfd2vk_inl" />
+      <config projectName="snd" targetName="NightlyTest" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ContinuousBuild" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ExperimentalCoverage" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="NightlySubmit" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="ktx_read" />
+      <config projectName="snd" targetName="Nightly" folderName="CTestDashboardTargets" />
+      <config projectName="snd" targetName="vk2dfd_inl" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -87,45 +87,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="progress..?">
-      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/ColorAttachment.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/ColorAttachment.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/BufferAttachment.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/BufferAttachment.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Justfile" beforeDir="false" afterPath="$PROJECT_DIR$/Justfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderGraph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderGraph.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderGraph.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderGraph.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderPass.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderPass.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderPass.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraph/RenderPass.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/RenderGraphImpl/TestRenderPass.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraphImpl/TestRenderPass.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/RenderGraphImpl/TestRenderPass.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/RenderGraphImpl/TestRenderPass.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanBakedPrimitiveInstanceBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanBakedPrimitiveInstanceBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanBuffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanBuffer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanBuffer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanBuffer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanIndirectCommandBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanIndirectCommandBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanMaterialBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanMaterialBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanPrimitiveBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanPrimitiveBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanSceneBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanSceneBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanSceneTransformBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanSceneTransformBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanVertexBuffer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/Buffers/VulkanVertexBuffer.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanImage.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanImage.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanImage.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSampler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanSampler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanSampler.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/Resources/VulkanScene.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanScene.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Renderer/Vulkan/VulkanRenderer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_core/Utils/StringUtils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_core/Utils/StringUtils.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snd_tools/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/snd_tools/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +104,7 @@
       <entry key="_/home/kaan/Masaüstü/sneed" value="3Ix7bZ43rhYva8G0T2Ht4tupwTa" />
     </persistenceIdMap>
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:debug-local" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:debug - debug" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -159,12 +125,12 @@
     &quot;assignee&quot;: &quot;kaanyalova&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/kaanyalova/sneed.git&quot;,
-    &quot;accountId&quot;: &quot;ebbfca58-e1e2-4539-b7fe-ee0f182a9efa&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/kaanyalova/snd_engine.git",
+    "accountId": "d56a6d9a-7b01-4884-a095-160befef7e9d"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/cmake-build-debug/_deps/imgui_src-src/backends/imgui_impl_vulkan.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/cmake-build-debug/_deps/vma-hpp-src/vk_mem_alloc.h" root0="FORCE_HIGHLIGHTING" />
@@ -186,61 +152,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="2.2199100499797" />
-      <entry key="MS500" value="5.022250625019275" />
-      <entry key="S2" value="8.757297364172771" />
-      <entry key="S5" value="12.331439935778302" />
-      <entry key="S10" value="14.898075890441302" />
-      <entry key="S30" value="18.5385643208427" />
-      <entry key="S60" value="24.541192777739628" />
-      <entry key="M2" value="38.04070823386986" />
-      <entry key="M5" value="72.3229302609771" />
-      <entry key="M10" value="117.18236160580076" />
-      <entry key="M15" value="162.4348838769139" />
-      <entry key="M30" value="299.91696975723806" />
-      <entry key="H1" value="522.0453076016526" />
-      <entry key="H2" value="895.294881646147" />
-      <entry key="H4" value="1646.1441406151941" />
-      <entry key="D1" value="6397.895464114463" />
-      <entry key="W1" value="9529.501357831497" />
+      <entry key="MS100" value="1.0001421793928795" />
+      <entry key="MS500" value="1.1704401180341315" />
+      <entry key="S2" value="1.9963836132011368" />
+      <entry key="S5" value="3.3347408378681123" />
+      <entry key="S10" value="4.375084565021767" />
+      <entry key="S30" value="6.938150054894662" />
+      <entry key="S60" value="13.464488928880153" />
+      <entry key="M2" value="28.82281002018563" />
+      <entry key="M5" value="68.36187504428162" />
+      <entry key="M10" value="118.11885373601166" />
+      <entry key="M15" value="165.18668426311936" />
+      <entry key="M30" value="304.49829668431147" />
+      <entry key="H1" value="529.3329210574751" />
+      <entry key="H2" value="905.1518169532459" />
+      <entry key="H4" value="1657.2655426301128" />
+      <entry key="D1" value="6413.9321345245735" />
+      <entry key="W1" value="9552.594388712823" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="7.583284409403825E-72" />
-      <entry key="S2" value="1.6594506291529066E-18" />
-      <entry key="S5" value="7.726552049580955E-8" />
-      <entry key="S10" value="2.779747451096167E-4" />
-      <entry key="S30" value="0.07123765282296063" />
-      <entry key="S60" value="0.49599237387735623" />
-      <entry key="M2" value="2.272031140421076" />
-      <entry key="M5" value="7.307756498649104" />
-      <entry key="M10" value="12.979105114384351" />
-      <entry key="M15" value="18.935697600254034" />
-      <entry key="M30" value="39.715200386681126" />
-      <entry key="H1" value="77.6014639838507" />
-      <entry key="H2" value="148.80957098774795" />
-      <entry key="H4" value="303.397565307149" />
-      <entry key="D1" value="1213.3247160609271" />
-      <entry key="W1" value="1771.6598231268053" />
+      <entry key="MS500" value="4.0597111243290274E-102" />
+      <entry key="S2" value="6.24738072540537E-26" />
+      <entry key="S5" value="1.2261912898261607E-10" />
+      <entry key="S10" value="1.559692060141793E-5" />
+      <entry key="S30" value="0.04089115164622158" />
+      <entry key="S60" value="0.34764761607233585" />
+      <entry key="M2" value="1.5801620141783026" />
+      <entry key="M5" value="6.235710330160636" />
+      <entry key="M10" value="12.255088570291461" />
+      <entry key="M15" value="18.31114903313595" />
+      <entry key="M30" value="39.00960884011319" />
+      <entry key="H1" value="76.9752075148428" />
+      <entry key="H2" value="148.3001262156685" />
+      <entry key="H4" value="302.84557384093097" />
+      <entry key="D1" value="1213.6259706572873" />
+      <entry key="W1" value="1773.3054387919333" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="2.1193741135029978" />
-      <entry key="MS500" value="4.736748128225184" />
-      <entry key="S2" value="8.197621300374664" />
-      <entry key="S5" value="11.872925993888494" />
-      <entry key="S10" value="14.59037913870404" />
-      <entry key="S30" value="18.475337776030845" />
-      <entry key="S60" value="24.946352298548792" />
-      <entry key="M2" value="40.22549535891256" />
-      <entry key="M5" value="79.54384760592204" />
-      <entry key="M10" value="130.08741150141415" />
-      <entry key="M15" value="181.30215244165225" />
-      <entry key="M30" value="339.5694032586718" />
-      <entry key="H1" value="599.5905801403569" />
-      <entry key="H2" value="1044.0516640403134" />
-      <entry key="H4" value="1949.487624470483" />
-      <entry key="D1" value="7611.182294491869" />
-      <entry key="W1" value="11301.153129208777" />
+      <entry key="MS100" value="5.020996765598927E-4" />
+      <entry key="MS500" value="0.25808686741472925" />
+      <entry key="S2" value="1.3959062932933413" />
+      <entry key="S5" value="2.898941676042124" />
+      <entry key="S10" value="4.075657384531373" />
+      <entry key="S30" value="6.813322566031174" />
+      <entry key="S60" value="13.677431955198708" />
+      <entry key="M2" value="30.285993812511208" />
+      <entry key="M5" value="74.49586857986702" />
+      <entry key="M10" value="130.2894494634573" />
+      <entry key="M15" value="183.4215214908573" />
+      <entry key="M30" value="343.44070297105986" />
+      <entry key="H1" value="606.24946618671" />
+      <entry key="H2" value="1053.397852365889" />
+      <entry key="H4" value="1960.0563920520592" />
+      <entry key="D1" value="7627.520089331769" />
+      <entry key="W1" value="11325.89175118795" />
     </decayedShown>
   </component>
   <component name="ProjectApplicationVersion">
@@ -321,257 +287,262 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.snd_core">
-    <configuration name="Continuous" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="Continuous" CONFIG_NAME="debug-local">
+    <configuration name="Continuous" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="Continuous" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousBuild" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousBuild" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousBuild" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousBuild" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousConfigure" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousConfigure" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousConfigure" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousConfigure" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousCoverage" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousCoverage" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousCoverage" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousCoverage" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousMemCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousMemCheck" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousMemCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousMemCheck" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousStart" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousStart" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousStart" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousStart" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousSubmit" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousSubmit" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousSubmit" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousSubmit" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousTest" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousTest" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousTest" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousTest" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContinuousUpdate" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ContinuousUpdate" CONFIG_NAME="debug-local">
+    <configuration name="ContinuousUpdate" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ContinuousUpdate" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Experimental" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="Experimental" CONFIG_NAME="debug-local">
+    <configuration name="Experimental" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="Experimental" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalBuild" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalBuild" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalBuild" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalBuild" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalConfigure" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalConfigure" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalConfigure" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalConfigure" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalCoverage" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalCoverage" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalCoverage" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalCoverage" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalMemCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalMemCheck" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalMemCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalMemCheck" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalStart" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalStart" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalStart" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalStart" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalSubmit" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalSubmit" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalSubmit" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalSubmit" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalTest" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalTest" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalTest" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalTest" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExperimentalUpdate" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ExperimentalUpdate" CONFIG_NAME="debug-local">
+    <configuration name="ExperimentalUpdate" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ExperimentalUpdate" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Nightly" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="Nightly" CONFIG_NAME="debug-local">
+    <configuration name="Nightly" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="Nightly" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyBuild" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyBuild" CONFIG_NAME="debug-local">
+    <configuration name="NightlyBuild" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyBuild" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyConfigure" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyConfigure" CONFIG_NAME="debug-local">
+    <configuration name="NightlyConfigure" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyConfigure" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyCoverage" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyCoverage" CONFIG_NAME="debug-local">
+    <configuration name="NightlyCoverage" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyCoverage" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyMemCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyMemCheck" CONFIG_NAME="debug-local">
+    <configuration name="NightlyMemCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyMemCheck" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyMemoryCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyMemoryCheck" CONFIG_NAME="debug-local">
+    <configuration name="NightlyMemoryCheck" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyMemoryCheck" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyStart" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyStart" CONFIG_NAME="debug-local">
+    <configuration name="NightlyStart" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyStart" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlySubmit" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlySubmit" CONFIG_NAME="debug-local">
+    <configuration name="NightlySubmit" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlySubmit" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyTest" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyTest" CONFIG_NAME="debug-local">
+    <configuration name="NightlyTest" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyTest" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NightlyUpdate" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="NightlyUpdate" CONFIG_NAME="debug-local">
+    <configuration name="NightlyUpdate" type="CMakeRunConfiguration" factoryName="Application" folderName="CTestDashboardTargets" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="NightlyUpdate" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SDL3-shared" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="SDL3-shared" CONFIG_NAME="debug-local">
+    <configuration name="SDL3-shared" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="SDL3-shared" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SDL3_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="SDL3_test" CONFIG_NAME="debug-local">
+    <configuration name="SDL3_test" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="SDL3_test" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SDL_uclibc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="SDL_uclibc" CONFIG_NAME="debug-local">
+    <configuration name="SDL_uclibc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="SDL_uclibc" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="astcenc-avx2-static" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="astcenc-avx2-static" CONFIG_NAME="debug-local">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="basisu_encoder" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="basisu_encoder" CONFIG_NAME="debug-local">
+    <configuration name="astcenc-avx2-static" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="astcenc-avx2-static" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="dfd2vk_inl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="dfd2vk_inl" CONFIG_NAME="debug-local">
+    <configuration name="basisu_encoder" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="basisu_encoder" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="dfdutils" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="dfdutils" CONFIG_NAME="debug-local">
+    <configuration name="dfd2vk_inl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="dfd2vk_inl" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="glm" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="glm" CONFIG_NAME="debug-local">
+    <configuration name="dfdutils" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="dfdutils" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="gmock" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="gmock" CONFIG_NAME="debug-local">
+    <configuration name="glm" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="glm" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="gmock_main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="gmock_main" CONFIG_NAME="debug-local">
+    <configuration name="gmock" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="gmock" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="gtest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="gtest" CONFIG_NAME="debug-local">
+    <configuration name="gmock_main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="gmock_main" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="gtest_main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="gtest_main" CONFIG_NAME="debug-local">
+    <configuration name="gtest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="gtest" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="imgui" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="imgui" CONFIG_NAME="debug-local">
+    <configuration name="gtest_main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="gtest_main" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ktx" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ktx" CONFIG_NAME="debug-local">
+    <configuration name="imgui" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="imgui" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ktx_read" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ktx_read" CONFIG_NAME="debug-local">
+    <configuration name="ktx" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ktx" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ktx_version" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="ktx_version" CONFIG_NAME="debug-local">
+    <configuration name="ktx_read" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ktx_read" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="loader_example" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="loader_example" CONFIG_NAME="debug-local" RUN_TARGET_PROJECT_NAME="Project" RUN_TARGET_NAME="loader_example">
+    <configuration name="ktx_version" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="ktx_version" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="objUtil" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="objUtil" CONFIG_NAME="debug-local">
+    <configuration name="loader_example" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="loader_example" CONFIG_NAME="debug-local" RUN_TARGET_PROJECT_NAME="snd" RUN_TARGET_NAME="loader_example">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="obj_basisu_cbind" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="obj_basisu_cbind" CONFIG_NAME="debug-local">
+    <configuration name="objUtil" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="objUtil" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="snd_cli_builder" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="snd_cli_builder" CONFIG_NAME="debug-local">
+    <configuration name="obj_basisu_cbind" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="obj_basisu_cbind" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="snd_core" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="snd_core" CONFIG_NAME="debug-local">
+    <configuration name="snd_cli_builder" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="snd_cli_builder" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="snd_tools" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="dump-gltf -i $USER_HOME$/İndirilenler/blue_archivekasumizawa_miyu.glb -o ./out.bin" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="snd_tools" CONFIG_NAME="debug-local" RUN_TARGET_PROJECT_NAME="Project" RUN_TARGET_NAME="snd_tools">
+    <configuration name="snd_core" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="snd_core" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="sneed" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="sneed" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Project" RUN_TARGET_NAME="sneed">
+    <configuration name="snd_tools" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="dump-gltf -i $USER_HOME$/İndirilenler/blue_archivekasumizawa_miyu.glb -o ./out.bin" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="snd_tools" CONFIG_NAME="debug-local" RUN_TARGET_PROJECT_NAME="snd" RUN_TARGET_NAME="snd_tools">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sneed" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="sneed" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="snd" RUN_TARGET_NAME="sneed">
       <envs>
         <env name="SDL_VIDEODRIVER" value="x11" />
       </envs>
@@ -579,7 +550,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="vk2dfd_inl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Project" TARGET_NAME="vk2dfd_inl" CONFIG_NAME="debug-local">
+    <configuration name="vk2dfd_inl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="snd" TARGET_NAME="vk2dfd_inl" CONFIG_NAME="debug-local">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -642,25 +613,18 @@
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
   </component>
-  <component name="SelectedDebugProfileService">{
-  &quot;profileIdByStamp&quot;: [
+  <component name="SelectedDebugProfileService"><![CDATA[{
+  "profileIdByStamp": [
     {
-      &quot;first&quot;: {
-        &quot;##RUN_CONFIGURATION##&quot;: &quot;CMake Application.snd_core&quot;,
-        &quot;cmake&quot;: &quot;CMakeBuildProfile:debug-local&quot;
+      "first": {
+        "##RUN_CONFIGURATION##": "CMake Application.snd_core",
+        "cmake": "CMakeBuildProfile:debug - debug"
       },
-      &quot;second&quot;: &quot;eb3b7a54-bf21-4596-97ac-933dc8a9ffca&quot;
-    },
-    {
-      &quot;first&quot;: {
-        &quot;##RUN_CONFIGURATION##&quot;: &quot;CMake Application.snd_tools&quot;,
-        &quot;cmake&quot;: &quot;CMakeBuildProfile:debug-local&quot;
-      },
-      &quot;second&quot;: &quot;eb3b7a54-bf21-4596-97ac-933dc8a9ffca&quot;
+      "second": "67789785-5bff-4da2-95cd-522accdeee04"
     }
   ],
-  &quot;modificationCount&quot;: 103
-}</component>
+  "modificationCount": 109
+}]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="80ec6c9c-0bb2-4d65-a792-435843f54d8d" name="Changes" comment="" />

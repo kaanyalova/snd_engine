@@ -72,6 +72,8 @@ add_library(snd_core STATIC
         Renderer/RenderGraph/RenderGraph.hpp
         Renderer/RenderGraphImpl/TestRenderPass.cpp
         Renderer/RenderGraphImpl/TestRenderPass.hpp
+        Renderer/RenderGraph/BufferAttachment.cpp
+        Renderer/RenderGraph/BufferAttachment.hpp
 )
 
 # include dir is the parent so includes read "snd_core/Window.hpp"
